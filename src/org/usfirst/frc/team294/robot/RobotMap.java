@@ -14,7 +14,8 @@ public class RobotMap {
 	public static int SolenoidChannel1 = 0;
 	public static int SolenoidChannel2 = 1; 
 	public static int EncoderLeft = 0;
-	public static int EncoderRight = 0; 
+	public static int EncoderRight = 0;
+	public static int dummyVariable = 1;
 	
     // For example to map the left and right motors, you could define the
     // following variables to use with your drivetrain subsystem.

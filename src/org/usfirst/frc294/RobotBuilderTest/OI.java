@@ -61,17 +61,18 @@ public class OI {
     public OI() {
         //Instantiates all objects for joysticks and buttons
 
-        rightJoystick = new Joystick(4);
+        rightJoystick = new Joystick(1);
         
         joystickButton2 = new JoystickButton(rightJoystick, 1);
         joystickButton2.whileHeld(new driveForward(0, 0));
-        leftJoystick = new Joystick(2);
+        leftJoystick = new Joystick(0);
         
         leftJoystickTrigger = new JoystickButton(leftJoystick, 1);
-        leftJoystickTrigger.whenPressed(new shoot());
+        //leftJoystickTrigger.whenPressed(new shoot());
+        leftJoystickTrigger.whenPressed(new shootingSequence());
         leftJoystickButtonA = new JoystickButton(leftJoystick, 5);
         leftJoystickButtonA.whileHeld(new driveForward(0, 1.0));
-
+        
 
         // SmartDashboard Buttons
         SmartDashboard.putData("driveWithJoysticks", new driveWithJoysticks());

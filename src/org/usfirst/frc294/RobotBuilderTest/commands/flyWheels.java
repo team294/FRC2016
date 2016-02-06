@@ -28,6 +28,9 @@ public class flyWheels extends Command {
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
     	//System.out.println(Robot.shooter.getTopError());
+    	if(!Robot.shooter.isButtonPressed() && start){
+    		return;
+    	}
     	if(start){
     		Robot.shooter.setSpeed(5000);
     	}
@@ -38,17 +41,20 @@ public class flyWheels extends Command {
 
     // Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished() {
+    	if(!Robot.shooter.isButtonPressed()){
+    		System.out.println(Robot.shooter.isButtonPressed());
+    		return true;
+    	}
     	if(System.currentTimeMillis()-this.startTime > 500){
     		err4 = err3;
     		err3 = err2;
     		err2 = err1;
-    		err1 = Robot.shooter.getTopError();
     		System.out.println(err1 + " " + err2 + " " +err3 + " " + err4);
     		if(err1+err2+err3+err4 < 20)
     			return true;
     	}
     	//This is the timing out of the command, if the other one doesnt fire first, this one will be there to catch it
-    	if(System.currentTimeMillis()-this.startTime > 3000){
+    	if(System.currentTimeMillis()-this.startTime > 2000){
     		return true;
     	}
         return false;

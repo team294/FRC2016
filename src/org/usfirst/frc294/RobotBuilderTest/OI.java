@@ -53,25 +53,27 @@ public class OI {
 
     // Creates Joystick variables
     public Joystick leftJoystick;
-    public JoystickButton leftJoystickButtonA;
+    public JoystickButton leftJoystickButton2;
     public JoystickButton leftJoystickTrigger;
+    
     public Joystick rightJoystick;
-    public JoystickButton joystickButton2;
+    public JoystickButton rightJoystickButton2;
 
     public OI() {
         //Instantiates all objects for joysticks and buttons
 
         rightJoystick = new Joystick(1);
         
-        joystickButton2 = new JoystickButton(rightJoystick, 1);
-        joystickButton2.whileHeld(new driveForward(0, 0));
+        rightJoystickButton2 = new JoystickButton(rightJoystick, 1);
+        rightJoystickButton2.whileHeld(new driveForward(0, 0));
         leftJoystick = new Joystick(0);
         
         leftJoystickTrigger = new JoystickButton(leftJoystick, 1);
         //leftJoystickTrigger.whenPressed(new shoot());
-        leftJoystickTrigger.whenPressed(new shootingSequence());
-        leftJoystickButtonA = new JoystickButton(leftJoystick, 5);
-        leftJoystickButtonA.whileHeld(new driveForward(0, 1.0));
+        leftJoystickTrigger.whenPressed(new intakeSequence());
+        leftJoystickButton2 = new JoystickButton(leftJoystick, 2);
+        leftJoystickButton2.whenPressed(new shootingSequence());
+        //leftJoystickButton2.whileHeld(new driveForward(0, 1.0));
         
 
         // SmartDashboard Buttons

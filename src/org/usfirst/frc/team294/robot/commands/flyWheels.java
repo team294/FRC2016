@@ -45,17 +45,17 @@ public class flyWheels extends Command {
     	if(!Robot.shooter.isButtonPressed()){
     		return true;
     	}
-//    	if(System.currentTimeMillis()-this.startTime > 500){
-//    		err4 = err3;
-//    		err3 = err2;
-//    		err2 = err1;
-//    		if(err1+err2+err3+err4 < 20)
-//    			return true;
-//    	}
+    	if(System.currentTimeMillis()-this.startTime > 500){
+    		err4 = err3;
+    		err3 = err2;
+    		err2 = err1;
+    		if(err1+err2+err3+err4 < 20)
+    			return true;
+    	}
     	//This is the timing out of the command, if the other one doesnt fire first, this one will be there to catch it
-//    	if(System.currentTimeMillis()-this.startTime > 2000){
-//    		return true;
-//    	}
+    	if(System.currentTimeMillis()-this.startTime > 2000){
+    		return true;
+    	}
         return false;
     }
 

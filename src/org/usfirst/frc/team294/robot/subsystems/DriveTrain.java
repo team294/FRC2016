@@ -9,10 +9,11 @@
 // it from being updated in the future.
 
 
-package org.usfirst.frc294.RobotBuilderTest.subsystems;
+package org.usfirst.frc.team294.robot.subsystems;
 
-import org.usfirst.frc294.RobotBuilderTest.RobotMap;
-import org.usfirst.frc294.RobotBuilderTest.commands.*;
+import org.usfirst.frc.team294.robot.RobotMap;
+import org.usfirst.frc.team294.robot.commands.*;
+
 import edu.wpi.first.wpilibj.AnalogGyro;
 import edu.wpi.first.wpilibj.CANTalon;
 import edu.wpi.first.wpilibj.RobotDrive;

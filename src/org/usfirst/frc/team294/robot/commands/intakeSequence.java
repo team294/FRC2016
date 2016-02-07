@@ -1,21 +1,18 @@
-package org.usfirst.frc294.RobotBuilderTest.commands;
+package org.usfirst.frc.team294.robot.commands;
 
 import edu.wpi.first.wpilibj.command.CommandGroup;
 
 /**
  *
  */
-public class shootingSequence extends CommandGroup {
+public class intakeSequence extends CommandGroup {
     
-    public  shootingSequence() {
+    public intakeSequence() {
+    	addSequential(new intakeRollers(true));
+    	addSequential(new intakeRollers(false));
+        
     	
-    	
-    	addSequential(new flyWheels(true)); //Starts the fly wheels, and runs them at full speed
-    	//addSequential(new flyWheelPiston(true)); //When wheels are full speed, use piston to push the ball into fly wheels
-    	//addParallel(new flyWheelPiston(false));
-    	addSequential(new flyWheels(false)); //Stops the fly wheels from spinning
-    	
-        // Add Commands here:
+    	// Add Commands here:
         // e.g. addSequential(new Command1());
         //      addSequential(new Command2());
         // these will run in order.

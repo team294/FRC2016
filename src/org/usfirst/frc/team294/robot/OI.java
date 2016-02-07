@@ -9,13 +9,14 @@
 // it from being updated in the future.
 
 
-package org.usfirst.frc294.RobotBuilderTest;
+package org.usfirst.frc.team294.robot;
 
-import org.usfirst.frc294.RobotBuilderTest.commands.*;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.*;
-import org.usfirst.frc294.RobotBuilderTest.subsystems.*;
+
+import org.usfirst.frc.team294.robot.commands.*;
+import org.usfirst.frc.team294.robot.subsystems.*;
 
 
 /**

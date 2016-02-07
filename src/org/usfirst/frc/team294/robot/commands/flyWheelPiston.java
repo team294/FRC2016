@@ -1,7 +1,7 @@
-package org.usfirst.frc294.RobotBuilderTest.commands;
+package org.usfirst.frc.team294.robot.commands;
 
-import org.usfirst.frc294.RobotBuilderTest.Robot;
-import org.usfirst.frc294.RobotBuilderTest.RobotMap;
+import org.usfirst.frc.team294.robot.Robot;
+import org.usfirst.frc.team294.robot.RobotMap;
 
 import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.command.Command;

@@ -1,6 +1,6 @@
-package org.usfirst.frc294.RobotBuilderTest.subsystems;
+package org.usfirst.frc.team294.robot.subsystems;
 
-import org.usfirst.frc294.RobotBuilderTest.RobotMap;
+import org.usfirst.frc.team294.robot.RobotMap;
 
 import edu.wpi.first.wpilibj.CANTalon;
 import edu.wpi.first.wpilibj.DigitalInput;

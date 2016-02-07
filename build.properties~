@@ -1,5 +1,5 @@
 # Project specific information
-package=org.usfirst.frc294.robot
+package=org.usfirst.frc294.RobotBuilderTest
 robot.class=${package}.Robot
 simulation.world.file=/usr/share/frcsim/worlds/GearsBotDemo.world
-userLibs=/navx-mxp/java/lib/navx_frc.jar
+

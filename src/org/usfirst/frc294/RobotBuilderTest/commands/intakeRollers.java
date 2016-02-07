@@ -38,7 +38,7 @@ public class intakeRollers extends Command {
 
 	// Make this return true when this Command no longer needs to run execute()
 	protected boolean isFinished() {
-		if (Robot.intake.isButtonPressed()){
+		if (Robot.intake.isButtonPressed() || !status){
 			return true;
 		}
 		if (System.currentTimeMillis() - this.startTime > 2000) {

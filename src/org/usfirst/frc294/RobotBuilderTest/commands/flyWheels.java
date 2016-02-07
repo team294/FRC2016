@@ -3,6 +3,7 @@ package org.usfirst.frc294.RobotBuilderTest.commands;
 import org.usfirst.frc294.RobotBuilderTest.Robot;
 
 import edu.wpi.first.wpilibj.command.Command;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**
  *
@@ -27,7 +28,6 @@ public class flyWheels extends Command {
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
-    	//System.out.println(Robot.shooter.getTopError());
     	if(!Robot.shooter.isButtonPressed() && start){
     		return;
     	}
@@ -41,22 +41,21 @@ public class flyWheels extends Command {
 
     // Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished() {
+    	SmartDashboard.putNumber("Motor_Error", Robot.shooter.getTopError());
     	if(!Robot.shooter.isButtonPressed()){
-    		System.out.println(Robot.shooter.isButtonPressed());
     		return true;
     	}
-    	if(System.currentTimeMillis()-this.startTime > 500){
-    		err4 = err3;
-    		err3 = err2;
-    		err2 = err1;
-    		System.out.println(err1 + " " + err2 + " " +err3 + " " + err4);
-    		if(err1+err2+err3+err4 < 20)
-    			return true;
-    	}
+//    	if(System.currentTimeMillis()-this.startTime > 500){
+//    		err4 = err3;
+//    		err3 = err2;
+//    		err2 = err1;
+//    		if(err1+err2+err3+err4 < 20)
+//    			return true;
+//    	}
     	//This is the timing out of the command, if the other one doesnt fire first, this one will be there to catch it
-    	if(System.currentTimeMillis()-this.startTime > 2000){
-    		return true;
-    	}
+//    	if(System.currentTimeMillis()-this.startTime > 2000){
+//    		return true;
+//    	}
         return false;
     }
 

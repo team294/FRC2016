@@ -14,6 +14,8 @@ import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+
 import org.usfirst.frc294.RobotBuilderTest.commands.*;
 import org.usfirst.frc294.RobotBuilderTest.subsystems.*;
 
@@ -44,6 +46,8 @@ public class Robot extends IterativeRobot {
 		driveTrain = new DriveTrain();
 		shooter = new Shooter();
 		intake = new Intake();
+
+    	SmartDashboard.putNumber("Motor_Error", Robot.shooter.getTopError());
 		
 		// OI must be constructed after subsystems. If the OI creates Commands
 		// (which it very likely will), subsystems are not guaranteed to be

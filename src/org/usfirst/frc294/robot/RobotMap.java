@@ -67,7 +67,7 @@ public class RobotMap {
         LiveWindow.addSensor("DriveTrain", "gyro1", driveTrainGyro1);
         driveTrainGyro1.setSensitivity(0.007);
         
-        shifterSolenoid = new DoubleSolenoid(0, 1);
+        shifterSolenoid = new DoubleSolenoid(1, 0);
         
         shooterMotor = new CANTalon(21);
         LiveWindow.addActuator("Shooter", "shooterMotor", shooterMotor);

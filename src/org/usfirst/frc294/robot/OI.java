@@ -58,16 +58,21 @@ public class OI {
     public JoystickButton leftJoystickTrigger;
     public Joystick rightJoystick;
     public JoystickButton rightJoystickButtonA;
+    public JoystickButton rightJoystickButton4;
+    public JoystickButton rightJoystickButton5;
 
     public OI() {
         //Instantiates all objects for joysticks and buttons
 
         rightJoystick = new Joystick(0);
-        
         rightJoystickButtonA = new JoystickButton(rightJoystick, 1);
         rightJoystickButtonA.whileHeld(new DriveForwardDistance(0, 0));
+        rightJoystickButton4 = new JoystickButton(rightJoystick, 4);
+        rightJoystickButton4.whileHeld(new ShiftDown());
+        rightJoystickButton5 = new JoystickButton(rightJoystick, 5);
+        rightJoystickButton5.whileHeld(new ShiftUp());
+
         leftJoystick = new Joystick(1);
-        
         leftJoystickTrigger = new JoystickButton(leftJoystick, 1);
         leftJoystickTrigger.whenPressed(new Shoot());
         leftJoystickButtonA = new JoystickButton(leftJoystick, 5);

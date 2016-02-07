@@ -8,14 +8,17 @@
 // update. Deleting the comments indicating the section will prevent
 // it from being updated in the future.
 
-package org.usfirst.frc294.RobotBuilderTest;
+package org.usfirst.frc294.robot;
 
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
-import org.usfirst.frc294.RobotBuilderTest.commands.*;
-import org.usfirst.frc294.RobotBuilderTest.subsystems.*;
+import edu.wpi.first.wpilibj.networktables.NetworkTable;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+
+import org.usfirst.frc294.robot.commands.*;
+import org.usfirst.frc294.robot.subsystems.*;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -31,7 +34,9 @@ public class Robot extends IterativeRobot {
 	public static OI oi;
 	// Creates the SubSystem onjects
 	public static DriveTrain driveTrain;
+	public static Shifter shifter;
 	public static Shooter shooter;
+	public static Vision vision;
 
 	/**
 	 * This function is run when the robot is first started up and should be
@@ -41,7 +46,9 @@ public class Robot extends IterativeRobot {
 		RobotMap.init();
 		//Instantiates the subsystems
 		driveTrain = new DriveTrain();
+		shifter = new Shifter();
 		shooter = new Shooter();
+		vision = new Vision();
 		
 		// OI must be constructed after subsystems. If the OI creates Commands
 		// (which it very likely will), subsystems are not guaranteed to be
@@ -51,8 +58,14 @@ public class Robot extends IterativeRobot {
 
 		// instantiate the command used for the autonomous period
 
-		autonomousCommand = new AutonomousCommand();
+		autonomousCommand = new AutonomousCommandGroup();
 		
+		// Display active commands and subsystem status on SmartDashboard
+		SmartDashboard.putData(Scheduler.getInstance());
+		SmartDashboard.putData(driveTrain);
+		SmartDashboard.putData(shifter);
+		SmartDashboard.putData(shooter);
+		SmartDashboard.putData(vision);
 	}
 
 	/**

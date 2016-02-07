@@ -9,13 +9,14 @@
 // it from being updated in the future.
 
 
-package org.usfirst.frc294.RobotBuilderTest;
+package org.usfirst.frc294.robot;
 
-import org.usfirst.frc294.RobotBuilderTest.commands.*;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.*;
-import org.usfirst.frc294.RobotBuilderTest.subsystems.*;
+
+import org.usfirst.frc294.robot.commands.*;
+import org.usfirst.frc294.robot.subsystems.*;
 
 
 /**
@@ -56,29 +57,33 @@ public class OI {
     public JoystickButton leftJoystickButtonA;
     public JoystickButton leftJoystickTrigger;
     public Joystick rightJoystick;
-    public JoystickButton joystickButton2;
+    public JoystickButton rightJoystickButtonA;
 
     public OI() {
         //Instantiates all objects for joysticks and buttons
 
-        rightJoystick = new Joystick(4);
+        rightJoystick = new Joystick(0);
         
-        joystickButton2 = new JoystickButton(rightJoystick, 1);
-        joystickButton2.whileHeld(new driveForward(0, 0));
-        leftJoystick = new Joystick(2);
+        rightJoystickButtonA = new JoystickButton(rightJoystick, 1);
+        rightJoystickButtonA.whileHeld(new DriveForwardDistance(0, 0));
+        leftJoystick = new Joystick(1);
         
         leftJoystickTrigger = new JoystickButton(leftJoystick, 1);
-        leftJoystickTrigger.whenPressed(new shoot());
+        leftJoystickTrigger.whenPressed(new Shoot());
         leftJoystickButtonA = new JoystickButton(leftJoystick, 5);
-        leftJoystickButtonA.whileHeld(new driveForward(0, 1.0));
+        leftJoystickButtonA.whileHeld(new DriveForwardDistance(0, 1.0));
 
 
         // SmartDashboard Buttons
-        SmartDashboard.putData("driveWithJoysticks", new driveWithJoysticks());
-        SmartDashboard.putData("Autonomous Command", new AutonomousCommand());
-        SmartDashboard.putData("driveForward: driveForwardFast", new driveForward(0, 1.0));
-        SmartDashboard.putData("driveForward: driveForwardSlow", new driveForward(0, 0));
-        SmartDashboard.putData("shoot", new shoot());
+        SmartDashboard.putData("Autonomous Command", new AutonomousCommandGroup());
+        SmartDashboard.putData("DriveWithJoysticks", new DriveWithJoysticks());
+        SmartDashboard.putData("DriveForward: driveForwardFast", new DriveForwardDistance(1.0, 1.0));
+        SmartDashboard.putData("DriveForward: driveForwardSlow", new DriveForwardDistance(0.5, 1.0));
+        SmartDashboard.putData("Rotate", new Rotate());
+        SmartDashboard.putData("Stop", new Stop());
+        SmartDashboard.putData("ShiftUp", new ShiftUp());
+        SmartDashboard.putData("ShiftDown", new ShiftDown());
+        SmartDashboard.putData("Shoot", new Shoot());
         
     }
 

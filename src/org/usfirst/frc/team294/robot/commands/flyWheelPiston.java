@@ -3,6 +3,7 @@ package org.usfirst.frc.team294.robot.commands;
 import org.usfirst.frc.team294.robot.Robot;
 import org.usfirst.frc.team294.robot.RobotMap;
 
+import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.command.Command;
 
@@ -11,7 +12,7 @@ import edu.wpi.first.wpilibj.command.Command;
  */
 public class flyWheelPiston extends Command {
 	
-	Solenoid shooterPiston = RobotMap.shooterPiston;
+	DoubleSolenoid shooterPiston = RobotMap.shooterPiston;
 	boolean status;
 
     public flyWheelPiston(boolean status) {
@@ -29,17 +30,14 @@ public class flyWheelPiston extends Command {
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
     	if(status)
-    		shooterPiston.set(true);
+    		shooterPiston.set(DoubleSolenoid.Value.kForward);
     	else if(!status)
-    		shooterPiston.set(false);
+    		shooterPiston.set(DoubleSolenoid.Value.kReverse);
     }
 
     // Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished() {
-    	if(shooterPiston.get() == status){
-    		return true;
-    	}
-        return false;
+    	return true;
     }
 
     // Called once after isFinished returns true

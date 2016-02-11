@@ -11,8 +11,8 @@ public class shootingSequence extends CommandGroup {
     	
     	
     	addSequential(new flyWheels(true)); //Starts the fly wheels, and runs them at full speed
-    	//addSequential(new flyWheelPiston(true)); //When wheels are full speed, use piston to push the ball into fly wheels
-    	//addParallel(new flyWheelPiston(false));
+    	addSequential(new flyWheelPiston(true)); //When wheels are full speed, use piston to push the ball into fly wheels
+    	addSequential(new flyWheelPiston(false));
     	addSequential(new flyWheels(false)); //Stops the fly wheels from spinning
     	
         // Add Commands here:

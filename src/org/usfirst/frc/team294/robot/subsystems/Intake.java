@@ -26,8 +26,8 @@ public class Intake extends Subsystem {
     }
     
     public void setSpeed(int speed){
-    	this.shooterMotorTop.set(speed);
-    	this.shooterMotorBottom.set(speed);
+//    	this.shooterMotorTop.set(speed);
+//    	this.shooterMotorBottom.set(speed);
     }
     
     public void raiseIntake(){

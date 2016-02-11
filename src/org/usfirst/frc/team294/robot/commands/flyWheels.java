@@ -11,8 +11,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 public class flyWheels extends Command {
 	
 	boolean start;
-	long startTime;
-	double err1 = 0, err2 = 0, err3 = 0, err4 = 0;
+	//double err1 = 0, err2 = 0, err3 = 0, err4 = 0;
 
     public flyWheels(boolean start) {
         // Use requires() here to declare subsystem dependencies
@@ -22,8 +21,7 @@ public class flyWheels extends Command {
 
     // Called just before this Command runs the first time
     protected void initialize() {
-    	startTime = System.currentTimeMillis();
-    	err1 = err2 = err3 = err4 = Robot.shooter.getTopError();
+    	SmartDashboard.putString("Stop", "");
     }
 
     // Called repeatedly when this Command is scheduled to run
@@ -32,10 +30,11 @@ public class flyWheels extends Command {
     		return;
     	}
     	if(start){
-    		Robot.shooter.setSpeed(5000);
+    		Robot.shooter.setSpeed(-5000);
     	}
     	if(!start){
-    		Robot.shooter.setSpeed(0);
+    		SmartDashboard.putString("Stop", "It should have stopped.");
+    		Robot.shooter.setSpeed(5000);
     	}
     }
 
@@ -45,15 +44,17 @@ public class flyWheels extends Command {
     	if(!Robot.shooter.isButtonPressed()){
     		return true;
     	}
-    	if(System.currentTimeMillis()-this.startTime > 500){
-    		err4 = err3;
-    		err3 = err2;
-    		err2 = err1;
-    		if(err1+err2+err3+err4 < 20)
-    			return true;
-    	}
+//    	if(System.currentTimeMillis()-this.startTime > 500){
+//    		err4 = err3;
+//    		err3 = err2;
+//    		err2 = err1;
+//    		err1 = 
+//    		if(err1+err2+err3+err4 < 20)
+//    			return true;
+//    	}
     	//This is the timing out of the command, if the other one doesnt fire first, this one will be there to catch it
-    	if(System.currentTimeMillis()-this.startTime > 2000){
+    	SmartDashboard.putNumber("Timer", this.timeSinceInitialized());
+    	if(this.timeSinceInitialized() > 2){
     		return true;
     	}
         return false;

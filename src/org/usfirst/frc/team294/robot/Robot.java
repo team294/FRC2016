@@ -10,6 +10,7 @@
 
 package org.usfirst.frc.team294.robot;
 
+import edu.wpi.first.wpilibj.CANTalon;
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
@@ -47,7 +48,7 @@ public class Robot extends IterativeRobot {
 		shooter = new Shooter();
 		intake = new Intake();
 
-    	SmartDashboard.putNumber("Motor_Error", Robot.shooter.getTopError());
+    	SmartDashboard.putNumber("Motor_Error", shooter.getTopError());
 		
 		// OI must be constructed after subsystems. If the OI creates Commands
 		// (which it very likely will), subsystems are not guaranteed to be
@@ -100,6 +101,18 @@ public class Robot extends IterativeRobot {
 	 */
 	public void teleopPeriodic() {
 		Scheduler.getInstance().run();
+		
+//		CANTalon shooterMotor = RobotMap.shooterMotorTop;
+//		
+//		SmartDashboard.putNumber("Speed", shooterMotor.getSpeed());
+//		SmartDashboard.putNumber("Speed2", shooterMotor.getSpeed());
+//		SmartDashboard.putNumber("Error", shooterMotor.getError());
+//		
+//		shooterMotor.set(SmartDashboard.getNumber("Setpoint"));
+//		shooterMotor.setF(SmartDashboard.getNumber("F")/1000);
+//		shooterMotor.setP(SmartDashboard.getNumber("P")/1000);
+//		shooterMotor.setI(SmartDashboard.getNumber("I")/1000);
+//		shooterMotor.setD(SmartDashboard.getNumber("D")/1000);
 	}
 
 	/**

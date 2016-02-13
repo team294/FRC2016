@@ -82,11 +82,11 @@ public class OI {
         SmartDashboard.putData("Autonomous Command", new AutonomousCommand());
         SmartDashboard.putData("driveForward: driveForwardFast", new driveForward(0, 1.0));
         SmartDashboard.putData("driveForward: driveForwardSlow", new driveForward(0, 0));
-        SmartDashboard.putData("shoot", new shoot());
-        SmartDashboard.putData("piston in", new flyWheelPiston(true));
-        SmartDashboard.putData("piston out", new flyWheelPiston(false));
-        SmartDashboard.putData("Start Wheels", new flyWheels(true));
-        SmartDashboard.putData("Stop Wheels", new flyWheels(false));
+        SmartDashboard.putData("shooting sequence", new shootingSequence());
+        SmartDashboard.putData("piston out", new ShooterPistonOut(true));
+        SmartDashboard.putData("piston in", new ShooterPistonOut(false));
+        SmartDashboard.putData("Start Wheels", new FlyWheelsTurnOn(true));
+        SmartDashboard.putData("Stop Wheels", new FlyWheelsTurnOn(false));
     }
 
     

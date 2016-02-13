@@ -8,12 +8,12 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 /**
  *
  */
-public class flyWheels extends Command {
+public class FlyWheelsTurnOn extends Command {
 	
 	boolean start;
 	//double err1 = 0, err2 = 0, err3 = 0, err4 = 0;
 
-    public flyWheels(boolean start) {
+    public FlyWheelsTurnOn(boolean start) {
         // Use requires() here to declare subsystem dependencies
         requires(Robot.shooter);
     	this.start = start;
@@ -21,29 +21,28 @@ public class flyWheels extends Command {
 
     // Called just before this Command runs the first time
     protected void initialize() {
-    	SmartDashboard.putString("Stop", "");
     }
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
-    	if(!Robot.shooter.isButtonPressed() && start){
-    		return;
-    	}
+//    	if(!Robot.shooter.isButtonPressed() && start){
+//    		return;
+//    	}
     	if(start){
-    		Robot.shooter.setSpeed(-5000);
+    		Robot.shooter.setSpeed(4000);
     	}
     	if(!start){
-    		SmartDashboard.putString("Stop", "It should have stopped.");
-    		Robot.shooter.setSpeed(5000);
+//    		SmartDashboard.putString("Stop", "It should have stopped.");
+    		Robot.shooter.setSpeed(0);
     	}
     }
 
     // Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished() {
     	SmartDashboard.putNumber("Motor_Error", Robot.shooter.getTopError());
-    	if(!Robot.shooter.isButtonPressed()){
-    		return true;
-    	}
+//    	if(!Robot.shooter.isButtonPressed()){
+//    		return true;
+//    	}
 //    	if(System.currentTimeMillis()-this.startTime > 500){
 //    		err4 = err3;
 //    		err3 = err2;

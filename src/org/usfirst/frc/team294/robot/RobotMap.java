@@ -60,7 +60,6 @@ public class RobotMap {
         
         driveTrainRobotDrive = new RobotDrive(driveTrainleftMotor1, driveTrainleftMotor2,
               driveTrainrightMotor1, driveTrainrightMotor2);
-        
         driveTrainRobotDrive.setSafetyEnabled(true);
         driveTrainRobotDrive.setExpiration(0.1);
         driveTrainRobotDrive.setSensitivity(0.5);
@@ -71,40 +70,52 @@ public class RobotMap {
         driveTraingyro1.setSensitivity(0.007);
         
         intakeButton = new DigitalInput(9);
+        LiveWindow.addSensor("Intake", "intakeButton", intakeButton);
         
         shooterMotorTop = new CANTalon(5);
-        shooterMotorTop.setFeedbackDevice(FeedbackDevice.CtreMagEncoder_Absolute);
+        LiveWindow.addActuator("Shooter", "shooterMotorTop", shooterMotorTop);
+        shooterMotorTop.setFeedbackDevice(FeedbackDevice.CtreMagEncoder_Relative);
         shooterMotorTop.configEncoderCodesPerRev(100);
-        shooterMotorTop.reverseSensor(true);
-        
+//        shooterMotorTop.reverseSensor(true);
         shooterMotorTop.configNominalOutputVoltage(+0.0f, -0.0f);
         shooterMotorTop.configPeakOutputVoltage(+12.0f, -12.0f);
         shooterMotorTop.setProfile(0);
-        shooterMotorTop.setF(0.025);
-        shooterMotorTop.setP(0.005);
-        shooterMotorTop.setI(0.00008);
-        shooterMotorTop.setD(0.00001);
+        shooterMotorTop.setPID(0.020, 0.0002, 2.0);  // Was:  0.005, 0.00008, 0.00001
+        shooterMotorTop.setF(0.035);   // Was:  0.025
         shooterMotorTop.changeControlMode(TalonControlMode.Speed);
-        
+		SmartDashboard.putNumber("F", shooterMotorTop.getF()*1000);
+		SmartDashboard.putNumber("P", shooterMotorTop.getP()*1000);
+		SmartDashboard.putNumber("I", shooterMotorTop.getI()*1000);
+		SmartDashboard.putNumber("D", shooterMotorTop.getD()*1000);
+		
+		SmartDashboard.putNumber("Setpoint", shooterMotorTop.getSetpoint());
+		SmartDashboard.putNumber("Speed", shooterMotorTop.getSpeed());
+		SmartDashboard.putNumber("Error", shooterMotorTop.getError());
+		
         shooterMotorBottom = new CANTalon(11);
-        shooterMotorBottom.setFeedbackDevice(FeedbackDevice.CtreMagEncoder_Absolute);
+        LiveWindow.addActuator("Shooter", "shooterMotorBottom", shooterMotorBottom);
+        shooterMotorBottom.setFeedbackDevice(FeedbackDevice.CtreMagEncoder_Relative);
         shooterMotorBottom.configEncoderCodesPerRev(100);
-        shooterMotorBottom.reverseSensor(true);
-        
+//        shooterMotorBottom.reverseSensor(true);
         shooterMotorBottom.configNominalOutputVoltage(+0.0f, -0.0f);
         shooterMotorBottom.configPeakOutputVoltage(+12.0f, -12.0f);
         shooterMotorBottom.setProfile(0);
-        shooterMotorBottom.setF(0.025);
-        shooterMotorBottom.setP(0.005);
-        shooterMotorBottom.setI(0.00008);
-        shooterMotorBottom.setD(0.00001);
+        shooterMotorTop.setPID(0.020, 0.0002, 2.0);  // Best:  Was:  0.005, 0.00008, 0.00001
+        shooterMotorTop.setF(0.035);   // Was:  0.025
         shooterMotorBottom.changeControlMode(TalonControlMode.Speed);
         
-        LiveWindow.addActuator("Shooter", "shooterMotorTop", shooterMotorTop);
+//		SmartDashboard.putNumber("F", shooterMotorBottom.getF()*1000);
+//		SmartDashboard.putNumber("P", shooterMotorBottom.getP()*1000);
+//		SmartDashboard.putNumber("I", shooterMotorBottom.getI()*1000);
+//		SmartDashboard.putNumber("D", shooterMotorBottom.getD()*1000);
+//		
+//		SmartDashboard.putNumber("Setpoint", shooterMotorBottom.getSetpoint());
+//		SmartDashboard.putNumber("Speed", shooterMotorBottom.getSpeed());
+//		SmartDashboard.putNumber("Error", shooterMotorBottom.getError());
         
         shooterPiston = new DoubleSolenoid(1, 0);
-        shooterPiston.set(DoubleSolenoid.Value.kReverse);
         LiveWindow.addActuator("Shooter", "shooterPiston", shooterPiston);
+        shooterPiston.set(DoubleSolenoid.Value.kReverse);
         
     }
 }

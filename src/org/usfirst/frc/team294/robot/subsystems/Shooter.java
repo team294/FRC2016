@@ -11,6 +11,7 @@
 
 package org.usfirst.frc.team294.robot.subsystems;
 
+import org.usfirst.frc.team294.robot.Robot;
 import org.usfirst.frc.team294.robot.RobotMap;
 import org.usfirst.frc.team294.robot.commands.*;
 
@@ -45,13 +46,11 @@ public class Shooter extends Subsystem {
     // here. Call these from Commands.
     
     public void setSpeed(double speed){
+    	// Positive speed ejects the ball.
+    	// Negative speed loads the ball.
     	SmartDashboard.putNumber("Speed", speed);
-    	this.shooterMotorTop.set(speed);
+    	this.shooterMotorTop.set(-speed*0.8);
     	this.shooterMotorBottom.set(speed);
-//    	if (speed==0) {
-//    		this.shooterMotorBottom.disable();
-//    		this.shooterMotorBottom.enable();
-//    	}
     }
     
     public double getTopFlyWheelSpeed(){
@@ -70,6 +69,14 @@ public class Shooter extends Subsystem {
     	return shooterMotorBottom.getError();
     }
     
+    public void setShooterPistonOut() {
+    	shooterPiston.set(DoubleSolenoid.Value.kForward);
+    }
+
+    public void setShooterPistonIn() {
+    	shooterPiston.set(DoubleSolenoid.Value.kReverse);
+    }
+
     public boolean isButtonPressed(){
     	return !intakeButton.get();
     }

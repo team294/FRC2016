@@ -10,12 +10,11 @@ import edu.wpi.first.wpilibj.command.Command;
 /**
  *
  */
-public class flyWheelPiston extends Command {
+public class ShooterPistonOut extends Command {
 	
-	DoubleSolenoid shooterPiston = RobotMap.shooterPiston;
 	boolean status;
 
-    public flyWheelPiston(boolean status) {
+    public ShooterPistonOut(boolean status) {
     	requires(Robot.shooter);
     	//Status = true means the piston is OUT
     	//Status = false means piston is IN
@@ -30,9 +29,9 @@ public class flyWheelPiston extends Command {
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
     	if(status)
-    		shooterPiston.set(DoubleSolenoid.Value.kForward);
+    		Robot.shooter.setShooterPistonOut();
     	else if(!status)
-    		shooterPiston.set(DoubleSolenoid.Value.kReverse);
+    		Robot.shooter.setShooterPistonIn();
     }
 
     // Make this return true when this Command no longer needs to run execute()

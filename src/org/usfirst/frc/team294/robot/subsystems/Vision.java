@@ -1,4 +1,4 @@
-package org.usfirst.frc294.robot.subsystems;
+package org.usfirst.frc.team294.robot.subsystems;
 
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.networktables.NetworkTable;

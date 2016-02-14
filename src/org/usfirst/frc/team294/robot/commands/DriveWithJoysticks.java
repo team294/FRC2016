@@ -9,19 +9,20 @@
 // it from being updated in the future.
 
 
-package org.usfirst.frc294.robot.commands;
+package org.usfirst.frc.team294.robot.commands;
 
-import org.usfirst.frc294.robot.Robot;
+import org.usfirst.frc.team294.robot.Robot;
+import org.usfirst.frc.team294.robot.RobotMap;
 
 import edu.wpi.first.wpilibj.command.Command;
 
 /**
  *
  */
-public class Shoot extends Command {
+public class DriveWithJoysticks extends Command {
 
-    public Shoot() {
-        requires(Robot.shooter);
+    public DriveWithJoysticks() {
+        requires(Robot.driveTrain);
     }
 
     // Called just before this Command runs the first time
@@ -30,6 +31,7 @@ public class Shoot extends Command {
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
+    	Robot.driveTrain.driveWithJoystick(Robot.oi.leftJoystick, Robot.oi.rightJoystick);
     }
 
     // Make this return true when this Command no longer needs to run execute()
@@ -44,5 +46,6 @@ public class Shoot extends Command {
     // Called when another command which requires one or more of the same
     // subsystems is scheduled to run
     protected void interrupted() {
+    	Robot.driveTrain.stop();
     }
 }

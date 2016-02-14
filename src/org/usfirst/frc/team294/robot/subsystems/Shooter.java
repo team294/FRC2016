@@ -9,10 +9,10 @@
 // it from being updated in the future.
 
 
-package org.usfirst.frc294.robot.subsystems;
+package org.usfirst.frc.team294.robot.subsystems;
 
-import org.usfirst.frc294.robot.RobotMap;
-import org.usfirst.frc294.robot.commands.*;
+import org.usfirst.frc.team294.robot.RobotMap;
+import org.usfirst.frc.team294.robot.commands.*;
 
 import edu.wpi.first.wpilibj.CANTalon;
 import edu.wpi.first.wpilibj.Solenoid;

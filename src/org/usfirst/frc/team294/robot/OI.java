@@ -58,30 +58,36 @@ public class OI {
     public JoystickButton leftJoystickTrigger;
     
     public Joystick rightJoystick;
-    public JoystickButton rightJoystickButton2;
+    public JoystickButton rightJoystickButtonA;
+    public JoystickButton rightJoystickButton4;
+    public JoystickButton rightJoystickButton5;
 
     public OI() {
         //Instantiates all objects for joysticks and buttons
 
         rightJoystick = new Joystick(1);
-        
-        rightJoystickButton2 = new JoystickButton(rightJoystick, 1);
-        rightJoystickButton2.whileHeld(new driveForward(0, 0));
+        rightJoystickButtonA = new JoystickButton(rightJoystick, 1);
+        rightJoystickButtonA.whileHeld(new DriveForwardDistance(0, 0));
+        rightJoystickButton4 = new JoystickButton(rightJoystick, 4);
+        rightJoystickButton4.whileHeld(new ShiftDown());
+        rightJoystickButton5 = new JoystickButton(rightJoystick, 5);
+        rightJoystickButton5.whileHeld(new ShiftUp());
+
         leftJoystick = new Joystick(0);
-        
         leftJoystickTrigger = new JoystickButton(leftJoystick, 1);
-        //leftJoystickTrigger.whenPressed(new shoot());
-        //leftJoystickTrigger.whenPressed(new intakeSequence());
-        leftJoystickButton2 = new JoystickButton(leftJoystick, 2);
-        leftJoystickButton2.whenPressed(new ShootBall());
-        //leftJoystickButton2.whileHeld(new driveForward(0, 1.0));
-        
+        leftJoystickTrigger.whenPressed(new ShootBall());
 
         // SmartDashboard Buttons
-        SmartDashboard.putData("driveWithJoysticks", new driveWithJoysticks());
-        SmartDashboard.putData("Autonomous Command", new AutonomousCommand());
-        SmartDashboard.putData("driveForward: driveForwardFast", new driveForward(0, 1.0));
-        SmartDashboard.putData("driveForward: driveForwardSlow", new driveForward(0, 0));
+        SmartDashboard.putData("Autonomous Command", new AutonomousCommandGroup());
+        
+        SmartDashboard.putData("DriveWithJoysticks", new DriveWithJoysticks());
+        SmartDashboard.putData("DriveForward: driveForwardFast", new DriveForwardDistance(1.0, 1.0));
+        SmartDashboard.putData("DriveForward: driveForwardSlow", new DriveForwardDistance(0.5, 1.0));
+        SmartDashboard.putData("Rotate", new Rotate());
+        SmartDashboard.putData("Stop", new Stop());
+        SmartDashboard.putData("ShiftUp", new ShiftUp());
+        SmartDashboard.putData("ShiftDown", new ShiftDown());
+        
         SmartDashboard.putData("Shoot ball", new ShootBall());
         SmartDashboard.putData("Piston out", new ShooterPistonOut(true));
         SmartDashboard.putData("Piston in", new ShooterPistonOut(false));
@@ -89,7 +95,6 @@ public class OI {
         SmartDashboard.putData("Stop Wheels", new FlyWheelsTurnOn(false));
     }
 
-    
     public Joystick getleftJoystick() {
         return leftJoystick;
     }

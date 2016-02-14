@@ -1,5 +1,5 @@
 /bin/
-/dist
 /build
-*.class
+/dist
 *~
+*.class

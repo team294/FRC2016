@@ -15,6 +15,7 @@ import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
+import edu.wpi.first.wpilibj.networktables.NetworkTable;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 import org.usfirst.frc.team294.robot.commands.*;
@@ -34,8 +35,10 @@ public class Robot extends IterativeRobot {
 	public static OI oi;
 	// Creates the SubSystem onjects
 	public static DriveTrain driveTrain;
+	public static Shifter shifter;
 	public static Shooter shooter;
 	public static Intake intake;
+	public static Vision vision;
 
 	/**
 	 * This function is run when the robot is first started up and should be
@@ -45,8 +48,10 @@ public class Robot extends IterativeRobot {
 		RobotMap.init();
 		//Instantiates the subsystems
 		driveTrain = new DriveTrain();
+		shifter = new Shifter();
 		shooter = new Shooter();
 		intake = new Intake();
+		vision = new Vision();
 
 		shooter.setupSmartDashboard(true);
 		
@@ -58,8 +63,15 @@ public class Robot extends IterativeRobot {
 
 		// instantiate the command used for the autonomous period
 
-		autonomousCommand = new AutonomousCommand();
+		autonomousCommand = new AutonomousCommandGroup();
 		
+		// Display active commands and subsystem status on SmartDashboard
+		SmartDashboard.putData(Scheduler.getInstance());
+		SmartDashboard.putData(driveTrain);
+		SmartDashboard.putData(shifter);
+		SmartDashboard.putData(shooter);
+		SmartDashboard.putData(intake);
+		SmartDashboard.putData(vision);
 	}
 
 	/**

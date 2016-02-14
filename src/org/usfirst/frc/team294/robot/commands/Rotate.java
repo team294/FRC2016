@@ -5,11 +5,14 @@ import org.usfirst.frc.team294.robot.Robot;
 import edu.wpi.first.wpilibj.command.Command;
 
 /**
- *
+ * Rotate robot 90 degrees using gyro.
  */
 public class Rotate extends Command {
 
-    public Rotate() {
+	/**
+	 * Rotate robot 90 degrees using gyro.
+	 */
+   public Rotate() {
         // Use requires() here to declare subsystem dependencies
         // eg. requires(chassis);
         requires(Robot.driveTrain);

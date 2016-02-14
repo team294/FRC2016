@@ -7,9 +7,12 @@ import edu.wpi.first.wpilibj.command.Command;
 /**
  *
  */
-public class Stop extends Command {
+public class StopDriving extends Command {
 
-    public Stop() {
+	/**
+	 * Stop the drivetrain motors.
+	 */
+    public StopDriving() {
         // Use requires() here to declare subsystem dependencies
         // eg. requires(chassis);
         requires(Robot.driveTrain);

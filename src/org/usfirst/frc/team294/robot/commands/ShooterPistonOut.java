@@ -14,6 +14,10 @@ public class ShooterPistonOut extends Command {
 	
 	boolean status;
 
+	/**
+	 * Move the shooter piston in or out.
+	 * @param status = true to move piston out, false to move piston in
+	 */
     public ShooterPistonOut(boolean status) {
     	requires(Robot.shooter);
     	//Status = true means the piston is OUT

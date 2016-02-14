@@ -3,11 +3,15 @@ package org.usfirst.frc.team294.robot.commands;
 import edu.wpi.first.wpilibj.command.Command;
 
 /**
- *
+ * Wait specified number of seconds.  This is useful for command sequences.
  */
 public class WaitSeconds extends Command {
 	double duration;
 	
+	/**
+	 * Wait specified number of seconds.  This is useful for command sequences.
+	 * @param duration = number of seconds to wait
+	 */
     public WaitSeconds(double duration) {
         // Use requires() here to declare subsystem dependencies
         // eg. requires(chassis);

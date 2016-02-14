@@ -5,11 +5,11 @@ import edu.wpi.first.wpilibj.command.CommandGroup;
 /**
  *
  */
-public class intakeSequence extends CommandGroup {
+public class IntakeTestSequence extends CommandGroup {
     
-    public intakeSequence() {
-    	addSequential(new intakeRollers(true));
-    	addSequential(new intakeRollers(false));
+    public IntakeTestSequence() {
+    	addSequential(new IntakeRollersTurnOn(true));
+    	addSequential(new IntakeRollersTurnOn(false));
         
     	
     	// Add Commands here:

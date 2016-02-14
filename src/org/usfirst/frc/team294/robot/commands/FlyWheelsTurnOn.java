@@ -6,14 +6,18 @@ import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**
- *
+ * Turn shooter flywheels on or off.
  */
 public class FlyWheelsTurnOn extends Command {
 	
 	boolean start;
 	//double err1 = 0, err2 = 0, err3 = 0, err4 = 0;
 
-    public FlyWheelsTurnOn(boolean start) {
+	/**
+	 * Turn shooter flywheels on or off.
+	 * @param start true = turn on, false = turn off.
+	 */
+	public FlyWheelsTurnOn(boolean start) {
         // Use requires() here to declare subsystem dependencies
         requires(Robot.shooter);
     	this.start = start;

@@ -7,13 +7,13 @@ import edu.wpi.first.wpilibj.command.Command;
 /**
  *
  */
-public class intakeRollers extends Command {
+public class IntakeRollersTurnOn extends Command {
 
 	boolean status;
 	double err1 = 0, err2 = 0, err3 = 0, err4 = 0;
 	long startTime;
 
-	public intakeRollers(boolean status) {
+	public IntakeRollersTurnOn(boolean status) {
 		// Use requires() here to declare subsystem dependencies
 		// eg. requires(chassis);
 		requires(Robot.intake);
@@ -38,9 +38,9 @@ public class intakeRollers extends Command {
 
 	// Make this return true when this Command no longer needs to run execute()
 	protected boolean isFinished() {
-		if (Robot.intake.isButtonPressed() || !status){
-			return true;
-		}
+//		if (Robot.intake.isButtonPressed() || !status){
+//			return true;
+//		}
 		if (System.currentTimeMillis() - this.startTime > 2000) {
 			return true;
 		}

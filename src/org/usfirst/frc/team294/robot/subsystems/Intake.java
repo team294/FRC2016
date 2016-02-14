@@ -3,31 +3,32 @@ package org.usfirst.frc.team294.robot.subsystems;
 import org.usfirst.frc.team294.robot.RobotMap;
 
 import edu.wpi.first.wpilibj.CANTalon;
-import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.command.Subsystem;
+import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 
 /**
- *
+ * Intake subsystem.  This needs a lot of work!
  */
 public class Intake extends Subsystem {
 	
-	//These motors are the fly wheels, and need to spin slowly when intaking a ball
-    private final CANTalon shooterMotorTop = RobotMap.shooterMotorTop;
-    private final CANTalon shooterMotorBottom = RobotMap.shooterMotorBottom;
-    //private final CANTalon intakeMotor = RobotMap.intakeMotor;
-    
-    private final DigitalInput intakeButton = RobotMap.intakeButton;
+    private final CANTalon intakeMotor = new CANTalon(RobotMap.intakeMotor);
+        
+    public Intake() {
+    	// Call the Subsystem constructor
+    	super();
+    	
+    	// Set up subsystem components
+
+    	// Add the subsystem to the LiveWindow
+        LiveWindow.addActuator("Intake", "intakeMotor", intakeMotor);
+    }
+
     
     // Put methods for controlling this subsystem
     // here. Call these from Commands.
 
-    public boolean isButtonPressed(){
-    	return !intakeButton.get();
-    }
-    
     public void setSpeed(int speed){
-//    	this.shooterMotorTop.set(speed);
-//    	this.shooterMotorBottom.set(speed);
+    	intakeMotor.set(speed);
     }
     
     public void raiseIntake(){

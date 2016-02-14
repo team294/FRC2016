@@ -45,20 +45,22 @@ public class Shooter extends Subsystem {
     // Put methods for controlling this subsystem
     // here. Call these from Commands.
     
+	/**
+	 * Set shooter motor speeds.  Positive speed ejects the ball.  Negative speed loads the ball.  
+	 */
     public void setSpeed(double speed){
-    	// Positive speed ejects the ball.
-    	// Negative speed loads the ball.
-    	SmartDashboard.putNumber("Speed", speed);
-    	this.shooterMotorTop.set(-speed*0.8);
-    	this.shooterMotorBottom.set(speed);
+    	shooterMotorTop.set(-speed*0.8);
+    	shooterMotorBottom.set(speed);
+    	SmartDashboard.putNumber("ShootTop Setpoint", shooterMotorTop.getSetpoint());
+		SmartDashboard.putNumber("ShootBot Setpoint", shooterMotorBottom.getSetpoint());   	
     }
     
     public double getTopFlyWheelSpeed(){
-    	return this.shooterMotorTop.getSpeed();
+    	return shooterMotorTop.getSpeed();
     }
     
     public double getBottomFlyWheelSpeed(){
-    	return this.shooterMotorBottom.getSpeed();
+    	return shooterMotorBottom.getSpeed();
     }
     
     public double getTopError(){
@@ -85,12 +87,9 @@ public class Shooter extends Subsystem {
 	 * Send shooter motor setpoint, speed, and error to SmartDashboard
 	 */
     public void updateSmartDashboard() {
-    	// Update
-		SmartDashboard.putNumber("ShootTop Setpoint", shooterMotorTop.getSetpoint());
 		SmartDashboard.putNumber("ShootTop Speed", shooterMotorTop.getSpeed());
 		SmartDashboard.putNumber("ShootTop Error", shooterMotorTop.getError());
 		
-		SmartDashboard.putNumber("ShootBot Setpoint", shooterMotorBottom.getSetpoint());
 		SmartDashboard.putNumber("ShootBot Speed", shooterMotorBottom.getSpeed());
 		SmartDashboard.putNumber("ShootBot Error", shooterMotorBottom.getError());		
     }
@@ -103,6 +102,8 @@ public class Shooter extends Subsystem {
     public void setupSmartDashboard(boolean bPIDF){
     	// bPID = TRUE to show PID parameters
     	
+ 		SmartDashboard.putNumber("ShootTop Setpoint", shooterMotorTop.getSetpoint());
+		SmartDashboard.putNumber("ShootBot Setpoint", shooterMotorBottom.getSetpoint());
 		updateSmartDashboard();
 
 		if (bPIDF) {

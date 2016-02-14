@@ -5,16 +5,9 @@ import edu.wpi.first.wpilibj.command.CommandGroup;
 /**
  *
  */
-public class shootingSequence extends CommandGroup {
+public class ShootBall extends CommandGroup {
     
-    public  shootingSequence() {	
-    	
-    	addSequential(new FlyWheelsTurnOn(true)); //Starts the fly wheels, and runs them at full speed
-    	addSequential(new ShooterPistonOut(true)); //When wheels are full speed, use piston to push the ball into fly wheels
-    	addSequential(new WaitSeconds(2.0));
-    	addSequential(new ShooterPistonOut(false));
-    	addSequential(new FlyWheelsTurnOn(false)); //Stops the fly wheels from spinning
-    	
+    public  ShootBall() {		
         // Add Commands here:
         // e.g. addSequential(new Command1());
         //      addSequential(new Command2());
@@ -31,5 +24,12 @@ public class shootingSequence extends CommandGroup {
         // e.g. if Command1 requires chassis, and Command2 requires arm,
         // a CommandGroup containing them would require both the chassis and the
         // arm.
+
+    	addSequential(new FlyWheelsTurnOn(true)); //Starts the fly wheels, and runs them at full speed
+    	addSequential(new ShooterPistonOut(true)); //When wheels are full speed, use piston to push the ball into fly wheels
+    	addSequential(new WaitSeconds(2.0));
+    	addSequential(new ShooterPistonOut(false));
+    	addSequential(new FlyWheelsTurnOn(false)); //Stops the fly wheels from spinning
+    	
     }
 }

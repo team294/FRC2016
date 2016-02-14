@@ -73,7 +73,7 @@ public class OI {
         //leftJoystickTrigger.whenPressed(new shoot());
         //leftJoystickTrigger.whenPressed(new intakeSequence());
         leftJoystickButton2 = new JoystickButton(leftJoystick, 2);
-        leftJoystickButton2.whenPressed(new shootingSequence());
+        leftJoystickButton2.whenPressed(new ShootBall());
         //leftJoystickButton2.whileHeld(new driveForward(0, 1.0));
         
 
@@ -82,9 +82,9 @@ public class OI {
         SmartDashboard.putData("Autonomous Command", new AutonomousCommand());
         SmartDashboard.putData("driveForward: driveForwardFast", new driveForward(0, 1.0));
         SmartDashboard.putData("driveForward: driveForwardSlow", new driveForward(0, 0));
-        SmartDashboard.putData("shooting sequence", new shootingSequence());
-        SmartDashboard.putData("piston out", new ShooterPistonOut(true));
-        SmartDashboard.putData("piston in", new ShooterPistonOut(false));
+        SmartDashboard.putData("Shoot ball", new ShootBall());
+        SmartDashboard.putData("Piston out", new ShooterPistonOut(true));
+        SmartDashboard.putData("Piston in", new ShooterPistonOut(false));
         SmartDashboard.putData("Start Wheels", new FlyWheelsTurnOn(true));
         SmartDashboard.putData("Stop Wheels", new FlyWheelsTurnOn(false));
     }

@@ -83,14 +83,6 @@ public class RobotMap {
         shooterMotorTop.setPID(0.020, 0.0002, 2.0);  // ProtoBot:  0.020, 0.0002, 2.0;  ProtoBoard:  0.005, 0.00008, 0.00001
         shooterMotorTop.setF(0.035);   // ProtoBot:  0.035;  ProtoBoard:  0.025
         shooterMotorTop.changeControlMode(TalonControlMode.Speed);
-//		SmartDashboard.putNumber("F", shooterMotorTop.getF()*1000);
-//		SmartDashboard.putNumber("P", shooterMotorTop.getP()*1000);
-//		SmartDashboard.putNumber("I", shooterMotorTop.getI()*1000);
-//		SmartDashboard.putNumber("D", shooterMotorTop.getD()*1000);
-//		
-//		SmartDashboard.putNumber("Setpoint", shooterMotorTop.getSetpoint());
-//		SmartDashboard.putNumber("Speed", shooterMotorTop.getSpeed());
-//		SmartDashboard.putNumber("Error", shooterMotorTop.getError());
 		
         shooterMotorBottom = new CANTalon(11);
         LiveWindow.addActuator("Shooter", "shooterMotorBottom", shooterMotorBottom);
@@ -103,15 +95,6 @@ public class RobotMap {
         shooterMotorTop.setPID(0.020, 0.0002, 2.0);  // ProtoBot:  0.020, 0.0002, 2.0;  ProtoBoard:  0.005, 0.00008, 0.00001
         shooterMotorTop.setF(0.035);   // ProtoBot:  0.035;  ProtoBoard:  0.025
         shooterMotorBottom.changeControlMode(TalonControlMode.Speed);
-        
-//		SmartDashboard.putNumber("F", shooterMotorBottom.getF()*1000);
-//		SmartDashboard.putNumber("P", shooterMotorBottom.getP()*1000);
-//		SmartDashboard.putNumber("I", shooterMotorBottom.getI()*1000);
-//		SmartDashboard.putNumber("D", shooterMotorBottom.getD()*1000);
-//		
-//		SmartDashboard.putNumber("Setpoint", shooterMotorBottom.getSetpoint());
-//		SmartDashboard.putNumber("Speed", shooterMotorBottom.getSpeed());
-//		SmartDashboard.putNumber("Error", shooterMotorBottom.getError());
         
         shooterPiston = new DoubleSolenoid(1, 0);
         LiveWindow.addActuator("Shooter", "shooterPiston", shooterPiston);

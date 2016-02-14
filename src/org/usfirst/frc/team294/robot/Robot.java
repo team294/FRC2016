@@ -102,20 +102,9 @@ public class Robot extends IterativeRobot {
 	public void teleopPeriodic() {
 		Scheduler.getInstance().run();
 		
-		shooter.updateSmartDashboard();
-		shooter.setPIDFromSmartDashboard();
-		
-//		CANTalon shooterMotor = RobotMap.shooterMotorTop;
-//		
-//		SmartDashboard.putNumber("Speed", shooterMotor.getSpeed());
-//		SmartDashboard.putNumber("Speed2", shooterMotor.getSpeed());
-//		SmartDashboard.putNumber("Error", shooterMotor.getError());
-//		
-//		shooterMotor.set(SmartDashboard.getNumber("Setpoint"));
-//		shooterMotor.setF(SmartDashboard.getNumber("F")/1000);
-//		shooterMotor.setP(SmartDashboard.getNumber("P")/1000);
-//		shooterMotor.setI(SmartDashboard.getNumber("I")/1000);
-//		shooterMotor.setD(SmartDashboard.getNumber("D")/1000);
+		// Uncomment the following 2 lines for debugging shooter motors.
+//		shooter.setPIDFromSmartDashboard();
+//		shooter.updateSmartDashboard();
 	}
 
 	/**

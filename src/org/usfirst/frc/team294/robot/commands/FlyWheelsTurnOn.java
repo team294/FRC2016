@@ -39,7 +39,7 @@ public class FlyWheelsTurnOn extends Command {
 
     // Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished() {
-    	SmartDashboard.putNumber("Motor_Error", Robot.shooter.getTopError());
+    	Robot.shooter.updateSmartDashboard();
 //    	if(!Robot.shooter.isButtonPressed()){
 //    		return true;
 //    	}
@@ -52,7 +52,7 @@ public class FlyWheelsTurnOn extends Command {
 //    			return true;
 //    	}
     	//This is the timing out of the command, if the other one doesnt fire first, this one will be there to catch it
-    	SmartDashboard.putNumber("Timer", this.timeSinceInitialized());
+    	//SmartDashboard.putNumber("Timer", this.timeSinceInitialized());
     	if(this.timeSinceInitialized() > 2){
     		return true;
     	}

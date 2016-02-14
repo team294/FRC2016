@@ -49,7 +49,7 @@ public class Shooter extends Subsystem {
 	 * Set shooter motor speeds.  Positive speed ejects the ball.  Negative speed loads the ball.  
 	 */
     public void setSpeed(double speed){
-    	shooterMotorTop.set(-speed*0.8);
+    	shooterMotorTop.set(-speed);
     	shooterMotorBottom.set(speed);
     	SmartDashboard.putNumber("ShootTop Setpoint", shooterMotorTop.getSetpoint());
 		SmartDashboard.putNumber("ShootBot Setpoint", shooterMotorBottom.getSetpoint());   	

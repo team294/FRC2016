@@ -29,7 +29,7 @@ public class FlyWheelsTurnOn extends Command {
 //    		return;
 //    	}
     	if(start){
-    		Robot.shooter.setSpeed(4000);
+    		Robot.shooter.setSpeed(4500);
     	}
     	if(!start){
 //    		SmartDashboard.putString("Stop", "It should have stopped.");

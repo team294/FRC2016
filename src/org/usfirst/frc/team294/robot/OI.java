@@ -72,6 +72,8 @@ public class OI {
         SmartDashboard.putData("DriveForward: driveForwardFast", new DriveForwardDistance(1.0, 1.0));
         SmartDashboard.putData("DriveForward: driveForwardSlow", new DriveForwardDistance(0.5, 1.0));
         SmartDashboard.putData("Rotate", new Rotate());
+        SmartDashboard.putData("Rotate +90 PID", new RotateDegreesPID(90.0));
+        SmartDashboard.putData("Rotate -90 PID", new RotateDegreesPID(-90.0));
         SmartDashboard.putData("Stop", new StopDriving());
         SmartDashboard.putData("ShiftUp", new ShiftUp());
         SmartDashboard.putData("ShiftDown", new ShiftDown());

@@ -4,7 +4,7 @@ import org.usfirst.frc.team294.robot.RobotMap;
 
 import edu.wpi.first.wpilibj.CANTalon;
 import edu.wpi.first.wpilibj.DigitalInput;
-import edu.wpi.first.wpilibj.DoubleSolenoid;
+// import edu.wpi.first.wpilibj.DoubleSolenoid;  // Old code for double solenoid from prototype bot
 import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.CANTalon.FeedbackDevice;
 import edu.wpi.first.wpilibj.CANTalon.TalonControlMode;
@@ -14,15 +14,19 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 
 /**
- * The shooter arm!
+ * The shooter mechanism on the arm.
  */
 public class Shooter extends Subsystem {
 
     private final CANTalon motorTop = new CANTalon(RobotMap.shooterMotorTop);
     private final CANTalon motorBottom = new CANTalon(RobotMap.shooterMotorBottom);
-    private final DoubleSolenoid ballPiston = new DoubleSolenoid(RobotMap.shooterPistonFwd, RobotMap.shooterPistonRev);
+//    private final DoubleSolenoid ballPiston = new DoubleSolenoid(RobotMap.shooterPistonFwd, RobotMap.shooterPistonRev);  // Old code for double solenoid from prototype bot
+    private final Solenoid ballPiston = new Solenoid(RobotMap.shooterPiston);
     private final DigitalInput ballSenseButton = new DigitalInput(RobotMap.ballSenseButton);
 
+    /**
+     * Create a shooter
+     */
     public Shooter() {
     	// Call the Subsystem constructor
     	super();
@@ -37,7 +41,7 @@ public class Shooter extends Subsystem {
         motorTop.setPID(0.020, 0.0002, 2.0);  // ProtoBot:  0.020, 0.0002, 2.0;  ProtoBoard:  0.005, 0.00008, 0.00001
         motorTop.setF(0.035);   // ProtoBot:  0.035;  ProtoBoard:  0.025
         motorTop.changeControlMode(TalonControlMode.Speed);
-		
+
         motorBottom.setFeedbackDevice(FeedbackDevice.CtreMagEncoder_Relative);
         motorBottom.configEncoderCodesPerRev(100);
 //        shooterMotorBottom.reverseSensor(true);
@@ -48,7 +52,8 @@ public class Shooter extends Subsystem {
         motorTop.setF(0.035);   // ProtoBot:  0.035;  ProtoBoard:  0.025
         motorBottom.changeControlMode(TalonControlMode.Speed);
                 
-        ballPiston.set(DoubleSolenoid.Value.kReverse);
+//        ballPiston.set(DoubleSolenoid.Value.kReverse);
+        ballPiston.set(false);
   
     	// Add the subsystem to the LiveWindow
         LiveWindow.addActuator("Shooter", "shooterMotorTop", motorTop);
@@ -61,39 +66,93 @@ public class Shooter extends Subsystem {
     // here. Call these from Commands.
     
 	/**
-	 * Set shooter motor speeds.  Positive speed ejects the ball.  Negative speed loads the ball.  
+	 * Set shooter motor speeds.  WARNING:  Keep speed <= 4500 RPM to ensure that the PIDF
+	 * controller can achieve the desired speed.  If not, then the I term of the PIDF
+	 * will prevent the controller from changing speeds properly.
+     * @param speed RPM to set both top and bottom motors.  + = eject ball, - = load ball.
 	 */
     public void setSpeed(double speed){
-    	motorTop.set(-speed*0.8);
+    	motorTop.set(-speed);
     	motorBottom.set(speed);
     	SmartDashboard.putNumber("ShootTop Setpoint", motorTop.getSetpoint());
 		SmartDashboard.putNumber("ShootBot Setpoint", motorBottom.getSetpoint());   	
     }
     
+	/**
+	 * Set shooter motor speeds.  WARNING:  Keep speeds <= 4500 RPM to ensure that the PIDF
+	 * controller can achieve the desired speed.  If not, then the I term of the PIDF
+	 * will prevent the controller from changing speeds properly.
+	 * <p> This method allows separate top/bottom speeds in order to put a spin on the ball.
+     * @param topSpeed RPM to set top motor.  + = eject ball, - = load ball.
+     * @param bottomSpeed RPM to set bottom motor.  + = eject ball, - = load ball.
+	 */
+    public void setSpeed(double topSpeed, double bottomSpeed){
+    	motorTop.set(-topSpeed);
+    	motorBottom.set(bottomSpeed);
+    	SmartDashboard.putNumber("ShootTop Setpoint", motorTop.getSetpoint());
+		SmartDashboard.putNumber("ShootBot Setpoint", motorBottom.getSetpoint());   	
+    }
+    
+    /** 
+     * Get speed of top flywheel motor
+     * @return Speed in RPM
+     */
     public double getTopFlyWheelSpeed(){
     	return motorTop.getSpeed();
     }
     
-    public double getBottomFlyWheelSpeed(){
+    /** 
+     * Get speed of bottom flywheel motor
+     * @return Speed in RPM
+     */
+   public double getBottomFlyWheelSpeed(){
     	return motorBottom.getSpeed();
     }
     
+   /** 
+    * Get error for top flywheel motor = actual speed - set speed
+    * @return Speed in RPM
+    */   
     public double getTopError(){
     	return motorTop.getError();
     }
     
+    /** 
+     * Get error for bottom flywheel motor = actual speed - set speed
+     * @return Speed in RPM
+     */   
     public double getBottomError(){
     	return motorBottom.getError();
     }
     
+    /**
+     * Extend shooter piston
+     */
     public void setShooterPistonOut() {
-    	ballPiston.set(DoubleSolenoid.Value.kForward);
+//    	ballPiston.set(DoubleSolenoid.Value.kForward);
+    	ballPiston.set(true);   // Old code for double solenoid from prototype bot
     }
 
+    /**
+     * Retract shooter piston
+     */
     public void setShooterPistonIn() {
-    	ballPiston.set(DoubleSolenoid.Value.kReverse);
+//    	ballPiston.set(DoubleSolenoid.Value.kReverse);
+    	ballPiston.set(false);   // Old code for double solenoid from prototype bot
     }
 
+    /**
+     * Reads the shooter piston state
+     * @return true = piston is out
+     */
+    public boolean getShooterPistonPosition() {
+    	return ballPiston.get();
+    }
+    
+    /**
+     * Checks if the shooter has a ball
+     * @return true = shooter has a ball
+     */
     public boolean isButtonPressed(){
     	return !ballSenseButton.get();
     }

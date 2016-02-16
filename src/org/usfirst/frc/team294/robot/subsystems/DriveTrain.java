@@ -10,6 +10,8 @@ import edu.wpi.first.wpilibj.CANTalon;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.RobotDrive;
 import edu.wpi.first.wpilibj.SPI;
+import edu.wpi.first.wpilibj.CANTalon.FeedbackDevice;
+import edu.wpi.first.wpilibj.CANTalon.TalonControlMode;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.PIDController;
 import edu.wpi.first.wpilibj.PIDOutput;
@@ -76,6 +78,26 @@ public class DriveTrain extends Subsystem implements PIDOutput {
         turnController.setOutputRange(-1.0, 1.0);
         turnController.setAbsoluteTolerance(kToleranceDegrees);  // PIDController.onTarget() method does not work!
         turnController.setToleranceBuffer(3);
+        
+        
+        rightMotor2.configEncoderCodesPerRev(100);
+//        shooterMotorTop.reverseSensor(true);
+        rightMotor2.configNominalOutputVoltage(+0.0f, -0.0f);
+        rightMotor2.configPeakOutputVoltage(+12.0f, -12.0f);
+        rightMotor2.setProfile(0);
+        rightMotor2.setPID(0.020, 0.0002, 2.0);  // ProtoBot:  0.020, 0.0002, 2.0;  ProtoBoard:  0.005, 0.00008, 0.00001
+        rightMotor2.setF(0.035);   // ProtoBot:  0.035;  ProtoBoard:  0.025
+        rightMotor2.changeControlMode(TalonControlMode.Speed);
+        
+        leftMotor2.configEncoderCodesPerRev(100);
+//        shooterMotorTop.reverseSensor(true);
+        leftMotor2.configNominalOutputVoltage(+0.0f, -0.0f);
+        leftMotor2.configPeakOutputVoltage(+12.0f, -12.0f);
+        leftMotor2.setProfile(0);
+        leftMotor2.setPID(0.020, 0.0002, 2.0);  // ProtoBot:  0.020, 0.0002, 2.0;  ProtoBoard:  0.005, 0.00008, 0.00001
+        leftMotor2.setF(0.035);   // ProtoBot:  0.035;  ProtoBoard:  0.025
+        leftMotor2.changeControlMode(TalonControlMode.Speed);
+        
         
         // Add the subsystem to the LiveWindow
         LiveWindow.addActuator("DriveTrain", "leftMotor1", leftMotor1);

@@ -11,6 +11,7 @@ public class RobotMap {
 	//Address for robot hardware
 
 	// CANbus addresses
+	public static int pneumaticController = 0;  // By default, the solenoid classes assume the CAN ID for the controller is 0
 	public static int driveTrainLeftMotor1 = 5;
     public static int driveTrainLeftMotor2 = 6;
     public static int driveTrainRightMotor1 = 11;
@@ -28,8 +29,9 @@ public class RobotMap {
     // Pneumatic controller PCM IDs
     public static int shifterSolenoidFwd = 1;
     public static int shifterSolenoidRev = 0;
-    public static int shooterPistonFwd = 3;
-    public static int shooterPistonRev = 2;
+    public static int shooterPiston = 2;
+//    public static int shooterPistonFwd = 3;  // old code for double solenoid on prototype bot
+//    public static int shooterPistonRev = 2;
     
 
     public static void init() {

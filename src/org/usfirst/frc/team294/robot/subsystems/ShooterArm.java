@@ -36,6 +36,13 @@ public class ShooterArm extends Subsystem implements PIDOutput{
     	  return shooterArmPot.getAverageVoltage();
      }
      
+     public void moveToAngle(double angle){
+    	 if(shooterArmPot.getAverageVoltage()<angle){
+    	//	 shooterArmMotor.set(PIDOutput);
+    		 shooterArmMotor.set(0.5);
+    	 }
+     }
+     
     public void initDefaultCommand() {
         // Set the default command for a subsystem here.
         //setDefaultCommand(new MySpecialCommand());

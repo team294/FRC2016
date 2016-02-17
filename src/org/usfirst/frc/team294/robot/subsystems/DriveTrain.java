@@ -44,6 +44,9 @@ public class DriveTrain extends Subsystem implements PIDOutput {
     static final double kToleranceDegrees = 3.0f;
     static final int kToleranceSamples = 5;  // These number of samples must be within tolerance to finish turn
     
+    static final double kDriveTolerance = 100.0f;
+    int nDriveInToleranceSamples;
+    
     int nInToleranceSamples;  // Number of successive measurements that were in tolerance
 
     public DriveTrain() {
@@ -85,18 +88,14 @@ public class DriveTrain extends Subsystem implements PIDOutput {
         rightMotor2.configNominalOutputVoltage(+0.0f, -0.0f);
         rightMotor2.configPeakOutputVoltage(+12.0f, -12.0f);
         rightMotor2.setProfile(0);
-        rightMotor2.setPID(0.020, 0.0002, 2.0);  // ProtoBot:  0.020, 0.0002, 2.0;  ProtoBoard:  0.005, 0.00008, 0.00001
-        rightMotor2.setF(0.035);   // ProtoBot:  0.035;  ProtoBoard:  0.025
-        rightMotor2.changeControlMode(TalonControlMode.Speed);
+        rightMotor2.changeControlMode(TalonControlMode.PercentVbus);
         
         leftMotor2.configEncoderCodesPerRev(100);
 //        shooterMotorTop.reverseSensor(true);
         leftMotor2.configNominalOutputVoltage(+0.0f, -0.0f);
         leftMotor2.configPeakOutputVoltage(+12.0f, -12.0f);
         leftMotor2.setProfile(0);
-        leftMotor2.setPID(0.020, 0.0002, 2.0);  // ProtoBot:  0.020, 0.0002, 2.0;  ProtoBoard:  0.005, 0.00008, 0.00001
-        leftMotor2.setF(0.035);   // ProtoBot:  0.035;  ProtoBoard:  0.025
-        leftMotor2.changeControlMode(TalonControlMode.Speed);
+        leftMotor2.changeControlMode(TalonControlMode.PercentVbus);
         
         
         // Add the subsystem to the LiveWindow
@@ -183,6 +182,45 @@ public class DriveTrain extends Subsystem implements PIDOutput {
 		nInToleranceSamples = 0;
 		turnController.setSetpoint(degrees);
 		turnController.enable();
+	}
+	
+	public void driveForwardPIDStart(double distance){
+		rightMotor2.changeControlMode(TalonControlMode.Position);
+		leftMotor2.changeControlMode(TalonControlMode.Position);
+        rightMotor2.setPID(0.020, 0.0002, 2.0);  // ProtoBot:  0.020, 0.0002, 2.0;  ProtoBoard:  0.005, 0.00008, 0.00001
+        leftMotor2.setPID(0.020, 0.0002, 2.0);  // ProtoBot:  0.020, 0.0002, 2.0;  ProtoBoard:  0.005, 0.00008, 0.00001
+        rightMotor2.setF(0.035);   // ProtoBot:  0.035;  ProtoBoard:  0.025
+        leftMotor2.setF(0.035);   // ProtoBot:  0.035;  ProtoBoard:  0.025
+		rightMotor2.set(distance);
+		leftMotor2.set(distance);
+		rightMotor2.enable();
+		leftMotor2.enable();
+	}
+	
+	public boolean driveForwardPIDIsFinished(){
+		double err;
+
+		//err = Math.abs(turnController.getSetpoint() - ahrs.getAngle());
+		err = Math.abs(rightMotor2.getSetpoint() - rightMotor2.get());
+		
+		if ( err <= kDriveTolerance ) {
+			nDriveInToleranceSamples++;
+		} else {
+			nDriveInToleranceSamples = 0;
+		}
+
+		if ( nDriveInToleranceSamples >= kToleranceSamples ) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+	
+	public void driveForwardPIDCancel(){
+		rightMotor2.changeControlMode(TalonControlMode.PercentVbus);
+		leftMotor2.changeControlMode(TalonControlMode.PercentVbus);
+		rightMotor2.disable();
+		leftMotor2.disable();
 	}
 	
 	public boolean turnDegreesPIDIsFinished() {

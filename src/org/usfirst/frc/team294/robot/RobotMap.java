@@ -12,28 +12,30 @@ public class RobotMap {
 
 	// CANbus addresses
 	public static int driveTrainLeftMotor1 = 5;
-    public static int driveTrainLeftMotor2 = 6;
-    public static int driveTrainRightMotor1 = 11;
-    public static int driveTrainRightMotor2 = 12;
-    public static int intakeMotor = 9;
-    public static int shooterMotorTop = 20;
-    public static int shooterMotorBottom = 21;
-    
-    // RoboRIO analog I/O addresses
-    public static int driveTrainGyro1 = 0;
- 
-    // RoboRIO digital I/O addresses
-    public static int ballSenseButton = 9;
-    
-    // Pneumatic controller PCM IDs
-    public static int shifterSolenoidFwd = 1;
-    public static int shifterSolenoidRev = 0;
-    public static int shooterPistonFwd = 3;
-    public static int shooterPistonRev = 2;
-    
+	public static int driveTrainLeftMotor2 = 6;
+	public static int driveTrainRightMotor1 = 11;
+	public static int driveTrainRightMotor2 = 12;
+	public static int intakeMotor = 9;
+	public static int shooterMotorTop = 20;
+	public static int shooterMotorBottom = 21;
+	public static int shooterArmMotor=22;
 
-    public static void init() {
-        // Instantiates all objects
-    	// Don -- I moved this code into each subsystem!      
-    }
+	// RoboRIO analog I/O addresses
+	public static int driveTrainGyro1 = 0;
+	public static int shooterArmPot=1;
+
+	// RoboRIO digital I/O addresses
+	public static int ballSenseButton = 9;
+
+	// Pneumatic controller PCM IDs
+	public static int shifterSolenoidFwd = 1;
+	public static int shifterSolenoidRev = 0;
+	public static int shooterPistonFwd = 3;
+	public static int shooterPistonRev = 2;
+
+
+	public static void init() {
+		// Instantiates all objects
+		// Don -- I moved this code into each subsystem!      
+	}
 }

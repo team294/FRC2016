@@ -37,12 +37,13 @@ public class ShooterArm extends Subsystem {
 		shooterArmMotor.enableControl();
 	}
 	public double getAngle(){
-		return shooterArmMotor.getAnalogInPosition();
+		return convertPosToAngle(shooterArmMotor.getAnalogInPosition());
 	}
 
 	public void moveToAngle(double angle){
 		shooterArmMotor.setPosition(convertAngleToPos(angle));
 	}
+	
 	public double convertAngleToPos(double angle){
 		return ((angle-minAngle+(anglesPerPos*minPosition))/anglesPerPos);
 	}

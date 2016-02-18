@@ -15,8 +15,7 @@ public class Intake extends Subsystem {
 	
     private final CANTalon intakeMotor = new CANTalon(RobotMap.intakeMotor);
     private final DoubleSolenoid intakeSolenoid = new DoubleSolenoid(RobotMap.intakeSolenoidFwd, RobotMap.intakeSolenoidRev);
-    public double lowerBoundAngleToAvoid = 0;
-    public double upperBoundAngleToAvoid = 90; 
+    
     
         
     public Intake() {
@@ -52,7 +51,7 @@ public class Intake extends Subsystem {
      */
     public boolean shooterArmConflicts(){
     	double AngleOfShooterArm = Robot.shooterArm.getAngle();
-    	if (AngleOfShooterArm > lowerBoundAngleToAvoid&&AngleOfShooterArm<upperBoundAngleToAvoid){
+    	if (AngleOfShooterArm > RobotMap.lowerBoundAngleToAvoid&&AngleOfShooterArm<RobotMap.upperBoundAngleToAvoid){
     		return true; 
     	}
     	return false; 

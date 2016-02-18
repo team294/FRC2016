@@ -1,5 +1,6 @@
 package org.usfirst.frc.team294.robot.subsystems;
 
+
 import org.usfirst.frc.team294.robot.RobotMap;
 import org.usfirst.frc.team294.robot.commands.*;
 
@@ -10,7 +11,6 @@ import edu.wpi.first.wpilibj.CANTalon;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.RobotDrive;
 import edu.wpi.first.wpilibj.SPI;
-import edu.wpi.first.wpilibj.CANTalon.FeedbackDevice;
 import edu.wpi.first.wpilibj.CANTalon.TalonControlMode;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.PIDController;
@@ -30,8 +30,7 @@ public class DriveTrain extends Subsystem implements PIDOutput {
     private final CANTalon leftMotor2 = new CANTalon(RobotMap.driveTrainLeftMotor2);
     private final CANTalon rightMotor1 = new CANTalon(RobotMap.driveTrainRightMotor1);
     private final CANTalon rightMotor2 = new CANTalon(RobotMap.driveTrainRightMotor2);
-    private final RobotDrive robotDrive = new RobotDrive(leftMotor1, leftMotor2,
-            rightMotor1, rightMotor2);
+    private final RobotDrive robotDrive = new RobotDrive(leftMotor2, rightMotor2);
     private final AnalogGyro gyro = new AnalogGyro(RobotMap.driveTrainGyro1);
     private AHRS ahrs;  // navX-mxp 9-axis IMU
     
@@ -83,19 +82,16 @@ public class DriveTrain extends Subsystem implements PIDOutput {
         turnController.setToleranceBuffer(3);
         
         
-        rightMotor2.configEncoderCodesPerRev(100);
 //        shooterMotorTop.reverseSensor(true);
-        rightMotor2.configNominalOutputVoltage(+0.0f, -0.0f);
-        rightMotor2.configPeakOutputVoltage(+12.0f, -12.0f);
-        rightMotor2.setProfile(0);
         rightMotor2.changeControlMode(TalonControlMode.PercentVbus);
+        rightMotor2.setProfile(0);
         
-        leftMotor2.configEncoderCodesPerRev(100);
 //        shooterMotorTop.reverseSensor(true);
-        leftMotor2.configNominalOutputVoltage(+0.0f, -0.0f);
-        leftMotor2.configPeakOutputVoltage(+12.0f, -12.0f);
-        leftMotor2.setProfile(0);
         leftMotor2.changeControlMode(TalonControlMode.PercentVbus);
+        leftMotor2.setProfile(0);
+        
+        rightMotor1.changeControlMode(TalonControlMode.Follower);
+        leftMotor1.changeControlMode(TalonControlMode.Follower);
         
         
         // Add the subsystem to the LiveWindow
@@ -193,17 +189,19 @@ public class DriveTrain extends Subsystem implements PIDOutput {
         leftMotor2.setF(0.035);   // ProtoBot:  0.035;  ProtoBoard:  0.025
 		rightMotor2.set(distance);
 		leftMotor2.set(distance);
-		rightMotor2.enable();
-		leftMotor2.enable();
+		rightMotor2.enableControl();
+		leftMotor2.enableControl();
 	}
 	
 	public boolean driveForwardPIDIsFinished(){
-		double err;
+		double errRight;
+		double errLeft;
 
 		//err = Math.abs(turnController.getSetpoint() - ahrs.getAngle());
-		err = Math.abs(rightMotor2.getSetpoint() - rightMotor2.get());
+		errRight = Math.abs(rightMotor2.getError());
+		errLeft = Math.abs(leftMotor2.getError());
 		
-		if ( err <= kDriveTolerance ) {
+		if ( errLeft <= kDriveTolerance && errRight <= kDriveTolerance) {
 			nDriveInToleranceSamples++;
 		} else {
 			nDriveInToleranceSamples = 0;
@@ -219,8 +217,12 @@ public class DriveTrain extends Subsystem implements PIDOutput {
 	public void driveForwardPIDCancel(){
 		rightMotor2.changeControlMode(TalonControlMode.PercentVbus);
 		leftMotor2.changeControlMode(TalonControlMode.PercentVbus);
-		rightMotor2.disable();
-		leftMotor2.disable();
+        rightMotor2.setPID(0.0, 0.0, 0.0);  // ProtoBot:  0.020, 0.0002, 2.0;  ProtoBoard:  0.005, 0.00008, 0.00001
+        leftMotor2.setPID(0.0, 0.0, 0.0);  // ProtoBot:  0.020, 0.0002, 2.0;  ProtoBoard:  0.005, 0.00008, 0.00001
+        rightMotor2.setF(0.0);   // ProtoBot:  0.035;  ProtoBoard:  0.025
+        leftMotor2.setF(0.0);   // ProtoBot:  0.035;  ProtoBoard:  0.025
+		rightMotor2.disableControl();
+		leftMotor2.disableControl();
 	}
 	
 	public boolean turnDegreesPIDIsFinished() {

@@ -22,7 +22,6 @@ public class RobotMap {
 
 	// RoboRIO analog I/O addresses
 	public static int driveTrainGyro1 = 0;
-	public static int shooterArmPot=1;
 
 	// RoboRIO digital I/O addresses
 	public static int ballSenseButton = 9;

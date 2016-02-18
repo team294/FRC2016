@@ -162,17 +162,27 @@ public class DriveTrain extends Subsystem implements PIDOutput {
 		robotDrive.drive(speed, curve);
 	}
 	
+	/**
+	 * Returns the current angle of the gyro.
+	 */
 	public double getDegrees() {
 		SmartDashboard.putNumber("gyro angle", gyro.getAngle());
 		SmartDashboard.putNumber("navX angle", ahrs.getAngle());
 		return gyro.getAngle();
 	}
 	
+	/**
+	 * Resets the angle of the gyro and the NavX
+	 */
 	public void resetDegrees() {
 		gyro.reset();
 		ahrs.reset();
 	}
-
+	
+	/**
+	 * Turns the robot a certain number of degrees using PID
+	 * @param degrees
+	 */
 	public void turnDegreesPIDStart(double degrees) {
 		resetDegrees();
 		nInToleranceSamples = 0;
@@ -180,6 +190,10 @@ public class DriveTrain extends Subsystem implements PIDOutput {
 		turnController.enable();
 	}
 	
+	/**
+	 * Drives the robot forward a certain distance
+	 * @param distance (eg. 5000 encoder units)
+	 */
 	public void driveForwardPIDStart(double distance){
 		rightMotor2.changeControlMode(TalonControlMode.Position);
 		leftMotor2.changeControlMode(TalonControlMode.Position);
@@ -193,6 +207,10 @@ public class DriveTrain extends Subsystem implements PIDOutput {
 		leftMotor2.enableControl();
 	}
 	
+	/**
+	 * Checks to see if the robot has reached the distance it was assigned to
+	 * @return boolean
+	 */
 	public boolean driveForwardPIDIsFinished(){
 		double errRight;
 		double errLeft;
@@ -214,6 +232,9 @@ public class DriveTrain extends Subsystem implements PIDOutput {
 		}
 	}
 	
+	/**
+	 * Stops the PID Control of Driving the robot forward
+	 */
 	public void driveForwardPIDCancel(){
 		rightMotor2.changeControlMode(TalonControlMode.PercentVbus);
 		leftMotor2.changeControlMode(TalonControlMode.PercentVbus);
@@ -225,6 +246,10 @@ public class DriveTrain extends Subsystem implements PIDOutput {
 		leftMotor2.disableControl();
 	}
 	
+	/**
+	 * Checks to see if the robot has turned a certain amount of degrees and is within the error range.
+	 * @return boolean
+	 */
 	public boolean turnDegreesPIDIsFinished() {
 		double err;
 		
@@ -255,6 +280,9 @@ public class DriveTrain extends Subsystem implements PIDOutput {
 		}
 }
 	
+	/**
+	 * Stops the PID Rotating.
+	 */
 	public void turnDegreesPIDCancel() {
 		turnController.disable();
 	}
@@ -267,7 +295,7 @@ public class DriveTrain extends Subsystem implements PIDOutput {
 //    	SmartDashboard.putNumber("PID turn power", output);
     	robotDrive.drive(output, -1);
     }
-
+	
 	public int getLeftEncoder() {
 		SmartDashboard.putNumber("Left Encoder Position", leftMotor2.getEncPosition());
 		return leftMotor2.getEncPosition();

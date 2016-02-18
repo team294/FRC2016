@@ -6,51 +6,53 @@ import edu.wpi.first.wpilibj.AnalogInput;
 import edu.wpi.first.wpilibj.CANTalon;
 import edu.wpi.first.wpilibj.PIDController;
 import edu.wpi.first.wpilibj.PIDOutput;
+import edu.wpi.first.wpilibj.CANTalon.FeedbackDevice;
+import edu.wpi.first.wpilibj.CANTalon.TalonControlMode;
 import edu.wpi.first.wpilibj.command.Subsystem;
 
 /**
  *
  */
-public class ShooterArm extends Subsystem implements PIDOutput{
-     private final CANTalon shooterArmMotor= new CANTalon(RobotMap.shooterArmMotor);
-     private final AnalogInput shooterArmPot= new AnalogInput(RobotMap.shooterArmPot);
-    // Put methods for controlling this subsystem
-    // here. Call these from Commands.
+public class ShooterArm extends Subsystem {
+	private final CANTalon shooterArmMotor= new CANTalon(RobotMap.shooterArmMotor);
+	// Put methods for controlling this subsystem
+	// here. Call these from Commands.
 
-  // PID contorller and parameters for turning using the potentiometer, stolen from Don's PID code in the drivetrain
-     PIDController angleController;
-     static final double kP = 0.02;
-     static final double kI = 0.00;
-     static final double kD = 0.01;
-     static final double kF = 0.00;
-     static final double kToleranceDegrees = 3.0f;
-     static final int kToleranceSamples = 5;  // These number of samples must be within tolerance to finish turn
-     int nInToleranceSamples;  // Number of successive measurements that were in tolerance
-     
-     public ShooterArm(){
-    	super(); 
-    	//shooterArmMotor.setFeedbackDevice(shooterArmPot);
-    	 
-     }
-     public double returnAngle(){
-    	  return shooterArmPot.getAverageVoltage();
-     }
-     
-     public void moveToAngle(double angle){
-    	 if(shooterArmPot.getAverageVoltage()<angle){
-    	//	 shooterArmMotor.set(PIDOutput);
-    		 shooterArmMotor.set(0.5);
-    	 }
-     }
-     
-    public void initDefaultCommand() {
-        // Set the default command for a subsystem here.
-        //setDefaultCommand(new MySpecialCommand());
-    }
-	@Override
-	public void pidWrite(double output) {
-		// TODO Auto-generated method stub
-		
+	private static double maxPosition=433.0;
+	private static double minPosition=233.0;
+	private static double maxAngle=94.0;
+	private static double minAngle=-12.0;
+	private static double anglesPerPos=(maxAngle-minAngle)/(maxPosition-minPosition);
+
+	public ShooterArm(){
+		super(); 
+		shooterArmMotor.setFeedbackDevice(CANTalon.FeedbackDevice.AnalogPot);
+		// shooterArmMotor.reverseSensor(true); 
+		shooterArmMotor.setProfile(0);
+		shooterArmMotor.setPID(0.020, 0.0000, 0.0);  
+		shooterArmMotor.setF(0.0);   
+		shooterArmMotor.changeControlMode(TalonControlMode.Position);
+		shooterArmMotor.configPotentiometerTurns(1);
+		shooterArmMotor.setPosition(shooterArmMotor.getAnalogInPosition());
+		shooterArmMotor.enableControl();
+	}
+	public double getAngle(){
+		return shooterArmMotor.getAnalogInPosition();
+	}
+
+	public void moveToAngle(double angle){
+		shooterArmMotor.setPosition(convertAngleToPos(angle));
+	}
+	public double convertAngleToPos(double angle){
+		return ((angle-minAngle+(anglesPerPos*minPosition))/anglesPerPos);
+	}
+	public double convertPosToAngle(double position){
+		return ((anglesPerPos*position)-(anglesPerPos*minPosition)+minAngle);
+	}
+
+	public void initDefaultCommand() {
+		// Set the default command for a subsystem here.
+		//setDefaultCommand(new MySpecialCommand());
 	}
 }
 

@@ -1,8 +1,10 @@
 package org.usfirst.frc.team294.robot.subsystems;
 
+import org.usfirst.frc.team294.robot.Robot;
 import org.usfirst.frc.team294.robot.RobotMap;
 
 import edu.wpi.first.wpilibj.CANTalon;
+import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 
@@ -12,6 +14,10 @@ import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 public class Intake extends Subsystem {
 	
     private final CANTalon intakeMotor = new CANTalon(RobotMap.intakeMotor);
+    private final DoubleSolenoid intakeSolenoid = new DoubleSolenoid(RobotMap.intakeSolenoidFwd, RobotMap.intakeSolenoidRev);
+    public double lowerBoundAngleToAvoid = 0;
+    public double upperBoundAngleToAvoid = 90; 
+    
         
     public Intake() {
     	// Call the Subsystem constructor
@@ -32,11 +38,28 @@ public class Intake extends Subsystem {
     }
     
     public void raiseIntake(){
-    	
+    	intakeSolenoid.set(DoubleSolenoid.Value.kReverse);
     }
     
     public void lowerIntake(){
-    	
+    	intakeSolenoid.set(DoubleSolenoid.Value.kForward);
+    }
+    
+    /*
+     * checks to make sure that the shooter arm is not going to crash into the intake when raising the intake
+     * @returns true when the shooter conflicts with the intake
+     * @returns false when the shooter does not conflict with the intake
+     */
+    public boolean shooterArmConflicts(){
+    	double AngleOfShooterArm = Robot.shooterArm.getAngle();
+    	if (AngleOfShooterArm > lowerBoundAngleToAvoid&&AngleOfShooterArm<upperBoundAngleToAvoid){
+    		return true; 
+    	}
+    	return false; 
+    }
+    
+    public void stop(){
+    	intakeSolenoid.set(DoubleSolenoid.Value.kOff);
     }
     
     public void initDefaultCommand() {

@@ -9,14 +9,12 @@ import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 
 /**
- * Intake subsystem.  This needs a lot of work!
+ * Intake subsystem
  */
 public class Intake extends Subsystem {
 	
     private final CANTalon intakeMotor = new CANTalon(RobotMap.intakeMotor);
     private final DoubleSolenoid intakeSolenoid = new DoubleSolenoid(RobotMap.intakeSolenoidFwd, RobotMap.intakeSolenoidRev);
-    
-    
         
     public Intake() {
     	// Call the Subsystem constructor

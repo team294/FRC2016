@@ -31,10 +31,16 @@ public class RobotMap {
 	public static int shifterSolenoidRev = 0;
 	public static int shooterPistonFwd = 3;
 	public static int shooterPistonRev = 2;
-
-
-	public static void init() {
-		// Instantiates all objects
-		// Don -- I moved this code into each subsystem!      
-	}
+    public static int intakeSolenoidFwd = 5;
+    public static int intakeSolenoidRev = 6;
+    
+    // Intake angle interval to avoid when raising or lowering intake with the shooter
+    public static double lowerBoundAngleToAvoid = 0;
+    public static double upperBoundAngleToAvoid = 90;
+    
+    
+    public static void init() {
+        // Instantiates all objects
+    	// Don -- I moved this code into each subsystem!      
+    }
 }

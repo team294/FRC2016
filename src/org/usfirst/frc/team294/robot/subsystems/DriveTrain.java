@@ -36,8 +36,8 @@ public class DriveTrain extends Subsystem implements PIDOutput {
     
     // PID contorller and parameters for turning using the navX
     PIDController turnController;
-    static final double kP = 0.02;
-    static final double kI = 0.00;
+    static final double kP = 0.025;
+    static final double kI = 0.00025;
     static final double kD = 0.01;
     static final double kF = 0.00;
     static final double kToleranceDegrees = 3.0f;
@@ -75,12 +75,11 @@ public class DriveTrain extends Subsystem implements PIDOutput {
         
         // Implement PID controller for turning
         turnController = new PIDController(kP, kI, kD, kF, ahrs, this);
-        turnController.setInputRange(-180.0f,  180.0f);
+        turnController.setInputRange(0.0f,  360.0f);
         turnController.setContinuous(true);
         turnController.setOutputRange(-1.0, 1.0);
         turnController.setAbsoluteTolerance(kToleranceDegrees);  // PIDController.onTarget() method does not work!
-        turnController.setToleranceBuffer(3);
-        
+        turnController.setToleranceBuffer(3);    
         
 //        shooterMotorTop.reverseSensor(true);
         rightMotor2.changeControlMode(TalonControlMode.PercentVbus);
@@ -168,7 +167,8 @@ public class DriveTrain extends Subsystem implements PIDOutput {
 	public double getDegrees() {
 		SmartDashboard.putNumber("gyro angle", gyro.getAngle());
 		SmartDashboard.putNumber("navX angle", ahrs.getAngle());
-		return gyro.getAngle();
+//		return gyro.getAngle();
+		return ahrs.getAngle();
 	}
 	
 	/**
@@ -180,16 +180,67 @@ public class DriveTrain extends Subsystem implements PIDOutput {
 	}
 	
 	/**
-	 * Turns the robot a certain number of degrees using PID
+	 * Turns the robot a certain number of degrees using PID.  Current PID
+	 * parameters work only in low gear on test robot.
 	 * @param degrees
 	 */
 	public void turnDegreesPIDStart(double degrees) {
+		double d;
+		
+		if (degrees>=0) {
+			d = degrees;
+		} else {
+			d = degrees + 360.0;
+		}
+		
 		resetDegrees();
 		nInToleranceSamples = 0;
-		turnController.setSetpoint(degrees);
+		turnController.setSetpoint(d);
 		turnController.enable();
 	}
 	
+	
+	/**
+	 * Checks to see if the robot has turned a certain amount of degrees and is within the error range.
+	 * @return boolean
+	 */
+	public boolean turnDegreesPIDIsFinished() {
+		double err;
+		
+		SmartDashboard.putNumber("PID error", turnController.getError());
+		SmartDashboard.putNumber("PID avg error", turnController.getAvgError());
+		SmartDashboard.putNumber("PID setpoint", turnController.getSetpoint());
+		SmartDashboard.putNumber("PID power", turnController.get());
+		SmartDashboard.putBoolean("PID on target", turnController.onTarget());
+	
+		err = Math.abs(turnController.getSetpoint() - ahrs.getAngle());
+		if (err > 180) { 
+			err = Math.abs(360-err); 
+		}
+		
+		SmartDashboard.putNumber("PID my error", err);
+		
+		if ( err <= kToleranceDegrees ) {
+			nInToleranceSamples++;
+		} else {
+			nInToleranceSamples = 0;
+		}
+
+		if ( nInToleranceSamples >= kToleranceSamples ) {
+			turnController.reset();
+			return true;
+		} else {
+			return false;
+		}
+	}
+	
+	/**
+	 * Stops the PID Rotating.
+	 */
+	public void turnDegreesPIDCancel() {
+		turnController.reset();
+	}
+
 	/**
 	 * Drives the robot forward a certain distance
 	 * @param distance (eg. 5000 encoder units)
@@ -244,47 +295,6 @@ public class DriveTrain extends Subsystem implements PIDOutput {
         leftMotor2.setF(0.0);   // ProtoBot:  0.035;  ProtoBoard:  0.025
 		rightMotor2.disableControl();
 		leftMotor2.disableControl();
-	}
-	
-	/**
-	 * Checks to see if the robot has turned a certain amount of degrees and is within the error range.
-	 * @return boolean
-	 */
-	public boolean turnDegreesPIDIsFinished() {
-		double err;
-		
-//		SmartDashboard.putNumber("PID error", turnController.getError());
-//		SmartDashboard.putNumber("PID avg error", turnController.getAvgError());
-//		SmartDashboard.putNumber("PID setpoint", turnController.getSetpoint());
-//		SmartDashboard.putNumber("PID power", turnController.get());
-//		SmartDashboard.putBoolean("PID on target", turnController.onTarget());
-	
-		err = Math.abs(turnController.getSetpoint() - ahrs.getAngle());
-		if (err > 180) { 
-			err = Math.abs(360-err); 
-		}
-		
-//		SmartDashboard.putNumber("PID my error", err);
-		
-		if ( err <= kToleranceDegrees ) {
-			nInToleranceSamples++;
-		} else {
-			nInToleranceSamples = 0;
-		}
-
-		if ( nInToleranceSamples >= kToleranceSamples ) {
-			turnController.disable();
-			return true;
-		} else {
-			return false;
-		}
-}
-	
-	/**
-	 * Stops the PID Rotating.
-	 */
-	public void turnDegreesPIDCancel() {
-		turnController.disable();
 	}
 
 	@Override

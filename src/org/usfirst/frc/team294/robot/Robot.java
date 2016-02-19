@@ -26,6 +26,7 @@ public class Robot extends IterativeRobot {
 	// Creates the SubSystem onjects
 	public static DriveTrain driveTrain;
 	public static Shifter shifter;
+	public static ShooterArm shooterArm;
 	public static Shooter shooter;
 	public static Intake intake;
 	public static Vision vision;
@@ -39,6 +40,7 @@ public class Robot extends IterativeRobot {
 		//Instantiates the subsystems
 		driveTrain = new DriveTrain();
 		shifter = new Shifter();
+		shooterArm = new ShooterArm();
 		shooter = new Shooter();
 		intake = new Intake();
 		vision = new Vision();
@@ -59,6 +61,7 @@ public class Robot extends IterativeRobot {
 		SmartDashboard.putData(Scheduler.getInstance());
 		SmartDashboard.putData(driveTrain);
 		SmartDashboard.putData(shifter);
+		SmartDashboard.putData(shooterArm);
 		SmartDashboard.putData(shooter);
 		SmartDashboard.putData(intake);
 		SmartDashboard.putData(vision);

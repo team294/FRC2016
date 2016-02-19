@@ -74,6 +74,10 @@ public class OI {
         SmartDashboard.putData("Rotate", new Rotate());
         SmartDashboard.putData("Rotate +90 PID", new RotateDegreesPID(90.0));
         SmartDashboard.putData("Rotate -90 PID", new RotateDegreesPID(-90.0));
+        SmartDashboard.putData("Rotate +5 PID", new RotateDegreesPID(5.0));
+        SmartDashboard.putData("Rotate -5 PID", new RotateDegreesPID(-5.0));
+        SmartDashboard.putData("Rotate +2 PID", new RotateDegreesPID(2.0));
+        SmartDashboard.putData("Rotate -2 PID", new RotateDegreesPID(-2.0));
         SmartDashboard.putData("Stop", new StopDriving());
         SmartDashboard.putData("ShiftUp", new ShiftUp());
         SmartDashboard.putData("ShiftDown", new ShiftDown());

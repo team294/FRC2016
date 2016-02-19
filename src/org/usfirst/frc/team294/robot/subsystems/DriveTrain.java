@@ -36,11 +36,11 @@ public class DriveTrain extends Subsystem implements PIDOutput {
     
     // PID contorller and parameters for turning using the navX
     PIDController turnController;
-    static final double kP = 0.025;
-    static final double kI = 0.00025;
-    static final double kD = 0.01;
+    static final double kP = 0.06;
+    static final double kI = 0.0;   //0.00025;
+    static final double kD = 0.01;  //0.01;
     static final double kF = 0.00;
-    static final double kToleranceDegrees = 3.0f;
+    static final double kToleranceDegrees = 1.5f;
     static final int kToleranceSamples = 5;  // These number of samples must be within tolerance to finish turn
     
     static final double kDriveTolerance = 100.0f;
@@ -195,6 +195,7 @@ public class DriveTrain extends Subsystem implements PIDOutput {
 		
 		resetDegrees();
 		nInToleranceSamples = 0;
+		turnController.reset();
 		turnController.setSetpoint(d);
 		turnController.enable();
 	}

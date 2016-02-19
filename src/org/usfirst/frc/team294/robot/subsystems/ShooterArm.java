@@ -15,14 +15,13 @@ import edu.wpi.first.wpilibj.command.Subsystem;
  */
 public class ShooterArm extends Subsystem {
 	private final CANTalon shooterArmMotor= new CANTalon(RobotMap.shooterArmMotor);
-	// Put methods for controlling this subsystem
-	// here. Call these from Commands.
 
-	private static double maxPosition=433.0;
-	private static double minPosition=233.0;
-	private static double maxAngle=94.0;
-	private static double minAngle=-12.0;
-	private static double anglesPerPos=(maxAngle-minAngle)/(maxPosition-minPosition);
+	private double positionRange = 250.0;
+	private double minPosition=233.0;		// We will need to calibrate this number occasionally
+	private double maxPosition=minPosition + positionRange;
+	private double minAngle=-12.0;
+	private double maxAngle=94.0;
+	private double anglesPerPos=(maxAngle-minAngle)/(maxPosition-minPosition);
 
 	public ShooterArm(){
 		super(); 
@@ -36,18 +35,62 @@ public class ShooterArm extends Subsystem {
 		shooterArmMotor.setPosition(shooterArmMotor.getAnalogInPosition());
 		shooterArmMotor.enableControl();
 	}
-	public double getAngle(){
+	
+	// Put methods for controlling this subsystem
+	// here. Call these from Commands.
+
+	/**
+	 * Disable PID control of shooter arm
+	 */
+	public void disableControl() {
+		shooterArmMotor.disableControl();
+	}
+	
+	/**
+	 * Get current arm angle
+	 * @return angle, in degrees.  0 = horizontal, + = up, - = down
+	 */
+	public double getAngle() {
 		return convertPosToAngle(shooterArmMotor.getAnalogInPosition());
 	}
 
-	public void moveToAngle(double angle){
+	/**
+	 * Tell PID controller to move arm to a specific absolute angle.  Arm will move
+	 * as much as it can within its movement limits and without interfering
+	 * with the intake (if the intake is raised).
+	 * @param angle Desired target angle, in degrees.  0 = horizontal, + = up, - = down
+	 */
+	public void moveToAngle(double angle) {
+		// NEED TO FIX:  stay within limits and avoid intake
 		shooterArmMotor.setPosition(convertAngleToPos(angle));
+		shooterArmMotor.enableControl();
 	}
 	
-	public double convertAngleToPos(double angle){
+	/**
+	 * Tell PID controller to move arm up or down by a relative amount.  Arm will move
+	 * as much as it can within its movement limits and without interfering
+	 * with the intake (if the intake is raised).
+	 * @param angle Desired relative movement, in degrees.  0 = none, + = higher, - = lower
+	 */
+	public void moveAngleRelative(double angle) {
+		moveToAngle(getAngle() + angle);
+	}
+	
+	/**
+	 * Convert an arm angle to a PID position
+	 * @param angle, in degrees
+	 * @return PID position, 0 to 1023
+	 */
+	private double convertAngleToPos(double angle) {
 		return ((angle-minAngle+(anglesPerPos*minPosition))/anglesPerPos);
 	}
-	public double convertPosToAngle(double position){
+
+	/**
+	 * Covert a PID position to an arm angle 
+	 * @param position PID setting, 0 to 1023
+	 * @return angle, in degrees
+	 */
+	private double convertPosToAngle(double position) {
 		return ((anglesPerPos*position)-(anglesPerPos*minPosition)+minAngle);
 	}
 

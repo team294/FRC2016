@@ -35,10 +35,13 @@ public class RobotMap {
     public static int intakeSolenoidFwd = 5;
     public static int intakeSolenoidRev = 6;
     
-    // Intake angle interval to avoid when raising or lowering intake with the shooter
+    // Range of motion for shooter arm
+    public static double shooterArmMinAngle=-12.0;
+    public static double shooterArmMaxAngle=94.0;
+
+    // Shooter arm range to avoid when raising or lowering intake
     public static double lowerBoundAngleToAvoid = 0;
     public static double upperBoundAngleToAvoid = 90;
-    public static boolean intakeDown=false;
     public static double AngleOfShooterArm = Robot.shooterArm.getAngle();
     
     

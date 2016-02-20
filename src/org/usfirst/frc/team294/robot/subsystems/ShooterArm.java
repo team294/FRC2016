@@ -1,6 +1,7 @@
 package org.usfirst.frc.team294.robot.subsystems;
 
 import org.usfirst.frc.team294.robot.OI;
+import org.usfirst.frc.team294.robot.Robot;
 import org.usfirst.frc.team294.robot.RobotMap;
 
 import edu.wpi.first.wpilibj.AnalogInput;
@@ -21,8 +22,8 @@ public class ShooterArm extends Subsystem {
 	private double positionRange = 250.0;
 	private double minPosition=233.0;		// We will need to calibrate this number occasionally
 	private double maxPosition=minPosition + positionRange;
-	private double minAngle=-12.0;
-	private double maxAngle=94.0;
+	private double minAngle=RobotMap.shooterArmMinAngle;
+	private double maxAngle=RobotMap.shooterArmMaxAngle;
 	private double anglesPerPos=(maxAngle-minAngle)/(maxPosition-minPosition);
 	private double slope=(maxAngle/2-minAngle/2);
 	private double yIntercept=maxAngle-slope;
@@ -67,10 +68,10 @@ public class ShooterArm extends Subsystem {
 	 */
 	public void moveToAngle(double angle) {
 		// NEED TO FIX:  stay within limits and avoid intake
-		if(RobotMap.intakeDown){
+		if(!Robot.intake.intakeIsUp()){
 			shooterArmMotor.setPosition(convertAngleToPos(angle));
 			shooterArmMotor.enableControl();
-		} else if(!RobotMap.intakeDown){
+		} else if(Robot.intake.intakeIsUp()){
 			if(RobotMap.AngleOfShooterArm >=RobotMap.upperBoundAngleToAvoid)
 				angle=(RobotMap.upperBoundAngleToAvoid+2);
 			shooterArmMotor.setPosition(convertAngleToPos(angle));

@@ -49,7 +49,9 @@ public class OI {
     public JoystickButton rightJoystickButtonA;
     public JoystickButton rightJoystickButton4;
     public JoystickButton rightJoystickButton5;
-
+    
+    public Joystick thirdJoystick;
+    
     public OI() {
         //Instantiates all objects for joysticks and buttons
 
@@ -64,6 +66,8 @@ public class OI {
         leftJoystick = new Joystick(0);
         leftJoystickTrigger = new JoystickButton(leftJoystick, 1);
         leftJoystickTrigger.whenPressed(new ShootBall());
+        
+        thirdJoystick= new Joystick(2);
 
         // SmartDashboard Buttons
         SmartDashboard.putData("Autonomous Command", new AutonomousCommandGroup());

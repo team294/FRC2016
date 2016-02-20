@@ -3,6 +3,7 @@ package org.usfirst.frc.team294.robot.subsystems;
 import org.usfirst.frc.team294.robot.OI;
 import org.usfirst.frc.team294.robot.Robot;
 import org.usfirst.frc.team294.robot.RobotMap;
+import org.usfirst.frc.team294.robot.utilities.ToleranceChecker;
 
 import edu.wpi.first.wpilibj.AnalogInput;
 import edu.wpi.first.wpilibj.CANTalon;
@@ -27,7 +28,8 @@ public class ShooterArm extends Subsystem {
 	private double anglesPerPos=(maxAngle-minAngle)/(maxPosition-minPosition);
 	private double slope=(maxAngle/2-minAngle/2);
 	private double yIntercept=maxAngle-slope;
-
+	
+	private ToleranceChecker tol = new ToleranceChecker(1.5, 5);
 
 	public ShooterArm(){
 		super(); 
@@ -38,7 +40,7 @@ public class ShooterArm extends Subsystem {
 		shooterArmMotor.setF(0.0);   
 		shooterArmMotor.changeControlMode(TalonControlMode.Position);
 		shooterArmMotor.configPotentiometerTurns(1);
-		shooterArmMotor.setPosition(shooterArmMotor.getAnalogInPosition());
+		shooterArmMotor.set(shooterArmMotor.getAnalogInPosition());
 		shooterArmMotor.enableControl();
 	}
 
@@ -73,10 +75,10 @@ public class ShooterArm extends Subsystem {
 		}else if(Robot.shooterArm.getAngle()<=RobotMap.lowerBoundAngleToAvoid&&angle>=RobotMap.lowerBoundAngleToAvoid){
 			angle=(RobotMap.lowerBoundAngleToAvoid-2);
 		}
-		shooterArmMotor.setPosition(convertAngleToPos(angle));
+		shooterArmMotor.set(convertAngleToPos(angle));
 		shooterArmMotor.enableControl();
+		tol.reset();
 	}
-
 
 	/**
 	 * Tell PID controller to move arm up or down by a relative amount.  Arm will move
@@ -88,6 +90,15 @@ public class ShooterArm extends Subsystem {
 		moveToAngle(getAngle() + angle);
 	}
 
+	/**
+	 * Returns true if the arm angle has been within tolerance of its setpoint consistently
+	 * while repeatedly calling this method.  Put this method in the calling command's isFinished() method.
+	 * @return true = arm is at the setpoint
+	 */
+	public boolean angleInTolerance() {
+		return tol.success( getAngle() - convertPosToAngle(shooterArmMotor.getSetpoint()) );  
+	}
+	
 	/**
 	 * Convert an arm angle to a PID position
 	 * @param angle, in degrees
@@ -105,6 +116,7 @@ public class ShooterArm extends Subsystem {
 	private double convertPosToAngle(double position) {
 		return ((anglesPerPos*position)-(anglesPerPos*minPosition)+minAngle);
 	}
+	
 	public void convertJoystickToPosition(double stickVal){
 		//stickVal=thirdJoystick.getY();
 	}

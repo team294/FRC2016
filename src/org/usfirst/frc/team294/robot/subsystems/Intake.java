@@ -2,19 +2,19 @@ package org.usfirst.frc.team294.robot.subsystems;
 
 import org.usfirst.frc.team294.robot.Robot;
 import org.usfirst.frc.team294.robot.RobotMap;
-
 import edu.wpi.first.wpilibj.CANTalon;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**
  * Intake subsystem
  */
 public class Intake extends Subsystem {
-	
     private final CANTalon intakeMotor = new CANTalon(RobotMap.intakeMotor);
     private final DoubleSolenoid intakeSolenoid = new DoubleSolenoid(RobotMap.intakeSolenoidFwd, RobotMap.intakeSolenoidRev);
+   
         
     public Intake() {
     	// Call the Subsystem constructor
@@ -23,40 +23,96 @@ public class Intake extends Subsystem {
     	// Set up subsystem components
 
     	// Add the subsystem to the LiveWindow
-        LiveWindow.addActuator("Intake", "intakeMotor", intakeMotor);
+        LiveWindow.addActuator("Intake", "Intake Motor", intakeMotor);
+        LiveWindow.addActuator("Intake", "Intake Solenoid", intakeSolenoid);
     }
 
     
     // Put methods for controlling this subsystem
     // here. Call these from Commands.
 
-    public void setSpeed(int speed){
+    /**
+     * Set speed of the intake rollers
+     * @param speed Roller motor power, -1 (expel ball) to +1 (load ball).  0 = stopped
+     */
+    public void setSpeed(double speed) {
     	intakeMotor.set(speed);
     }
     
-    public void raiseIntake(){
-    	intakeSolenoid.set(DoubleSolenoid.Value.kReverse);
+    /**
+     * Get speed of the intake rollers
+     * @return Roller motor power, -1 (expel ball) to +1 (load ball).  0 = stopped
+     */
+    public double getSpeed() {
+    	return intakeMotor.get();
     }
     
-    public void lowerIntake(){
+    /**
+     * Raise intake arm, if the shooter arm is not in the way.  If shooter arm is in
+     * the way, then this is ignored.
+     */
+    public void raiseIntake() {
+    	if (!shooterArmConflicts()) {
+    		intakeSolenoid.set(DoubleSolenoid.Value.kReverse);
+    	}
+    }
+    
+    /**
+     * Lower intake arm
+     */
+    public void lowerIntake() {
     	intakeSolenoid.set(DoubleSolenoid.Value.kForward);
     }
-    
-    /*
-     * checks to make sure that the shooter arm is not going to crash into the intake when raising the intake
-     * @returns true when the shooter conflicts with the intake
-     * @returns false when the shooter does not conflict with the intake
+
+    /**
+     * Turn off piston solenoid
      */
-    public boolean shooterArmConflicts(){
-    	double AngleOfShooterArm = Robot.shooterArm.getAngle();
-    	if (AngleOfShooterArm > RobotMap.lowerBoundAngleToAvoid&&AngleOfShooterArm<RobotMap.upperBoundAngleToAvoid){
+    public void stopPiston() {
+    	intakeSolenoid.set(DoubleSolenoid.Value.kOff);
+    }
+    
+    /**
+     * Returns current solenoid setting for the intake arm.  <p>
+     * <b>NOTE</b>: The intake could currently be <i>moving</i> to this position
+     * and has not reached this position yet.
+     * @return true = intake is up, false = intake is down
+     */
+    public boolean intakeIsUp() {
+    	return intakeSolenoid.get()==DoubleSolenoid.Value.kReverse;
+    }
+    
+    /**
+     * Checks to make sure that the shooter arm is not going to crash into the intake when raising the intake
+     * @return true when the shooter conflicts with the intake
+     * @return false when the shooter does not conflict with the intake
+     */
+    public boolean shooterArmConflicts() {
+    	double angleOfShooterArm = Robot.shooterArm.getAngle();
+    	if (angleOfShooterArm >= RobotMap.lowerBoundAngleToAvoid && angleOfShooterArm <= RobotMap.upperBoundAngleToAvoid){
     		return true; 
     	}
     	return false; 
     }
-    
-    public void stop(){
-    	intakeSolenoid.set(DoubleSolenoid.Value.kOff);
+
+	/**
+	 * Set up the intake controls on the SmartDashboard.  Call this once when the robot is 
+	 * initialized (after the Intake subsystem is initialized).
+	 */
+    public void setupSmartDashboard(boolean bPIDF){
+		updateSmartDashboard();
+    }
+ 
+	/**
+	 * Send intake status to SmartDashboard
+	 */
+    public void updateSmartDashboard() {
+ 		SmartDashboard.putNumber("Intake motor setpoint", intakeMotor.get());
+// 		if (intakeIsUp()) {
+// 			SmartDashboard.putString("Intake position", "Up");
+// 		} else {
+// 			SmartDashboard.putString("Intake position", "Down");
+// 		}
+ 		SmartDashboard.putString("Intake position", intakeIsUp() ? "Up" : "Down");
     }
     
     public void initDefaultCommand() {

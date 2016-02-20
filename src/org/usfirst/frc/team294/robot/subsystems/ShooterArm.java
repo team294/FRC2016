@@ -1,5 +1,7 @@
 package org.usfirst.frc.team294.robot.subsystems;
 
+import org.usfirst.frc.team294.robot.OI;
+import org.usfirst.frc.team294.robot.Robot;
 import org.usfirst.frc.team294.robot.RobotMap;
 
 import edu.wpi.first.wpilibj.AnalogInput;
@@ -8,6 +10,7 @@ import edu.wpi.first.wpilibj.PIDController;
 import edu.wpi.first.wpilibj.PIDOutput;
 import edu.wpi.first.wpilibj.CANTalon.FeedbackDevice;
 import edu.wpi.first.wpilibj.CANTalon.TalonControlMode;
+import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.command.Subsystem;
 
 /**
@@ -19,9 +22,12 @@ public class ShooterArm extends Subsystem {
 	private double positionRange = 250.0;
 	private double minPosition=233.0;		// We will need to calibrate this number occasionally
 	private double maxPosition=minPosition + positionRange;
-	private double minAngle=-12.0;
-	private double maxAngle=94.0;
+	private double minAngle=RobotMap.shooterArmMinAngle;
+	private double maxAngle=RobotMap.shooterArmMaxAngle;
 	private double anglesPerPos=(maxAngle-minAngle)/(maxPosition-minPosition);
+	private double slope=(maxAngle/2-minAngle/2);
+	private double yIntercept=maxAngle-slope;
+
 
 	public ShooterArm(){
 		super(); 
@@ -35,7 +41,7 @@ public class ShooterArm extends Subsystem {
 		shooterArmMotor.setPosition(shooterArmMotor.getAnalogInPosition());
 		shooterArmMotor.enableControl();
 	}
-	
+
 	// Put methods for controlling this subsystem
 	// here. Call these from Commands.
 
@@ -45,7 +51,7 @@ public class ShooterArm extends Subsystem {
 	public void disableControl() {
 		shooterArmMotor.disableControl();
 	}
-	
+
 	/**
 	 * Get current arm angle
 	 * @return angle, in degrees.  0 = horizontal, + = up, - = down
@@ -61,11 +67,17 @@ public class ShooterArm extends Subsystem {
 	 * @param angle Desired target angle, in degrees.  0 = horizontal, + = up, - = down
 	 */
 	public void moveToAngle(double angle) {
-		// NEED TO FIX:  stay within limits and avoid intake
+		if(Robot.intake.intakeIsUp()){
+			if(Robot.shooterArm.getAngle() >=RobotMap.upperBoundAngleToAvoid&&angle<=RobotMap.upperBoundAngleToAvoid)
+				angle=(RobotMap.upperBoundAngleToAvoid+2);
+		}else if(Robot.shooterArm.getAngle()<=RobotMap.lowerBoundAngleToAvoid&&angle>=RobotMap.lowerBoundAngleToAvoid){
+			angle=(RobotMap.lowerBoundAngleToAvoid-2);
+		}
 		shooterArmMotor.setPosition(convertAngleToPos(angle));
 		shooterArmMotor.enableControl();
 	}
-	
+
+
 	/**
 	 * Tell PID controller to move arm up or down by a relative amount.  Arm will move
 	 * as much as it can within its movement limits and without interfering
@@ -75,7 +87,7 @@ public class ShooterArm extends Subsystem {
 	public void moveAngleRelative(double angle) {
 		moveToAngle(getAngle() + angle);
 	}
-	
+
 	/**
 	 * Convert an arm angle to a PID position
 	 * @param angle, in degrees
@@ -92,6 +104,13 @@ public class ShooterArm extends Subsystem {
 	 */
 	private double convertPosToAngle(double position) {
 		return ((anglesPerPos*position)-(anglesPerPos*minPosition)+minAngle);
+	}
+	public void convertJoystickToPosition(double stickVal){
+		//stickVal=thirdJoystick.getY();
+	}
+
+	public void moveArmWithJoystick(Joystick thirdJoystick){
+		moveToAngle((slope*thirdJoystick.getY())+yIntercept);
 	}
 
 	public void initDefaultCommand() {

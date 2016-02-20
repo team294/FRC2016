@@ -42,7 +42,6 @@ public class RobotMap {
     // Shooter arm range to avoid when raising or lowering intake
     public static double lowerBoundAngleToAvoid = 0;
     public static double upperBoundAngleToAvoid = 90;
-    public static double AngleOfShooterArm = Robot.shooterArm.getAngle();
     
     
     public static void init() {

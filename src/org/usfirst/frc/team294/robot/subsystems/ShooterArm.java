@@ -67,21 +67,14 @@ public class ShooterArm extends Subsystem {
 	 * @param angle Desired target angle, in degrees.  0 = horizontal, + = up, - = down
 	 */
 	public void moveToAngle(double angle) {
-		// NEED TO FIX:  stay within limits and avoid intake
-		if(!Robot.intake.intakeIsUp()){
-			shooterArmMotor.setPosition(convertAngleToPos(angle));
-			shooterArmMotor.enableControl();
-		} else if(Robot.intake.intakeIsUp()){
-			if(RobotMap.AngleOfShooterArm >=RobotMap.upperBoundAngleToAvoid)
+		if(Robot.intake.intakeIsUp()){
+			if(Robot.shooterArm.getAngle() >=RobotMap.upperBoundAngleToAvoid&&angle<=RobotMap.upperBoundAngleToAvoid)
 				angle=(RobotMap.upperBoundAngleToAvoid+2);
-			shooterArmMotor.setPosition(convertAngleToPos(angle));
-			shooterArmMotor.enableControl();
-		}
-		if(RobotMap.AngleOfShooterArm<=RobotMap.lowerBoundAngleToAvoid){
+		}else if(Robot.shooterArm.getAngle()<=RobotMap.lowerBoundAngleToAvoid&&angle>=RobotMap.lowerBoundAngleToAvoid){
 			angle=(RobotMap.lowerBoundAngleToAvoid-2);
-			shooterArmMotor.setPosition(convertAngleToPos(angle));
-			shooterArmMotor.enableControl();	
 		}
+		shooterArmMotor.setPosition(convertAngleToPos(angle));
+		shooterArmMotor.enableControl();
 	}
 
 

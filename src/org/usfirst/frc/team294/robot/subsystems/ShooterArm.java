@@ -25,7 +25,7 @@ public class ShooterArm extends Subsystem {
 	private double maxAngle=94.0;
 	private double anglesPerPos=(maxAngle-minAngle)/(maxPosition-minPosition);
 	private double slope=(maxAngle/2-minAngle/2);
-	private double yIntercept=41;
+	private double yIntercept=maxAngle-slope;
 
 
 	public ShooterArm(){

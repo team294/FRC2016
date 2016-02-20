@@ -49,7 +49,9 @@ public class OI {
     public JoystickButton rightJoystickButtonA;
     public JoystickButton rightJoystickButton4;
     public JoystickButton rightJoystickButton5;
-
+    
+    public Joystick thirdJoystick;
+    
     public OI() {
         //Instantiates all objects for joysticks and buttons
 
@@ -64,6 +66,8 @@ public class OI {
         leftJoystick = new Joystick(0);
         leftJoystickTrigger = new JoystickButton(leftJoystick, 1);
         leftJoystickTrigger.whenPressed(new ShootBall());
+        
+        thirdJoystick= new Joystick(2);
 
         // SmartDashboard Buttons
         SmartDashboard.putData("Autonomous Command", new AutonomousCommandGroup());
@@ -74,6 +78,10 @@ public class OI {
         SmartDashboard.putData("Rotate", new Rotate());
         SmartDashboard.putData("Rotate +90 PID", new RotateDegreesPID(90.0));
         SmartDashboard.putData("Rotate -90 PID", new RotateDegreesPID(-90.0));
+        SmartDashboard.putData("Rotate +5 PID", new RotateDegreesPID(5.0));
+        SmartDashboard.putData("Rotate -5 PID", new RotateDegreesPID(-5.0));
+        SmartDashboard.putData("Rotate +2 PID", new RotateDegreesPID(2.0));
+        SmartDashboard.putData("Rotate -2 PID", new RotateDegreesPID(-2.0));
         SmartDashboard.putData("Stop", new StopDriving());
         SmartDashboard.putData("ShiftUp", new ShiftUp());
         SmartDashboard.putData("ShiftDown", new ShiftDown());

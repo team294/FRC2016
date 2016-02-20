@@ -1,6 +1,9 @@
 package org.usfirst.frc.team294.robot.subsystems;
 
+import org.usfirst.frc.team294.robot.OI;
+import org.usfirst.frc.team294.robot.Robot;
 import org.usfirst.frc.team294.robot.RobotMap;
+import org.usfirst.frc.team294.robot.utilities.ToleranceChecker;
 
 import edu.wpi.first.wpilibj.AnalogInput;
 import edu.wpi.first.wpilibj.CANTalon;
@@ -8,6 +11,7 @@ import edu.wpi.first.wpilibj.PIDController;
 import edu.wpi.first.wpilibj.PIDOutput;
 import edu.wpi.first.wpilibj.CANTalon.FeedbackDevice;
 import edu.wpi.first.wpilibj.CANTalon.TalonControlMode;
+import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.command.Subsystem;
 
 /**
@@ -19,9 +23,13 @@ public class ShooterArm extends Subsystem {
 	private double positionRange = 250.0;
 	private double minPosition=233.0;		// We will need to calibrate this number occasionally
 	private double maxPosition=minPosition + positionRange;
-	private double minAngle=-12.0;
-	private double maxAngle=94.0;
+	private double minAngle=RobotMap.shooterArmMinAngle;
+	private double maxAngle=RobotMap.shooterArmMaxAngle;
 	private double anglesPerPos=(maxAngle-minAngle)/(maxPosition-minPosition);
+	private double slope=(maxAngle/2-minAngle/2);
+	private double yIntercept=maxAngle-slope;
+	
+	private ToleranceChecker tol = new ToleranceChecker(1.5, 5);
 
 	public ShooterArm(){
 		super(); 
@@ -32,10 +40,10 @@ public class ShooterArm extends Subsystem {
 		shooterArmMotor.setF(0.0);   
 		shooterArmMotor.changeControlMode(TalonControlMode.Position);
 		shooterArmMotor.configPotentiometerTurns(1);
-		shooterArmMotor.setPosition(shooterArmMotor.getAnalogInPosition());
+		shooterArmMotor.set(shooterArmMotor.getAnalogInPosition());
 		shooterArmMotor.enableControl();
 	}
-	
+
 	// Put methods for controlling this subsystem
 	// here. Call these from Commands.
 
@@ -45,7 +53,7 @@ public class ShooterArm extends Subsystem {
 	public void disableControl() {
 		shooterArmMotor.disableControl();
 	}
-	
+
 	/**
 	 * Get current arm angle
 	 * @return angle, in degrees.  0 = horizontal, + = up, - = down
@@ -61,11 +69,17 @@ public class ShooterArm extends Subsystem {
 	 * @param angle Desired target angle, in degrees.  0 = horizontal, + = up, - = down
 	 */
 	public void moveToAngle(double angle) {
-		// NEED TO FIX:  stay within limits and avoid intake
-		shooterArmMotor.setPosition(convertAngleToPos(angle));
+		if(Robot.intake.intakeIsUp()){
+			if(Robot.shooterArm.getAngle() >=RobotMap.upperBoundAngleToAvoid&&angle<=RobotMap.upperBoundAngleToAvoid)
+				angle=(RobotMap.upperBoundAngleToAvoid+2);
+		}else if(Robot.shooterArm.getAngle()<=RobotMap.lowerBoundAngleToAvoid&&angle>=RobotMap.lowerBoundAngleToAvoid){
+			angle=(RobotMap.lowerBoundAngleToAvoid-2);
+		}
+		shooterArmMotor.set(convertAngleToPos(angle));
 		shooterArmMotor.enableControl();
+		tol.reset();
 	}
-	
+
 	/**
 	 * Tell PID controller to move arm up or down by a relative amount.  Arm will move
 	 * as much as it can within its movement limits and without interfering
@@ -74,6 +88,15 @@ public class ShooterArm extends Subsystem {
 	 */
 	public void moveAngleRelative(double angle) {
 		moveToAngle(getAngle() + angle);
+	}
+
+	/**
+	 * Returns true if the arm angle has been within tolerance of its setpoint consistently
+	 * while repeatedly calling this method.  Put this method in the calling command's isFinished() method.
+	 * @return true = arm is at the setpoint
+	 */
+	public boolean angleInTolerance() {
+		return tol.success( getAngle() - convertPosToAngle(shooterArmMotor.getSetpoint()) );  
 	}
 	
 	/**
@@ -92,6 +115,14 @@ public class ShooterArm extends Subsystem {
 	 */
 	private double convertPosToAngle(double position) {
 		return ((anglesPerPos*position)-(anglesPerPos*minPosition)+minAngle);
+	}
+	
+	public void convertJoystickToPosition(double stickVal){
+		//stickVal=thirdJoystick.getY();
+	}
+
+	public void moveArmWithJoystick(Joystick thirdJoystick){
+		moveToAngle((slope*thirdJoystick.getY())+yIntercept);
 	}
 
 	public void initDefaultCommand() {

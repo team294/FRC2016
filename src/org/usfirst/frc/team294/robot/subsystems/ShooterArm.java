@@ -1,5 +1,6 @@
 package org.usfirst.frc.team294.robot.subsystems;
 
+import org.usfirst.frc.team294.robot.OI;
 import org.usfirst.frc.team294.robot.RobotMap;
 
 import edu.wpi.first.wpilibj.AnalogInput;
@@ -105,6 +106,14 @@ public class ShooterArm extends Subsystem {
 	 */
 	private double convertPosToAngle(double position) {
 		return ((anglesPerPos*position)-(anglesPerPos*minPosition)+minAngle);
+	}
+	public void convertJoystickToPosition(double stickVal){
+		//stickVal=thirdJoystick.getY();
+	}
+	
+	public void moveArmWithJoystick(){
+		
+		
 	}
 
 	public void initDefaultCommand() {

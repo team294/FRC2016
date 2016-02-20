@@ -90,8 +90,13 @@ public class DriveTrain extends Subsystem implements PIDOutput {
         leftMotor2.changeControlMode(TalonControlMode.PercentVbus);
         leftMotor2.setProfile(0);
         
-        rightMotor1.changeControlMode(TalonControlMode.Follower);
-        leftMotor1.changeControlMode(TalonControlMode.Follower);
+        rightMotor2.setPID(0.0, 0.0, 0.0);  // ProtoBot:  0.020, 0.0002, 2.0;  ProtoBoard:  0.005, 0.00008, 0.00001
+        leftMotor2.setPID(0.0, 0.0, 0.0);  // ProtoBot:  0.020, 0.0002, 2.0;  ProtoBoard:  0.005, 0.00008, 0.00001
+        rightMotor2.setF(0.0);   // ProtoBot:  0.035;  ProtoBoard:  0.025
+        leftMotor2.setF(0.0);   // ProtoBot:  0.035;  ProtoBoard:  0.025
+        
+//        rightMotor1.changeControlMode(TalonControlMode.Follower);
+//        leftMotor1.changeControlMode(TalonControlMode.Follower);
         
         
         // Add the subsystem to the LiveWindow

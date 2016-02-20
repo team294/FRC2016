@@ -55,7 +55,7 @@ public class OI {
 
         rightJoystick = new Joystick(1);
         rightJoystickButtonA = new JoystickButton(rightJoystick, 1);
-        rightJoystickButtonA.whileHeld(new DriveDistance(0, 0));
+        rightJoystickButtonA.whileHeld(new DriveDistance(1, 5000));
         rightJoystickButton4 = new JoystickButton(rightJoystick, 4);
         rightJoystickButton4.whileHeld(new ShiftDown());
         rightJoystickButton5 = new JoystickButton(rightJoystick, 5);

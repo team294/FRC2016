@@ -26,9 +26,12 @@ public class AutonomousCommandGroup extends CommandGroup {
         // arm.
 
     	addSequential(new DriveDistance(0.5, 1));
-    	addSequential(new Rotate());
+    	addSequential(new DriveAnglePID(90));
     	addSequential(new DriveDistance(0.5, 1)); 
-    	addSequential(new StopDriving());
+    	addSequential(new DriveStop());
+    	//addSequential(new RaiseShooterArm()); //This will raise the shooter arm to prep the ball for shooting
+    	//Somewhere around here will need code to adjust for the goal to shoot correctly
+    	//addSequential(new ShootBall()); //The robot will then shoot the ball, SCORING WITH 100% ACCURACY
 
     }
 }

@@ -40,8 +40,8 @@ public class ShooterArm extends Subsystem {
 		shooterArmMotor.setF(0.0);   
 		shooterArmMotor.changeControlMode(TalonControlMode.Position);
 		shooterArmMotor.configPotentiometerTurns(1);
-		shooterArmMotor.set(shooterArmMotor.getAnalogInPosition());
-		shooterArmMotor.enableControl();
+//		shooterArmMotor.set(shooterArmMotor.getAnalogInPosition());
+//		shooterArmMotor.enableControl();
 	}
 
 	// Put methods for controlling this subsystem

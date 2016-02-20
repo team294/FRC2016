@@ -23,11 +23,11 @@ public class DriveDistance extends Command {
     // Called just before this Command runs the first time
     protected void initialize() {
     	//Robot.driveTrain.driveForward(speed);
+    	Robot.driveTrain.driveDistancePIDStart(distance);
     }
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
-    	Robot.driveTrain.driveDistancePIDStart(this.distance);
     }
 
     // Make this return true when this Command no longer needs to run execute()

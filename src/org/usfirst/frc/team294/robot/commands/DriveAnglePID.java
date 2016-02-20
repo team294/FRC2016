@@ -7,14 +7,14 @@ import edu.wpi.first.wpilibj.command.Command;
 /**
  * Rotate robot x degrees using navX-mxp
  */
-public class RotateDegreesPID extends Command {
+public class DriveAnglePID extends Command {
 	double degrees;
 	
 	/**
 	 * Rotate robot x degrees using navX-mxp
 	 * @param degrees Number of degrees to rotate (+ right, - left (I think))
 	 */
-    public RotateDegreesPID(double degrees) {
+    public DriveAnglePID(double degrees) {
         // Use requires() here to declare subsystem dependencies
         // eg. requires(chassis);
         requires(Robot.driveTrain);

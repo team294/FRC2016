@@ -75,14 +75,13 @@ public class OI {
         SmartDashboard.putData("DriveWithJoysticks", new DriveWithJoysticks());
         SmartDashboard.putData("DriveForward: driveForwardFast", new DriveDistance(1.0, 1.0));
         SmartDashboard.putData("DriveForward: driveForwardSlow", new DriveDistance(0.5, 1.0));
-        SmartDashboard.putData("Rotate", new Rotate());
-        SmartDashboard.putData("Rotate +90 PID", new RotateDegreesPID(90.0));
-        SmartDashboard.putData("Rotate -90 PID", new RotateDegreesPID(-90.0));
-        SmartDashboard.putData("Rotate +5 PID", new RotateDegreesPID(5.0));
-        SmartDashboard.putData("Rotate -5 PID", new RotateDegreesPID(-5.0));
-        SmartDashboard.putData("Rotate +2 PID", new RotateDegreesPID(2.0));
-        SmartDashboard.putData("Rotate -2 PID", new RotateDegreesPID(-2.0));
-        SmartDashboard.putData("Stop", new StopDriving());
+        SmartDashboard.putData("Rotate +90 PID", new DriveAnglePID(90.0));
+        SmartDashboard.putData("Rotate -90 PID", new DriveAnglePID(-90.0));
+        SmartDashboard.putData("Rotate +5 PID", new DriveAnglePID(5.0));
+        SmartDashboard.putData("Rotate -5 PID", new DriveAnglePID(-5.0));
+        SmartDashboard.putData("Rotate +2 PID", new DriveAnglePID(2.0));
+        SmartDashboard.putData("Rotate -2 PID", new DriveAnglePID(-2.0));
+        SmartDashboard.putData("Stop", new DriveStop());
         SmartDashboard.putData("ShiftUp", new ShiftUp());
         SmartDashboard.putData("ShiftDown", new ShiftDown());
         

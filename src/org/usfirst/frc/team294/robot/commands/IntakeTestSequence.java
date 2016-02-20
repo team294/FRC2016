@@ -8,8 +8,7 @@ import edu.wpi.first.wpilibj.command.CommandGroup;
 public class IntakeTestSequence extends CommandGroup {
     
     public IntakeTestSequence() {
-    	addSequential(new IntakeSetToSpeed(true));
-    	addSequential(new IntakeSetToSpeed(false));
+    	
         
     	
     	// Add Commands here:

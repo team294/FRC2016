@@ -12,14 +12,15 @@ public class IntakeSequence extends CommandGroup {
     
     public  IntakeSequence() {
     	if(Robot.intake.intakeIsUp()){
-    	addSequential(new IntakeLower());
-    	addSequential(new WaitSeconds(30));} 
+    		addSequential(new IntakeLower());
+    		addSequential(new WaitSeconds(3));
+    	} 
     	if(Robot.shooterArm.getAngle()>RobotMap.shooterArmMinAngle){
     		addSequential(new ShooterArmMoveToSetLocation(RobotMap.shooterArmBallLoadAngle)); 
     	}
     	addParallel(new IntakeSetToSpeed(1));
     	addSequential(new IntakeIsButtonPressed());
-    	addSequential(new IntakeRaise()); 
+    	addSequential(new IntakeSetToSpeed(0)); 
     	
     	
         // Add Commands here:

@@ -89,8 +89,13 @@ public class DriveTrain extends Subsystem implements PIDOutput {
         leftMotor2.changeControlMode(TalonControlMode.PercentVbus);
         leftMotor2.setProfile(0);
         
-        rightMotor1.changeControlMode(TalonControlMode.Follower);
-        leftMotor1.changeControlMode(TalonControlMode.Follower);
+        rightMotor2.setPID(0.0, 0.0, 0.0);  // ProtoBot:  0.020, 0.0002, 2.0;  ProtoBoard:  0.005, 0.00008, 0.00001
+        leftMotor2.setPID(0.0, 0.0, 0.0);  // ProtoBot:  0.020, 0.0002, 2.0;  ProtoBoard:  0.005, 0.00008, 0.00001
+        rightMotor2.setF(0.0);   // ProtoBot:  0.035;  ProtoBoard:  0.025
+        leftMotor2.setF(0.0);   // ProtoBot:  0.035;  ProtoBoard:  0.025
+        
+//        rightMotor1.changeControlMode(TalonControlMode.Follower);
+//        leftMotor1.changeControlMode(TalonControlMode.Follower);
         
         
         // Add the subsystem to the LiveWindow
@@ -246,7 +251,7 @@ public class DriveTrain extends Subsystem implements PIDOutput {
 	 * Drives the robot forward a certain distance
 	 * @param distance (eg. 5000 encoder units)
 	 */
-	public void driveForwardPIDStart(double distance){
+	public void driveDistancePIDStart(double distance){
 		rightMotor2.changeControlMode(TalonControlMode.Position);
 		leftMotor2.changeControlMode(TalonControlMode.Position);
         rightMotor2.setPID(0.020, 0.0002, 2.0);  // ProtoBot:  0.020, 0.0002, 2.0;  ProtoBoard:  0.005, 0.00008, 0.00001
@@ -263,7 +268,7 @@ public class DriveTrain extends Subsystem implements PIDOutput {
 	 * Checks to see if the robot has reached the distance it was assigned to
 	 * @return boolean
 	 */
-	public boolean driveForwardPIDIsFinished(){
+	public boolean driveDistancePIDIsFinished(){
 		double errRight;
 		double errLeft;
 
@@ -287,7 +292,7 @@ public class DriveTrain extends Subsystem implements PIDOutput {
 	/**
 	 * Stops the PID Control of Driving the robot forward
 	 */
-	public void driveForwardPIDCancel(){
+	public void driveDistancePIDCancel(){
 		rightMotor2.changeControlMode(TalonControlMode.PercentVbus);
 		leftMotor2.changeControlMode(TalonControlMode.PercentVbus);
         rightMotor2.setPID(0.0, 0.0, 0.0);  // ProtoBot:  0.020, 0.0002, 2.0;  ProtoBoard:  0.005, 0.00008, 0.00001

@@ -97,11 +97,11 @@ public class ShooterArm extends Subsystem {
 	}
 
 	/**
-	 * Returns true if the arm angle has been within tolerance of its setpoint consistently
+	 * Returns true if the arm angle has been within tolerance of its moveToAngle setpoint consistently
 	 * while repeatedly calling this method.  Put this method in the calling command's isFinished() method.
 	 * @return true = arm is at the setpoint
 	 */
-	public boolean angleInTolerance() {
+	public boolean moveToAngleIsFinished() {
 		return tol.success( getAngle() - convertPosToAngle(shooterArmMotor.getSetpoint()) );  
 	}
 	

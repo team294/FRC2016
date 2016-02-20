@@ -1,17 +1,29 @@
 package org.usfirst.frc.team294.robot.commands;
 
+import org.usfirst.frc.team294.robot.Robot;
+import org.usfirst.frc.team294.robot.RobotMap;
+
 import edu.wpi.first.wpilibj.command.CommandGroup;
 
 /**
  *
  */
-public class IntakeTestSequence extends CommandGroup {
+public class IntakeSequence extends CommandGroup {
     
-    public IntakeTestSequence() {
+    public  IntakeSequence() {
+    	if(Robot.intake.intakeIsUp()){
+    		addSequential(new IntakeLower());
+    		addSequential(new WaitSeconds(3));
+    	} 
+    	if(Robot.shooterArm.getAngle()>RobotMap.shooterArmMinAngle){
+    		addSequential(new ShooterArmMoveToSetLocation(RobotMap.shooterArmBallLoadAngle)); 
+    	}
+    	addParallel(new IntakeSetToSpeed(1));
+    	addSequential(new IntakeIsButtonPressed());
+    	addSequential(new IntakeSetToSpeed(0)); 
     	
-        
     	
-    	// Add Commands here:
+        // Add Commands here:
         // e.g. addSequential(new Command1());
         //      addSequential(new Command2());
         // these will run in order.

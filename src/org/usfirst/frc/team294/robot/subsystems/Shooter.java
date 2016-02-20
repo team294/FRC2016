@@ -22,7 +22,7 @@ public class Shooter extends Subsystem {
     private final CANTalon motorBottom = new CANTalon(RobotMap.shooterMotorBottom);
 //    private final DoubleSolenoid ballPiston = new DoubleSolenoid(RobotMap.shooterPistonFwd, RobotMap.shooterPistonRev);  // Old code for double solenoid from prototype bot
     private final Solenoid ballPiston = new Solenoid(RobotMap.shooterPiston);
-    private final DigitalInput ballSenseButton = new DigitalInput(RobotMap.ballSenseButton);
+    private final DigitalInput ballSenseButton = new DigitalInput(RobotMap.ballSensor);
 
     /**
      * Create a shooter

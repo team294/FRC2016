@@ -90,6 +90,12 @@ public class OI {
         SmartDashboard.putData("Piston in", new ShooterPistonOut(false));
         SmartDashboard.putData("Start FlyWheels", new FlyWheelsTurnOn(true));
         SmartDashboard.putData("Stop FlyWheels", new FlyWheelsTurnOn(false));
+        
+        SmartDashboard.putData("Intake Raise", new IntakeRaise());
+        SmartDashboard.putData("Intake Lower", new IntakeLower());
+        SmartDashboard.putData("Intake Motor Stop", new IntakeMotorStop());
+        SmartDashboard.putData("Intake Rollers In", new IntakeSetToSpeed(1));
+        SmartDashboard.putData("Intake Rollers Out", new IntakeSetToSpeed(-1));
     }
 
     public Joystick getleftJoystick() {

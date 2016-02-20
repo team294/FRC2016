@@ -35,7 +35,7 @@ public class ShooterArm extends Subsystem {
 		shooterArmMotor.setPosition(shooterArmMotor.getAnalogInPosition());
 		shooterArmMotor.enableControl();
 	}
-	
+
 	// Put methods for controlling this subsystem
 	// here. Call these from Commands.
 
@@ -45,7 +45,7 @@ public class ShooterArm extends Subsystem {
 	public void disableControl() {
 		shooterArmMotor.disableControl();
 	}
-	
+
 	/**
 	 * Get current arm angle
 	 * @return angle, in degrees.  0 = horizontal, + = up, - = down
@@ -62,10 +62,23 @@ public class ShooterArm extends Subsystem {
 	 */
 	public void moveToAngle(double angle) {
 		// NEED TO FIX:  stay within limits and avoid intake
-		shooterArmMotor.setPosition(convertAngleToPos(angle));
-		shooterArmMotor.enableControl();
+		if(RobotMap.intakeDown){
+			shooterArmMotor.setPosition(convertAngleToPos(angle));
+			shooterArmMotor.enableControl();
+		} else if(!RobotMap.intakeDown){
+			if(RobotMap.AngleOfShooterArm >=RobotMap.upperBoundAngleToAvoid)
+				angle=(RobotMap.upperBoundAngleToAvoid+2);
+			shooterArmMotor.setPosition(convertAngleToPos(angle));
+			shooterArmMotor.enableControl();
+		}
+		if(RobotMap.AngleOfShooterArm<=RobotMap.lowerBoundAngleToAvoid){
+			angle=(RobotMap.lowerBoundAngleToAvoid-2);
+			shooterArmMotor.setPosition(convertAngleToPos(angle));
+			shooterArmMotor.enableControl();	
+		}
 	}
-	
+
+
 	/**
 	 * Tell PID controller to move arm up or down by a relative amount.  Arm will move
 	 * as much as it can within its movement limits and without interfering
@@ -75,7 +88,7 @@ public class ShooterArm extends Subsystem {
 	public void moveAngleRelative(double angle) {
 		moveToAngle(getAngle() + angle);
 	}
-	
+
 	/**
 	 * Convert an arm angle to a PID position
 	 * @param angle, in degrees

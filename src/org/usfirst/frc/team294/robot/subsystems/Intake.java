@@ -2,7 +2,6 @@ package org.usfirst.frc.team294.robot.subsystems;
 
 import org.usfirst.frc.team294.robot.Robot;
 import org.usfirst.frc.team294.robot.RobotMap;
-
 import edu.wpi.first.wpilibj.CANTalon;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.command.Subsystem;
@@ -15,10 +14,12 @@ public class Intake extends Subsystem {
 	
     private final CANTalon intakeMotor = new CANTalon(RobotMap.intakeMotor);
     private final DoubleSolenoid intakeSolenoid = new DoubleSolenoid(RobotMap.intakeSolenoidFwd, RobotMap.intakeSolenoidRev);
+   
         
     public Intake() {
     	// Call the Subsystem constructor
     	super();
+    	RobotMap.intakeDown=false;
     	
     	// Set up subsystem components
 
@@ -36,20 +37,21 @@ public class Intake extends Subsystem {
     
     public void raiseIntake(){
     	intakeSolenoid.set(DoubleSolenoid.Value.kReverse);
+    	RobotMap.intakeDown=false;
+    	
     }
     
     public void lowerIntake(){
     	intakeSolenoid.set(DoubleSolenoid.Value.kForward);
+    	RobotMap.intakeDown=true;
     }
-    
     /*
      * checks to make sure that the shooter arm is not going to crash into the intake when raising the intake
      * @returns true when the shooter conflicts with the intake
      * @returns false when the shooter does not conflict with the intake
      */
-    public boolean shooterArmConflicts(){
-    	double AngleOfShooterArm = Robot.shooterArm.getAngle();
-    	if (AngleOfShooterArm > RobotMap.lowerBoundAngleToAvoid&&AngleOfShooterArm<RobotMap.upperBoundAngleToAvoid){
+    public static boolean shooterArmConflicts(){
+    	if (RobotMap.AngleOfShooterArm > RobotMap.lowerBoundAngleToAvoid&&RobotMap.AngleOfShooterArm<RobotMap.upperBoundAngleToAvoid){
     		return true; 
     	}
     	return false; 

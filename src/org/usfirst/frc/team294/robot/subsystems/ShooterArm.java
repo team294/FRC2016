@@ -9,6 +9,7 @@ import edu.wpi.first.wpilibj.PIDController;
 import edu.wpi.first.wpilibj.PIDOutput;
 import edu.wpi.first.wpilibj.CANTalon.FeedbackDevice;
 import edu.wpi.first.wpilibj.CANTalon.TalonControlMode;
+import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.command.Subsystem;
 
 /**
@@ -23,6 +24,9 @@ public class ShooterArm extends Subsystem {
 	private double minAngle=-12.0;
 	private double maxAngle=94.0;
 	private double anglesPerPos=(maxAngle-minAngle)/(maxPosition-minPosition);
+	private double slope=(maxAngle/2-minAngle/2);
+	private double yIntercept=41;
+
 
 	public ShooterArm(){
 		super(); 
@@ -110,10 +114,9 @@ public class ShooterArm extends Subsystem {
 	public void convertJoystickToPosition(double stickVal){
 		//stickVal=thirdJoystick.getY();
 	}
-	
-	public void moveArmWithJoystick(){
-		
-		
+
+	public void moveArmWithJoystick(Joystick thirdJoystick){
+		moveToAngle((slope*thirdJoystick.getY())+yIntercept);
 	}
 
 	public void initDefaultCommand() {

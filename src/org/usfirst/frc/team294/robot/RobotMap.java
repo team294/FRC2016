@@ -36,6 +36,9 @@ public class RobotMap {
     public static int intakeSolenoidRev = 6;
     
     // Range of motion for shooter arm
+
+    
+    public static double shooterArmBallLoadAngle = 0.0; 
     public static double shooterArmMinAngle=0;
     public static double shooterArmMaxAngle=93.0;
 

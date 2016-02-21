@@ -97,6 +97,11 @@ public class OI {
         SmartDashboard.putData("Intake Motor Stop", new IntakeMotorStop());
         SmartDashboard.putData("Intake Rollers In", new IntakeSetToSpeed(1));
         SmartDashboard.putData("Intake Rollers Out", new IntakeSetToSpeed(-1));
+        
+        SmartDashboard.putData("Shooter Arm 90", new ShooterArmMoveToSetLocation(90));
+        SmartDashboard.putData("Shooter Arm 135", new ShooterArmMoveToSetLocation(135));
+        SmartDashboard.putData("Shooter Arm 0", new ShooterArmMoveToSetLocation(0));
+        
     }
 
     public Joystick getleftJoystick() {

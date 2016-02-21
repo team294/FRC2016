@@ -18,7 +18,7 @@ public class IntakeSequence extends CommandGroup {
     	if(Robot.shooterArm.getAngle()>RobotMap.shooterArmMinAngle){
     		addSequential(new ShooterArmMoveToSetLocation(RobotMap.shooterArmBallLoadAngle)); 
     	}
-    	addParallel(new IntakeSetToSpeed(1));
+    	addParallel(new IntakeSetToSpeed(-2500));
     	addSequential(new IntakeIsButtonPressed());
     	addSequential(new IntakeSetToSpeed(0)); 
     	

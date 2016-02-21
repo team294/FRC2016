@@ -51,9 +51,6 @@ public class FlyWheelSetToSpeed extends Command {
 //    	}
     	//This is the timing out of the command, if the other one doesnt fire first, this one will be there to catch it
     	//SmartDashboard.putNumber("Timer", this.timeSinceInitialized());
-    	if(this.timeSinceInitialized() > 2){
-    		return true;
-    	}
         return false;
     }
 

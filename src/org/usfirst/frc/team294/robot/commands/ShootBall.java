@@ -25,11 +25,11 @@ public class ShootBall extends CommandGroup {
         // a CommandGroup containing them would require both the chassis and the
         // arm.
 
-    	addSequential(new FlyWheelSetToSpeed(4500)); //Starts the fly wheels, and runs them at full speed
+    	addSequential(new FlyWheelSetToSpeed(4500), 2); //Starts the fly wheels, and runs them at full speed
     	addSequential(new ShooterPistonOut(true)); //When wheels are full speed, use piston to push the ball into fly wheels
     	addSequential(new WaitSeconds(2.0));
     	addSequential(new ShooterPistonOut(false));
-    	addSequential(new FlyWheelSetToSpeed(0)); //Stops the fly wheels from spinning
+    	addSequential(new FlyWheelSetToSpeed(0), 2); //Stops the fly wheels from spinning
     	
     }
 }

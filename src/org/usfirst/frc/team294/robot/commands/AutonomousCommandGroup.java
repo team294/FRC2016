@@ -24,14 +24,15 @@ public class AutonomousCommandGroup extends CommandGroup {
         // e.g. if Command1 requires chassis, and Command2 requires arm,
         // a CommandGroup containing them would require both the chassis and the
         // arm.
-
-    	addSequential(new DriveDistance(0.5, 1));
-    	addSequential(new DriveAnglePID(90));
-    	addSequential(new DriveDistance(0.5, 1)); 
-    	addSequential(new DriveStop());
-    	//addSequential(new RaiseShooterArm()); //This will raise the shooter arm to prep the ball for shooting
-    	//Somewhere around here will need code to adjust for the goal to shoot correctly
-    	//addSequential(new ShootBall()); //The robot will then shoot the ball, SCORING WITH 100% ACCURACY
-
+    	//addSequential(new IntakeLower());
+    	addSequential(new DriveDistance(0.5, 500));			//Goes over ramparts
+    	addSequential(new DriveAnglePID(90));				//Rotates towards the tower
+    	addSequential(new DriveDistance(0.5, 500)); 		//Goes towards the tower
+    	addSequential(new DriveStop());						//Stops moving? (This is possibly not needed)
+    	//addSequential(new ShooterArmMoveToSetLocation(45)); //This will raise the shooter arm to prep the ball for shooting
+    	//			Align robot using Vision to shoot the ball.
+    	//addSequential(new ShootBall()); //Calls the ShootBall Command Group
+    	//Then end Autonomous?  Is there anything else that needs to be done?
+    	
     }
 }

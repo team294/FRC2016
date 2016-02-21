@@ -2,6 +2,7 @@ package org.usfirst.frc.team294.robot;
 
 import edu.wpi.first.wpilibj.CANTalon;
 import edu.wpi.first.wpilibj.IterativeRobot;
+import edu.wpi.first.wpilibj.Preferences;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
@@ -30,7 +31,10 @@ public class Robot extends IterativeRobot {
 	public static Shooter shooter;
 	public static Intake intake;
 	public static Vision vision;
-
+	//for preferences armMin position, arm 90 degree position
+	Preferences prefs;
+	double minArmCalPosition;
+	double maxArmCalPosition;
 	/**
 	 * This function is run when the robot is first started up and should be
 	 * used for any initialization code.
@@ -47,6 +51,9 @@ public class Robot extends IterativeRobot {
 
 		shooter.setupSmartDashboard(true);
 		
+		prefs = Preferences.getInstance();
+		minArmCalPosition = prefs.getDouble("minArmCalPosition", 1.0);
+		maxArmCalPosition = prefs.getDouble("maxArmCalPosition", 4.);
 		// OI must be constructed after subsystems. If the OI creates Commands
 		// (which it very likely will), subsystems are not guaranteed to be
 		// constructed yet. Thus, their requires() statements may grab null

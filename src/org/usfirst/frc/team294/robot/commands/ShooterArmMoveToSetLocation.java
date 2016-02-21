@@ -14,13 +14,14 @@ double angleToMove ;
         // Use requires() here to declare subsystem dependencies
         // eg. requires(chassis);
     	angle = angleToMove; 
-    	requires(Robot.shooterArm); 
+    	requires(Robot.shooterArm);
+    	requires(Robot.intake);
     }
 
     // Called just before this Command runs the first time
     protected void initialize() {
+    	Robot.intake.setSpeed(0);
     	Robot.shooterArm.moveToAngle(angleToMove);
-
     }
 
     // Called repeatedly when this Command is scheduled to run

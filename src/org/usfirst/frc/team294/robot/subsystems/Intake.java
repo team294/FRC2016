@@ -78,6 +78,18 @@ public class Intake extends Subsystem {
      * @return true = intake is up, false = intake is down
      */
     public boolean intakeIsUp() {
+    	switch (intakeSolenoid.get()) {
+    	case kForward:
+    		SmartDashboard.putString("Intake position", "Forward");
+    		break;
+    	case kReverse:
+    		SmartDashboard.putString("Intake position", "Reverse");
+    		break;
+    	case kOff:
+    		SmartDashboard.putString("Intake position", "Off");
+    		break;
+    	}
+    	SmartDashboard.putBoolean("IntakeIsUp", intakeSolenoid.get()==DoubleSolenoid.Value.kReverse);
     	return intakeSolenoid.get()==DoubleSolenoid.Value.kReverse;
     }
     

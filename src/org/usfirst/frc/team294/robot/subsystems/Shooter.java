@@ -166,6 +166,9 @@ public class Shooter extends Subsystem {
 		
 		SmartDashboard.putNumber("ShootBot Speed", motorBottom.getSpeed());
 		SmartDashboard.putNumber("ShootBot Error", motorBottom.getError());		
+
+		SmartDashboard.putNumber("ShootTop Speed2", motorTop.getSpeed());
+		SmartDashboard.putNumber("ShootBot Speed2", motorBottom.getSpeed());    
     }
     
 	/**

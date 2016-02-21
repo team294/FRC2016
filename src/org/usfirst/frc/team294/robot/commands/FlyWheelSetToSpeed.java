@@ -8,19 +8,19 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 /**
  * Turn shooter flywheels on or off.
  */
-public class FlyWheelsTurnOn extends Command {
+public class FlyWheelSetToSpeed extends Command {
 	
-	boolean start;
+	int speed;
 	//double err1 = 0, err2 = 0, err3 = 0, err4 = 0;
 
 	/**
 	 * Turn shooter flywheels on or off.
 	 * @param start true = turn on, false = turn off.
 	 */
-	public FlyWheelsTurnOn(boolean start) {
+	public FlyWheelSetToSpeed(int speed) {
         // Use requires() here to declare subsystem dependencies
         requires(Robot.shooter);
-    	this.start = start;
+		this.speed = speed;
     }
 
     // Called just before this Command runs the first time
@@ -32,13 +32,7 @@ public class FlyWheelsTurnOn extends Command {
 //    	if(!Robot.shooter.isButtonPressed() && start){
 //    		return;
 //    	}
-    	if(start){
-    		Robot.shooter.setSpeed(4500);
-    	}
-    	if(!start){
-//    		SmartDashboard.putString("Stop", "It should have stopped.");
-    		Robot.shooter.setSpeed(0);
-    	}
+    	Robot.shooter.setSpeed(speed);
     }
 
     // Make this return true when this Command no longer needs to run execute()

@@ -19,7 +19,7 @@ public class IntakeSetToSpeed extends Command {
 
 	// Called just before this Command runs the first time
 	protected void initialize() {
-		if(speedToSet<=1||speedToSet>=-1) {
+		if(speedToSet<=1&&speedToSet>=-1) {
 			Robot.intake.setSpeed(speedToSet);
 		}		
 	}

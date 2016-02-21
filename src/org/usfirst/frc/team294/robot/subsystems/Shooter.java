@@ -1,6 +1,8 @@
 package org.usfirst.frc.team294.robot.subsystems;
 
 import org.usfirst.frc.team294.robot.RobotMap;
+import org.usfirst.frc.team294.robot.commands.RecordBallState;
+import org.usfirst.frc.team294.robot.triggers.BallLoadedTrigger;
 
 import edu.wpi.first.wpilibj.CANTalon;
 import edu.wpi.first.wpilibj.DigitalInput;
@@ -9,6 +11,7 @@ import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.CANTalon.FeedbackDevice;
 import edu.wpi.first.wpilibj.CANTalon.TalonControlMode;
 import edu.wpi.first.wpilibj.command.Subsystem;
+import edu.wpi.first.wpilibj.hal.CanTalonJNI;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
@@ -22,7 +25,11 @@ public class Shooter extends Subsystem {
     private final CANTalon motorBottom = new CANTalon(RobotMap.shooterMotorBottom);
 //    private final DoubleSolenoid ballPiston = new DoubleSolenoid(RobotMap.shooterPistonFwd, RobotMap.shooterPistonRev);  // Old code for double solenoid from prototype bot
     private final Solenoid ballPiston = new Solenoid(RobotMap.shooterPiston);
-    private final DigitalInput ballSenseButton = new DigitalInput(RobotMap.ballSensor);
+    private final DigitalInput ballSensor = new DigitalInput(RobotMap.ballSensor);
+    
+    private final BallLoadedTrigger ballLoadedTrigger = new BallLoadedTrigger(ballSensor);
+    
+    boolean ballIsLoaded = false;
 
     /**
      * Create a shooter
@@ -37,9 +44,8 @@ public class Shooter extends Subsystem {
         motorTop.reverseSensor(true);
         motorTop.configNominalOutputVoltage(+0.0f, -0.0f);
         motorTop.configPeakOutputVoltage(+12.0f, -12.0f);
-        motorTop.setProfile(0);
-        motorTop.setPID(0.020, 0.000, 0);  // ProtoBot:  0.020, 0.0002, 2.0;  ProtoBoard:  0.005, 0.00008, 0.00001
-        motorTop.setF(0.020);   // ProtoBot:  0.035;  ProtoBoard:  0.025
+//        motorTop.setPID(0.010, 0.00005, 0); motorTop.setF(0.020); // Better
+        motorTop.setPID(0.010, 0.00015, 0, 0.020, 10000, 1000, 0); // Limit windup -- best
         motorTop.changeControlMode(TalonControlMode.Speed);
 
         motorBottom.setFeedbackDevice(FeedbackDevice.CtreMagEncoder_Relative);
@@ -47,19 +53,19 @@ public class Shooter extends Subsystem {
         motorBottom.reverseSensor(true);
         motorBottom.configNominalOutputVoltage(+0.0f, -0.0f);
         motorBottom.configPeakOutputVoltage(+12.0f, -12.0f);
-        motorBottom.setProfile(0);
-        motorBottom.setPID(0.020, 0.000, 0);  // ProtoBot:  0.020, 0.0002, 2.0;  ProtoBoard:  0.005, 0.00008, 0.00001
-        motorBottom.setF(0.020);   // ProtoBot:  0.035;  ProtoBoard:  0.025
+        motorBottom.setPID(0.010, 0.00015, 0, 0.020, 10000, 1000, 0); // Limit windup -- best
         motorBottom.changeControlMode(TalonControlMode.Speed);
                 
 //        ballPiston.set(DoubleSolenoid.Value.kReverse);
         ballPiston.set(false);
+        
+        ballLoadedTrigger.whenActive(new RecordBallState(true));
   
     	// Add the subsystem to the LiveWindow
         LiveWindow.addActuator("Shooter", "shooterMotorTop", motorTop);
         LiveWindow.addActuator("Shooter", "shooterMotorBottom", motorBottom);
         LiveWindow.addActuator("Shooter", "shooterPiston", ballPiston);
-        LiveWindow.addSensor("Shooter", "ballSenseButton", ballSenseButton);
+        LiveWindow.addSensor("Shooter", "ballSenseButton", ballSensor);
     }
 
     // Put methods for controlling this subsystem
@@ -74,6 +80,8 @@ public class Shooter extends Subsystem {
     public void setSpeed(double speed){
     	motorTop.set(speed);
     	motorBottom.set(speed);
+    	motorTop.clearIAccum();
+    	motorBottom.clearIAccum();
     	SmartDashboard.putNumber("ShootTop Setpoint", motorTop.getSetpoint());
 		SmartDashboard.putNumber("ShootBot Setpoint", motorBottom.getSetpoint());   	
     }
@@ -129,16 +137,17 @@ public class Shooter extends Subsystem {
      * Extend shooter piston
      */
     public void setShooterPistonOut() {
-//    	ballPiston.set(DoubleSolenoid.Value.kForward);
-    	ballPiston.set(true);   // Old code for double solenoid from prototype bot
+//    	ballPiston.set(DoubleSolenoid.Value.kForward);  // Old code for double solenoid from prototype bot
+    	ballPiston.set(true); 
+    	recordBallState(false);  // Record that we shot the ball
     }
 
     /**
      * Retract shooter piston
      */
     public void setShooterPistonIn() {
-//    	ballPiston.set(DoubleSolenoid.Value.kReverse);
-    	ballPiston.set(false);   // Old code for double solenoid from prototype bot
+//    	ballPiston.set(DoubleSolenoid.Value.kReverse);  // Old code for double solenoid from prototype bot
+    	ballPiston.set(false);
     }
 
     /**
@@ -150,11 +159,22 @@ public class Shooter extends Subsystem {
     }
     
     /**
+     * Call this method to record the loading or unloading of a ball for state tracking by the shooter.
+     * This is autmatically updated when a ball is loaded by the BallLoadedTrigger.
+     * @param ballIsLoaded true = ball is loaded, false = ball is not loaded
+     */
+    public void recordBallState(boolean ballIsLoaded) {
+    	this.ballIsLoaded = ballIsLoaded;
+    }
+    
+    /**
      * Checks if the shooter has a ball
      * @return true = shooter has a ball
      */
-    public boolean isButtonPressed(){
-    	return !ballSenseButton.get();
+    public boolean isBallLoaded(){
+    	SmartDashboard.putBoolean("BallSensor", ballSensor.get());
+    	SmartDashboard.putBoolean("Ball in shooter", ballIsLoaded);
+    	return ballIsLoaded;
     }
 
 	/**

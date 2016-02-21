@@ -13,14 +13,15 @@ double angleToMove ;
     public ShooterArmMoveToSetLocation(double angle) {
         // Use requires() here to declare subsystem dependencies
         // eg. requires(chassis);
-    	angle = angleToMove; 
+    	this.angleToMove = angle; 
     	requires(Robot.shooterArm); 
+    	requires(Robot.intake);
     }
 
     // Called just before this Command runs the first time
     protected void initialize() {
+    	Robot.intake.setSpeed(0);
     	Robot.shooterArm.moveToAngle(angleToMove);
-
     }
 
     // Called repeatedly when this Command is scheduled to run
@@ -30,7 +31,7 @@ double angleToMove ;
 
     // Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished() {
-    	return(Robot.shooterArm.moveToAngleIsFinished());     	
+    	return (Robot.shooterArm.moveToAngleIsFinished());
     }
 
     // Called once after isFinished returns true

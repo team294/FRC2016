@@ -13,6 +13,7 @@ import edu.wpi.first.wpilibj.CANTalon.FeedbackDevice;
 import edu.wpi.first.wpilibj.CANTalon.TalonControlMode;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.command.Subsystem;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**
  *
@@ -20,28 +21,33 @@ import edu.wpi.first.wpilibj.command.Subsystem;
 public class ShooterArm extends Subsystem {
 	private final CANTalon shooterArmMotor= new CANTalon(RobotMap.shooterArmMotor);
 
-	private double positionRange = 250.0;
-	private double minPosition=233.0;		// We will need to calibrate this number occasionally
-	private double maxPosition=minPosition + positionRange;
+	//private double positionRange = 250.0;
+	private double minPosition=2.52;		// We will need to calibrate this number occasionally
+	private double maxPosition=2.27;		// The pot is "backwards" when the arm is fully down, the potentiometer is at a large value,
+										// and when the pot is straight up, the pot is at a lower value.
+	
 	private double minAngle=RobotMap.shooterArmMinAngle;
 	private double maxAngle=RobotMap.shooterArmMaxAngle;
 	private double anglesPerPos=(maxAngle-minAngle)/(maxPosition-minPosition);
+	
 	private double slope=(maxAngle/2-minAngle/2);
 	private double yIntercept=maxAngle-slope;
 	
-	private ToleranceChecker tol = new ToleranceChecker(1.5, 5);
+	private ToleranceChecker armTol = new ToleranceChecker(1.5, 5);
 
 	public ShooterArm(){
 		super(); 
 		shooterArmMotor.setFeedbackDevice(CANTalon.FeedbackDevice.AnalogPot);
-		// shooterArmMotor.reverseSensor(true); 
+		//shooterArmMotor.reverseSensor(true); 
 		shooterArmMotor.setProfile(0);
-		shooterArmMotor.setPID(0.020, 0.0000, 0.0);  
+		shooterArmMotor.setPID(50, 0.0, 0.0);  
 		shooterArmMotor.setF(0.0);   
 		shooterArmMotor.changeControlMode(TalonControlMode.Position);
-		shooterArmMotor.configPotentiometerTurns(1);
-		shooterArmMotor.set(shooterArmMotor.getAnalogInPosition());
-		shooterArmMotor.enableControl();
+		shooterArmMotor.configPotentiometerTurns(3);
+		shooterArmMotor.setReverseSoftLimit(2.21);
+		shooterArmMotor.enableReverseSoftLimit(true);
+//		shooterArmMotor.set(shooterArmMotor.getAnalogInPosition());
+		//this.setupSmartDashboard(true);
 	}
 
 	// Put methods for controlling this subsystem
@@ -53,13 +59,21 @@ public class ShooterArm extends Subsystem {
 	public void disableControl() {
 		shooterArmMotor.disableControl();
 	}
+	
+	public double getPos(){
+		return shooterArmMotor.get();
+	}
+	
+	public double getEncPos(){
+		return shooterArmMotor.getAnalogInPosition();
+	}
 
 	/**
 	 * Get current arm angle
 	 * @return angle, in degrees.  0 = horizontal, + = up, - = down
 	 */
 	public double getAngle() {
-		return convertPosToAngle(shooterArmMotor.getAnalogInPosition());
+		return convertPosToAngle(shooterArmMotor.get());
 	}
 
 	/**
@@ -69,21 +83,25 @@ public class ShooterArm extends Subsystem {
 	 * @param angle Desired target angle, in degrees.  0 = horizontal, + = up, - = down
 	 */
 	public void moveToAngle(double angle) {
+		SmartDashboard.putNumber("Set angle", angle);
+		SmartDashboard.putNumber("Set position", convertAngleToPos(angle));
 		if(Robot.intake.intakeIsUp()){
-			if(Robot.shooterArm.getAngle() >=RobotMap.upperBoundAngleToAvoid&&angle<=RobotMap.upperBoundAngleToAvoid)
+			if(Robot.shooterArm.getAngle()>=RobotMap.upperBoundAngleToAvoid&&angle<=RobotMap.upperBoundAngleToAvoid){
 				angle=(RobotMap.upperBoundAngleToAvoid+3);
-		}else if(Robot.shooterArm.getAngle()<=RobotMap.lowerBoundAngleToAvoid&&angle>=RobotMap.lowerBoundAngleToAvoid){
-			angle=(RobotMap.lowerBoundAngleToAvoid-3);
+			}else if(Robot.shooterArm.getAngle()<=RobotMap.lowerBoundAngleToAvoid&&angle>=RobotMap.lowerBoundAngleToAvoid){
+				angle=(RobotMap.lowerBoundAngleToAvoid-3);
+			}
 		}
-		if(angle>RobotMap.shooterArmMaxAngle){
-			angle=RobotMap.shooterArmMaxAngle;
-		}
+		//TODO: Uncomment for safety
+//		if(angle>RobotMap.shooterArmMaxAngle){
+//			angle=RobotMap.shooterArmMaxAngle;
+//		}
 		if(angle<RobotMap.shooterArmMinAngle){
 			angle=RobotMap.shooterArmMinAngle;
 		}
 		shooterArmMotor.set(convertAngleToPos(angle));
 		shooterArmMotor.enableControl();
-		tol.reset();
+		armTol.reset();
 	}
 
 	/**
@@ -102,7 +120,12 @@ public class ShooterArm extends Subsystem {
 	 * @return true = arm is at the setpoint
 	 */
 	public boolean moveToAngleIsFinished() {
-		return tol.success( getAngle() - convertPosToAngle(shooterArmMotor.getSetpoint()) );  
+		SmartDashboard.putNumber("Going Towards", shooterArmMotor.getSetpoint());
+		SmartDashboard.putNumber("Arm Error", shooterArmMotor.getError());
+		SmartDashboard.putNumber("Arm Reading", shooterArmMotor.get());
+		SmartDashboard.putBoolean("Arm Talon Mode", shooterArmMotor.getControlMode()==TalonControlMode.Position);
+		
+		return armTol.success( getAngle() - convertPosToAngle(shooterArmMotor.getSetpoint()) );  
 	}
 	
 	/**
@@ -110,7 +133,7 @@ public class ShooterArm extends Subsystem {
 	 * @param angle, in degrees
 	 * @return PID position, 0 to 1023
 	 */
-	private double convertAngleToPos(double angle) {
+	public double convertAngleToPos(double angle) {
 		return ((angle-minAngle+(anglesPerPos*minPosition))/anglesPerPos);
 	}
 
@@ -119,7 +142,7 @@ public class ShooterArm extends Subsystem {
 	 * @param position PID setting, 0 to 1023
 	 * @return angle, in degrees
 	 */
-	private double convertPosToAngle(double position) {
+	public double convertPosToAngle(double position) {
 		return ((anglesPerPos*position)-(anglesPerPos*minPosition)+minAngle);
 	}
 	
@@ -130,6 +153,35 @@ public class ShooterArm extends Subsystem {
 	public void moveArmWithJoystick(Joystick thirdJoystick){
 		moveToAngle((slope*thirdJoystick.getY())+yIntercept);
 	}
+	
+	/**
+	 * Set up the shooter motor controls on the SmartDashboard.  Call this once when the robot is 
+	 * initialized (after the Shooter subsystem is initialized).
+	 * @param bPIDF false to only show setpoint/speed; true to also show the PIDF parameters 
+	 */
+//    public void setupSmartDashboard(boolean bPIDF){
+//    	// bPID = TRUE to show PID parameters
+//    	
+// 		SmartDashboard.putNumber("Arm Setpoint", shooterArmMotor.getSetpoint());
+//
+//		if (bPIDF) {
+//			SmartDashboard.putNumber("Shooter Arm F", shooterArmMotor.getF());
+//			SmartDashboard.putNumber("Shooter Arm P", shooterArmMotor.getP());
+//			SmartDashboard.putNumber("Shooter Arm I", shooterArmMotor.getI());
+//			SmartDashboard.putNumber("Shooter Arm D", shooterArmMotor.getD());
+//		}
+//    }
+    
+	/**
+	 * Set shooter motor setpoint and PIDF parameters from the SmartDashboard.  To use this method,
+	 * be sure to previously call shooter.setupSmartDashboard(true) during robot init.
+	 */
+//    public void setPIDFromSmartDashboard() {
+//		shooterArmMotor.setF(SmartDashboard.getNumber("Shooter Arm F"));
+//		shooterArmMotor.setP(SmartDashboard.getNumber("Shooter Arm P"));
+//		shooterArmMotor.setI(SmartDashboard.getNumber("Shooter Arm I"));
+//		shooterArmMotor.setD(SmartDashboard.getNumber("Shooter Arm D"));
+//    }
 
 	public void initDefaultCommand() {
 		// Set the default command for a subsystem here.

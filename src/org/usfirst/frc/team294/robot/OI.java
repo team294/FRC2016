@@ -75,22 +75,34 @@ public class OI {
         SmartDashboard.putData("DriveWithJoysticks", new DriveWithJoysticks());
         SmartDashboard.putData("DriveForward: driveForwardFast", new DriveDistance(1.0, 1.0));
         SmartDashboard.putData("DriveForward: driveForwardSlow", new DriveDistance(0.5, 1.0));
-        SmartDashboard.putData("Rotate", new Rotate());
-        SmartDashboard.putData("Rotate +90 PID", new RotateDegreesPID(90.0));
-        SmartDashboard.putData("Rotate -90 PID", new RotateDegreesPID(-90.0));
-        SmartDashboard.putData("Rotate +5 PID", new RotateDegreesPID(5.0));
-        SmartDashboard.putData("Rotate -5 PID", new RotateDegreesPID(-5.0));
-        SmartDashboard.putData("Rotate +2 PID", new RotateDegreesPID(2.0));
-        SmartDashboard.putData("Rotate -2 PID", new RotateDegreesPID(-2.0));
-        SmartDashboard.putData("Stop", new StopDriving());
+        SmartDashboard.putData("Rotate +90 PID", new DriveAnglePID(90.0));
+        SmartDashboard.putData("Rotate -90 PID", new DriveAnglePID(-90.0));
+        SmartDashboard.putData("Rotate +5 PID", new DriveAnglePID(5.0));
+        SmartDashboard.putData("Rotate -5 PID", new DriveAnglePID(-5.0));
+        SmartDashboard.putData("Rotate +2 PID", new DriveAnglePID(2.0));
+        SmartDashboard.putData("Rotate -2 PID", new DriveAnglePID(-2.0));
+        SmartDashboard.putData("Stop", new DriveStop());
         SmartDashboard.putData("ShiftUp", new ShiftUp());
         SmartDashboard.putData("ShiftDown", new ShiftDown());
         
         SmartDashboard.putData("Shoot ball", new ShootBall());
         SmartDashboard.putData("Piston out", new ShooterPistonOut(true));
         SmartDashboard.putData("Piston in", new ShooterPistonOut(false));
-        SmartDashboard.putData("Start FlyWheels", new FlyWheelsTurnOn(true));
-        SmartDashboard.putData("Stop FlyWheels", new FlyWheelsTurnOn(false));
+        SmartDashboard.putData("Start FlyWheels", new FlyWheelSetToSpeed(4500));
+        SmartDashboard.putData("Intake FlyWheels", new FlyWheelSetToSpeed(-2500));
+        SmartDashboard.putData("Stop FlyWheels", new FlyWheelSetToSpeed(0));
+        
+        SmartDashboard.putData("Intake Raise", new IntakeRaise());
+        SmartDashboard.putData("Intake Lower", new IntakeLower());
+        SmartDashboard.putData("Intake Motor Stop", new IntakeMotorStop());
+        SmartDashboard.putData("Intake Rollers In", new IntakeSetToSpeed(1));
+        SmartDashboard.putData("Intake Rollers Out", new IntakeSetToSpeed(-1));
+        
+        SmartDashboard.putData("Shooter Arm 90", new ShooterArmMoveToSetLocation(90));
+        SmartDashboard.putData("Shooter Arm 135", new ShooterArmMoveToSetLocation(135));
+        SmartDashboard.putData("Shooter Arm 0", new ShooterArmMoveToSetLocation(0));
+        
+        SmartDashboard.putData("Load Ball", new LoadBallSequence());
     }
 
     public Joystick getleftJoystick() {

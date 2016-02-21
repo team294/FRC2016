@@ -34,22 +34,22 @@ public class Shooter extends Subsystem {
     	// Set up subsystem components
         motorTop.setFeedbackDevice(FeedbackDevice.CtreMagEncoder_Relative);
         motorTop.configEncoderCodesPerRev(100);
-//        shooterMotorTop.reverseSensor(true);
+        motorTop.reverseSensor(true);
         motorTop.configNominalOutputVoltage(+0.0f, -0.0f);
         motorTop.configPeakOutputVoltage(+12.0f, -12.0f);
         motorTop.setProfile(0);
-        motorTop.setPID(0.020, 0.0002, 2.0);  // ProtoBot:  0.020, 0.0002, 2.0;  ProtoBoard:  0.005, 0.00008, 0.00001
-        motorTop.setF(0.035);   // ProtoBot:  0.035;  ProtoBoard:  0.025
+        motorTop.setPID(0.020, 0.000, 0);  // ProtoBot:  0.020, 0.0002, 2.0;  ProtoBoard:  0.005, 0.00008, 0.00001
+        motorTop.setF(0.020);   // ProtoBot:  0.035;  ProtoBoard:  0.025
         motorTop.changeControlMode(TalonControlMode.Speed);
 
         motorBottom.setFeedbackDevice(FeedbackDevice.CtreMagEncoder_Relative);
         motorBottom.configEncoderCodesPerRev(100);
-//        shooterMotorBottom.reverseSensor(true);
+        motorBottom.reverseSensor(true);
         motorBottom.configNominalOutputVoltage(+0.0f, -0.0f);
         motorBottom.configPeakOutputVoltage(+12.0f, -12.0f);
         motorBottom.setProfile(0);
-        motorTop.setPID(0.020, 0.0002, 2.0);  // ProtoBot:  0.020, 0.0002, 2.0;  ProtoBoard:  0.005, 0.00008, 0.00001
-        motorTop.setF(0.035);   // ProtoBot:  0.035;  ProtoBoard:  0.025
+        motorBottom.setPID(0.020, 0.000, 0);  // ProtoBot:  0.020, 0.0002, 2.0;  ProtoBoard:  0.005, 0.00008, 0.00001
+        motorBottom.setF(0.020);   // ProtoBot:  0.035;  ProtoBoard:  0.025
         motorBottom.changeControlMode(TalonControlMode.Speed);
                 
 //        ballPiston.set(DoubleSolenoid.Value.kReverse);
@@ -72,7 +72,7 @@ public class Shooter extends Subsystem {
      * @param speed RPM to set both top and bottom motors.  + = eject ball, - = load ball.
 	 */
     public void setSpeed(double speed){
-    	motorTop.set(-speed);
+    	motorTop.set(speed);
     	motorBottom.set(speed);
     	SmartDashboard.putNumber("ShootTop Setpoint", motorTop.getSetpoint());
 		SmartDashboard.putNumber("ShootBot Setpoint", motorBottom.getSetpoint());   	
@@ -87,7 +87,7 @@ public class Shooter extends Subsystem {
      * @param bottomSpeed RPM to set bottom motor.  + = eject ball, - = load ball.
 	 */
     public void setSpeed(double topSpeed, double bottomSpeed){
-    	motorTop.set(-topSpeed);
+    	motorTop.set(topSpeed);
     	motorBottom.set(bottomSpeed);
     	SmartDashboard.putNumber("ShootTop Setpoint", motorTop.getSetpoint());
 		SmartDashboard.putNumber("ShootBot Setpoint", motorBottom.getSetpoint());   	

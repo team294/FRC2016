@@ -7,17 +7,18 @@ import edu.wpi.first.wpilibj.command.Command;
 /**
  *
  */
-public class IntakeIsButtonPressed extends Command {
-
-    public IntakeIsButtonPressed() {
+public class RecordBallState extends Command {
+	boolean ballIsLoaded;
+	
+    public RecordBallState(boolean ballIsLoaded) {
         // Use requires() here to declare subsystem dependencies
         // eg. requires(chassis);
-    	requires(Robot.intake); 
+    	this.ballIsLoaded = ballIsLoaded;
     }
 
     // Called just before this Command runs the first time
     protected void initialize() {
-    	
+    	Robot.shooter.recordBallState(ballIsLoaded);
     }
 
     // Called repeatedly when this Command is scheduled to run
@@ -26,7 +27,7 @@ public class IntakeIsButtonPressed extends Command {
 
     // Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished() {
-        return Robot.shooter.isButtonPressed();
+        return true;
     }
 
     // Called once after isFinished returns true

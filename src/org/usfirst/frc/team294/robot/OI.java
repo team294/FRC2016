@@ -89,7 +89,7 @@ public class OI {
         SmartDashboard.putData("Piston out", new ShooterPistonOut(true));
         SmartDashboard.putData("Piston in", new ShooterPistonOut(false));
         SmartDashboard.putData("Start FlyWheels", new FlyWheelSetToSpeed(4500));
-        SmartDashboard.putData("Intake FlyWheels", new FlyWheelSetToSpeed(-1000));
+        SmartDashboard.putData("Intake FlyWheels", new FlyWheelSetToSpeed(-2500));
         SmartDashboard.putData("Stop FlyWheels", new FlyWheelSetToSpeed(0));
         
         SmartDashboard.putData("Intake Raise", new IntakeRaise());
@@ -97,6 +97,8 @@ public class OI {
         SmartDashboard.putData("Intake Motor Stop", new IntakeMotorStop());
         SmartDashboard.putData("Intake Rollers In", new IntakeSetToSpeed(1));
         SmartDashboard.putData("Intake Rollers Out", new IntakeSetToSpeed(-1));
+        
+        SmartDashboard.putData("Load Ball", new LoadBallSequence());
     }
 
     public Joystick getleftJoystick() {

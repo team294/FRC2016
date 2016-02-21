@@ -52,8 +52,8 @@ public class Robot extends IterativeRobot {
 		shooter.setupSmartDashboard(true);
 		
 		prefs = Preferences.getInstance();
-		minArmCalPosition = prefs.getDouble("minArmCalPosition", 1.0);
-		maxArmCalPosition = prefs.getDouble("maxArmCalPosition", 4.);
+		minArmCalPosition = prefs.getDouble("minArmCalPosition", 2.52);
+		maxArmCalPosition = prefs.getDouble("maxArmCalPosition", 2.27);
 		// OI must be constructed after subsystems. If the OI creates Commands
 		// (which it very likely will), subsystems are not guaranteed to be
 		// constructed yet. Thus, their requires() statements may grab null

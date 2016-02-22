@@ -30,8 +30,9 @@ public class LoadBallSequence extends CommandGroup {
 //    		addSequential(new ShooterArmMoveToSetLocation(RobotMap.shooterArmBallLoadAngle)); 
 //    	}
     	addParallel(new IntakeSetToSpeed(1));
-    	addParallel(new FlyWheelSetToSpeed(-2500));
+    	addParallel(new FlyWheelSetToSpeed(-1500));
     	addSequential(new WaitForBallLoaded());
+    	addSequential(new WaitSeconds(.5));
     	addParallel(new IntakeSetToSpeed(0)); 
     	addSequential(new FlyWheelSetToSpeed(0));
     	    	

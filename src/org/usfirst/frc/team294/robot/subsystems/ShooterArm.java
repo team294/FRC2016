@@ -46,6 +46,8 @@ public class ShooterArm extends Subsystem {
 		shooterArmMotor.configPotentiometerTurns(3);
 		shooterArmMotor.setReverseSoftLimit(2.21);
 		shooterArmMotor.enableReverseSoftLimit(true);
+		shooterArmMotor.setForwardSoftLimit(2.50);
+		shooterArmMotor.enableForwardSoftLimit(true);
 //		shooterArmMotor.set(shooterArmMotor.getAnalogInPosition());
 		//this.setupSmartDashboard(true);
 	}
@@ -96,9 +98,9 @@ public class ShooterArm extends Subsystem {
 //		if(angle>RobotMap.shooterArmMaxAngle){
 //			angle=RobotMap.shooterArmMaxAngle;
 //		}
-		if(angle<RobotMap.shooterArmMinAngle){
-			angle=RobotMap.shooterArmMinAngle;
-		}
+//		if(angle<RobotMap.shooterArmMinAngle){
+//			angle=RobotMap.shooterArmMinAngle;
+//		}
 		shooterArmMotor.set(convertAngleToPos(angle));
 		shooterArmMotor.enableControl();
 		armTol.reset();

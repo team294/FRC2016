@@ -21,9 +21,10 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 public class ShooterArm extends Subsystem {
 	private final CANTalon shooterArmMotor= new CANTalon(RobotMap.shooterArmMotor);
 
-	//private double positionRange = 250.0;
-	private double minPosition=2.52;		// We will need to calibrate this number occasionally
-	private double maxPosition=2.27;		// The pot is "backwards" when the arm is fully down, the potentiometer is at a large value,
+	private double minPosition=Robot.armCalMinPosition;		// We will need to calibrate this number occasionally
+	private double maxPosition=Robot.armCalMinPosition;
+//	private double minPosition=2.52;		// We will need to calibrate this number occasionally
+//	private double maxPosition=2.27;		// The pot is "backwards" when the arm is fully down, the potentiometer is at a large value,
 										// and when the pot is straight up, the pot is at a lower value.
 	
 	private double minAngle=RobotMap.shooterArmMinAngle;

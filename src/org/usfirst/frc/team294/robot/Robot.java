@@ -35,9 +35,9 @@ public class Robot extends IterativeRobot {
 	
 	//for preferences armMin position, arm 90 degree position
 	Preferences prefs;
-	public double armCalMinPosition;
-	public double armCal90DegPosition;
-	public boolean shooterArmEnabled;
+	public static double armCalMinPosition;
+	public static double armCal90DegPosition;
+	public static boolean shooterArmEnabled;
 	
 	/**
 	 * This function is run when the robot is first started up and should be
@@ -51,7 +51,7 @@ public class Robot extends IterativeRobot {
 		armCalMinPosition = prefs.getDouble("armCalMinPosition", 0);
 		armCal90DegPosition = prefs.getDouble("armCal90DegPosition", 0);
 		if (armCalMinPosition==0 || armCal90DegPosition==0) {
-			DriverStation.reportError("Error:  Preferences missing from RoboRio for Shooter Arm position calibration.", true);
+			DriverStation.reportError("Error:  Preferences missing from RoboRio for Shooter Arm position calibration.  Shooter arm disabled.", true);
 			shooterArmEnabled = false;
 		} else {
 			shooterArmEnabled = true;

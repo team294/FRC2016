@@ -21,14 +21,15 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 public class ShooterArm extends Subsystem {
 	private final CANTalon shooterArmMotor= new CANTalon(RobotMap.shooterArmMotor);
 
-	//private double positionRange = 250.0;
-	private double minPosition=2.52;		// We will need to calibrate this number occasionally
-	private double maxPosition=2.27;		// The pot is "backwards" when the arm is fully down, the potentiometer is at a large value,
+	private double minPosition=Robot.armCalMinPosition;		// We will need to calibrate this number occasionally
+	private double deg90Position=Robot.armCal90DegPosition;
+//	private double minPosition=2.52;		// We will need to calibrate this number occasionally
+//	private double maxPosition=2.27;		// The pot is "backwards" when the arm is fully down, the potentiometer is at a large value,
 										// and when the pot is straight up, the pot is at a lower value.
 	
 	private double minAngle=RobotMap.shooterArmMinAngle;
 	private double maxAngle=RobotMap.shooterArmMaxAngle;
-	private double anglesPerPos=(maxAngle-minAngle)/(maxPosition-minPosition);
+	private double anglesPerPos=(90-minAngle)/(deg90Position-minPosition);
 	
 	private double slope=(maxAngle/2-minAngle/2);
 	private double yIntercept=maxAngle-slope;
@@ -37,6 +38,7 @@ public class ShooterArm extends Subsystem {
 
 	public ShooterArm(){
 		super(); 
+		
 		shooterArmMotor.setFeedbackDevice(CANTalon.FeedbackDevice.AnalogPot);
 		//shooterArmMotor.reverseSensor(true); 
 		shooterArmMotor.setProfile(0);
@@ -44,10 +46,11 @@ public class ShooterArm extends Subsystem {
 		shooterArmMotor.setF(0.0);   
 		shooterArmMotor.changeControlMode(TalonControlMode.Position);
 		shooterArmMotor.configPotentiometerTurns(3);
-		shooterArmMotor.setReverseSoftLimit(2.21);
+		shooterArmMotor.setReverseSoftLimit(deg90Position-0.06);		// Limit in high position (slightly more than 90 deg, 0.06 rotations)
 		shooterArmMotor.enableReverseSoftLimit(true);
-		shooterArmMotor.setForwardSoftLimit(2.50);
+		shooterArmMotor.setForwardSoftLimit(minPosition-0.02);		// Limit in low position (slightly above 0 deg, and let gravity pull the arm down)
 		shooterArmMotor.enableForwardSoftLimit(true);
+		shooterArmMotor.disableControl();
 //		shooterArmMotor.set(shooterArmMotor.getAnalogInPosition());
 		//this.setupSmartDashboard(true);
 	}
@@ -86,6 +89,13 @@ public class ShooterArm extends Subsystem {
 	 */
 	public void moveToAngle(double angle) {
 		SmartDashboard.putNumber("Set angle", angle);
+
+		// Don't move if the shooter arm is disabled.
+		if (!Robot.shooterArmEnabled) {
+			SmartDashboard.putNumber("Set position", -9999);			
+			return;
+		}
+		
 		SmartDashboard.putNumber("Set position", convertAngleToPos(angle));
 		if(Robot.intake.intakeIsUp()){
 			if(Robot.shooterArm.getAngle()>=RobotMap.upperBoundAngleToAvoid&&angle<=RobotMap.upperBoundAngleToAvoid){
@@ -95,12 +105,12 @@ public class ShooterArm extends Subsystem {
 			}
 		}
 		//TODO: Uncomment for safety
-//		if(angle>RobotMap.shooterArmMaxAngle){
-//			angle=RobotMap.shooterArmMaxAngle;
-//		}
-//		if(angle<RobotMap.shooterArmMinAngle){
-//			angle=RobotMap.shooterArmMinAngle;
-//		}
+		if(angle>RobotMap.shooterArmMaxAngle){
+			angle=RobotMap.shooterArmMaxAngle;
+		}
+		if(angle<RobotMap.shooterArmMinAngle){
+			angle=RobotMap.shooterArmMinAngle;
+		}
 		shooterArmMotor.set(convertAngleToPos(angle));
 		shooterArmMotor.enableControl();
 		armTol.reset();
@@ -153,6 +163,12 @@ public class ShooterArm extends Subsystem {
 	}
 
 	public void moveArmWithJoystick(Joystick thirdJoystick){
+		// Don't move if the shooter arm is disabled.
+		if (!Robot.shooterArmEnabled) {
+			SmartDashboard.putNumber("Set position", -9999);			
+			return;
+		}
+
 		moveToAngle((slope*thirdJoystick.getY())+yIntercept);
 	}
 	

@@ -1,6 +1,7 @@
 package org.usfirst.frc.team294.robot;
 
 import edu.wpi.first.wpilibj.CANTalon;
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.Preferences;
 import edu.wpi.first.wpilibj.command.Command;
@@ -31,16 +32,31 @@ public class Robot extends IterativeRobot {
 	public static Shooter shooter;
 	public static Intake intake;
 	public static Vision vision;
+	
 	//for preferences armMin position, arm 90 degree position
 	Preferences prefs;
-	double minArmCalPosition;
-	double maxArmCalPosition;
+	public static double armCalMinPosition;
+	public static double armCal90DegPosition;
+	public static boolean shooterArmEnabled;
+	
 	/**
 	 * This function is run when the robot is first started up and should be
 	 * used for any initialization code.
 	 */
 	public void robotInit() {
 		RobotMap.init();
+		
+		//Get preferences from robot flash memory
+		prefs = Preferences.getInstance();
+		armCalMinPosition = prefs.getDouble("armCalMinPosition", 0);
+		armCal90DegPosition = prefs.getDouble("armCal90DegPosition", 0);
+		if (armCalMinPosition==0 || armCal90DegPosition==0) {
+			DriverStation.reportError("Error:  Preferences missing from RoboRio for Shooter Arm position calibration.  Shooter arm disabled.", true);
+			shooterArmEnabled = false;
+		} else {
+			shooterArmEnabled = true;
+		}
+		
 		//Instantiates the subsystems
 		driveTrain = new DriveTrain();
 		shifter = new Shifter();
@@ -51,9 +67,6 @@ public class Robot extends IterativeRobot {
 
 		shooter.setupSmartDashboard(true);
 		
-		prefs = Preferences.getInstance();
-		minArmCalPosition = prefs.getDouble("minArmCalPosition", 2.52);
-		maxArmCalPosition = prefs.getDouble("maxArmCalPosition", 2.27);
 		// OI must be constructed after subsystems. If the OI creates Commands
 		// (which it very likely will), subsystems are not guaranteed to be
 		// constructed yet. Thus, their requires() statements may grab null

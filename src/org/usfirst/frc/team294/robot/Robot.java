@@ -128,13 +128,13 @@ public class Robot extends IterativeRobot {
 		Scheduler.getInstance().run();
 		
 		// Uncomment the following 2 lines for debugging shooter motors.
-//		shooter.setPIDFromSmartDashboard();
-//		shooter.updateSmartDashboard();
+		shooter.setPIDFromSmartDashboard();
+		shooter.updateSmartDashboard();
 
         SmartDashboard.putNumber("Arm Position", shooterArm.getPos());
         SmartDashboard.putNumber("Enc Position", shooterArm.getEncPos());
         SmartDashboard.putNumber("Arm Angle", shooterArm.getAngle());
-        //shooterArm.setPIDFromSmartDashboard();
+        shooterArm.setPIDFromSmartDashboard();
 		shooter.isBallLoaded();
 		intake.intakeIsUp();
 	}

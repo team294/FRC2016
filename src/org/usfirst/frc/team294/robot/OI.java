@@ -46,9 +46,11 @@ public class OI {
     public JoystickButton leftJoystickTrigger;
     
     public Joystick rightJoystick;
-    public JoystickButton rightJoystickButtonA;
     public JoystickButton rightJoystickButton4;
     public JoystickButton rightJoystickButton5;
+    public JoystickButton rightJoystickButton3;
+    public JoystickButton rightJoystickButton2;
+    public JoystickButton rightJoystickTrigger;
     
     public Joystick thirdJoystick;
     
@@ -56,16 +58,27 @@ public class OI {
         //Instantiates all objects for joysticks and buttons
 
         rightJoystick = new Joystick(1);
-        rightJoystickButtonA = new JoystickButton(rightJoystick, 1);
-        rightJoystickButtonA.whileHeld(new DriveDistance(1, 5000));
+        rightJoystickTrigger = new JoystickButton(rightJoystick, 1);
+        rightJoystickTrigger.whenPressed(new ShootBall());
+        
         rightJoystickButton4 = new JoystickButton(rightJoystick, 4);
-        rightJoystickButton4.whileHeld(new ShiftDown());
+        rightJoystickButton4.whenPressed(new ShiftDown());
+        
         rightJoystickButton5 = new JoystickButton(rightJoystick, 5);
-        rightJoystickButton5.whileHeld(new ShiftUp());
+        rightJoystickButton5.whenPressed(new ShiftUp());
+        
+        rightJoystickButton3 = new JoystickButton(rightJoystick, 3);
+        rightJoystickButton3.whenPressed(new ShooterArmMoveToSetLocation(85));
+        
+        rightJoystickButton2 = new JoystickButton(rightJoystick, 2);
+        rightJoystickButton2.whenPressed(new ShooterArmMoveToSetLocation(0));
 
+        
+        
         leftJoystick = new Joystick(0);
+        
         leftJoystickTrigger = new JoystickButton(leftJoystick, 1);
-        leftJoystickTrigger.whenPressed(new ShootBall());
+        leftJoystickTrigger.whenPressed(new LoadBallSequence());
         
         thirdJoystick= new Joystick(2);
 
@@ -99,6 +112,7 @@ public class OI {
         SmartDashboard.putData("Intake Rollers Out", new IntakeSetToSpeed(-1));
         
         SmartDashboard.putData("Shooter Arm 90", new ShooterArmMoveToSetLocation(90));
+        SmartDashboard.putData("Shooter Arm 78", new ShooterArmMoveToSetLocation(78));
         SmartDashboard.putData("Shooter Arm 135", new ShooterArmMoveToSetLocation(135));
         SmartDashboard.putData("Shooter Arm 0", new ShooterArmMoveToSetLocation(0));
         //REMOVE THIS BUTTON ONLY FOR TESTING.

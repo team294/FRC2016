@@ -37,12 +37,12 @@ public class DriveTrain extends Subsystem implements PIDOutput {
     
     // PID contorller and parameters for turning using the navX
     PIDController turnController;
-    static final double kP = 0.06;
+    static final double kP = 0.04;
     static final double kI = 0.0;   //0.00025;
     static final double kD = 0.01;  //0.01;
     static final double kF = 0.00;
-    ToleranceChecker rotateTol = new ToleranceChecker(1.5, 5);
-//    static final double kToleranceDegrees = 1.5f;
+    static final double kToleranceDegrees = 1.5f;
+    ToleranceChecker rotateTol = new ToleranceChecker(kToleranceDegrees, 5);
 //    static final int kToleranceSamples = 5;  // These number of samples must be within tolerance to finish turn
 
     ToleranceChecker driveTol = new ToleranceChecker(100, 5);
@@ -99,7 +99,7 @@ public class DriveTrain extends Subsystem implements PIDOutput {
         turnController.setInputRange(0.0f,  360.0f);
         turnController.setContinuous(true);
         turnController.setOutputRange(-1.0, 1.0);
-//        turnController.setAbsoluteTolerance(kToleranceDegrees);  // PIDController.onTarget() method does not work!
+        turnController.setAbsoluteTolerance(kToleranceDegrees);  // PIDController.onTarget() method does not work!
 //        turnController.setToleranceBuffer(3);    
         
         
@@ -248,11 +248,12 @@ public class DriveTrain extends Subsystem implements PIDOutput {
 	public boolean turnDegreesPIDIsFinished() {
 		double err;
 		
-//		SmartDashboard.putNumber("PID error", turnController.getError());
-//		SmartDashboard.putNumber("PID avg error", turnController.getAvgError());
-//		SmartDashboard.putNumber("PID setpoint", turnController.getSetpoint());
-//		SmartDashboard.putNumber("PID power", turnController.get());
+		SmartDashboard.putNumber("PID error", turnController.getError());
+		SmartDashboard.putNumber("PID avg error", turnController.getAvgError());
+		SmartDashboard.putNumber("PID setpoint", turnController.getSetpoint());
+		SmartDashboard.putNumber("PID power", turnController.get());
 //		SmartDashboard.putBoolean("PID on target", turnController.onTarget());
+		SmartDashboard.putNumber("navX angle", ahrs.getAngle());
 	
 		err = Math.abs(turnController.getSetpoint() - ahrs.getAngle());
 		if (err > 180) { 

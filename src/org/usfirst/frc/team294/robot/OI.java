@@ -103,6 +103,7 @@ public class OI {
         SmartDashboard.putData("Piston in", new ShooterPistonOut(false));
         SmartDashboard.putData("Start FlyWheels", new FlyWheelSetToSpeed(4500));
         SmartDashboard.putData("Intake FlyWheels", new FlyWheelSetToSpeed(-2500));
+        SmartDashboard.putData("Start Top FlyWheel only", new FlyWheelSetToSpeed(4500, 0));
         SmartDashboard.putData("Stop FlyWheels", new FlyWheelSetToSpeed(0));
         
         SmartDashboard.putData("Intake Raise", new IntakeRaise());
@@ -113,6 +114,8 @@ public class OI {
         
         SmartDashboard.putData("Shooter Arm 90", new ShooterArmMoveToSetLocation(90));
         SmartDashboard.putData("Shooter Arm 78", new ShooterArmMoveToSetLocation(78));
+        SmartDashboard.putData("Shooter Arm 75.5", new ShooterArmMoveToSetLocation(75.5));
+        SmartDashboard.putData("Shooter Arm 73", new ShooterArmMoveToSetLocation(73));
         SmartDashboard.putData("Shooter Arm 135", new ShooterArmMoveToSetLocation(135));
         SmartDashboard.putData("Shooter Arm 0", new ShooterArmMoveToSetLocation(0));
         //REMOVE THIS BUTTON ONLY FOR TESTING.

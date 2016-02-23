@@ -36,7 +36,7 @@ public class Intake extends Subsystem {
      * @param speed Roller motor power, -1 (expel ball) to +1 (load ball).  0 = stopped
      */
     public void setSpeed(double speed) {
-    	intakeMotor.set(speed);
+    	intakeMotor.set(-speed);
     }
     
     /**
@@ -44,7 +44,7 @@ public class Intake extends Subsystem {
      * @return Roller motor power, -1 (expel ball) to +1 (load ball).  0 = stopped
      */
     public double getSpeed() {
-    	return intakeMotor.get();
+    	return -intakeMotor.get();
     }
     
     /**
@@ -118,12 +118,7 @@ public class Intake extends Subsystem {
 	 * Send intake status to SmartDashboard
 	 */
     public void updateSmartDashboard() {
- 		SmartDashboard.putNumber("Intake motor setpoint", intakeMotor.get());
-// 		if (intakeIsUp()) {
-// 			SmartDashboard.putString("Intake position", "Up");
-// 		} else {
-// 			SmartDashboard.putString("Intake position", "Down");
-// 		}
+ 		SmartDashboard.putNumber("Intake motor setpoint", -intakeMotor.get());
  		SmartDashboard.putString("Intake position", intakeIsUp() ? "Up" : "Down");
     }
     

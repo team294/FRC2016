@@ -11,7 +11,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
  */
 public class FlyWheelSetToSpeed extends Command {
 	
-	int speed;
+	int topSpeed, bottomSpeed;
 	ToleranceChecker sTol = new ToleranceChecker(150, 5);
 
 	/**
@@ -21,12 +21,25 @@ public class FlyWheelSetToSpeed extends Command {
 	public FlyWheelSetToSpeed(int speed) {
         // Use requires() here to declare subsystem dependencies
         requires(Robot.shooter);
-		this.speed = speed;
+		this.topSpeed = speed;
+		this.bottomSpeed = speed;
+    }
+
+	/**
+	 * Set target speed for shooter flywheels.  Command finishes when flywheels are at speed.
+	 * @param topSpeed target speed in RPM.  + kick ball out, - intake ball
+	 * @param bottomSpeed target speed in RPM.  + kick ball out, - intake ball
+	 */
+	public FlyWheelSetToSpeed(int topSpeed, int bottomSpeed) {
+        // Use requires() here to declare subsystem dependencies
+        requires(Robot.shooter);
+		this.topSpeed = topSpeed;
+		this.bottomSpeed = bottomSpeed;
     }
 
     // Called just before this Command runs the first time
     protected void initialize() {
-    	Robot.shooter.setSpeed(speed);
+    	Robot.shooter.setSpeed(topSpeed, bottomSpeed);
     	sTol.reset();
     }
 
@@ -40,7 +53,7 @@ public class FlyWheelSetToSpeed extends Command {
     	
     	Robot.shooter.updateSmartDashboard();
 
-    	err = Math.abs(speed - Robot.shooter.getTopFlyWheelSpeed()) + Math.abs(speed - Robot.shooter.getBottomFlyWheelSpeed()) ; 
+    	err = Math.abs(topSpeed - Robot.shooter.getTopFlyWheelSpeed()) + Math.abs(bottomSpeed - Robot.shooter.getBottomFlyWheelSpeed()) ; 
     	return sTol.success(err);
     }
 

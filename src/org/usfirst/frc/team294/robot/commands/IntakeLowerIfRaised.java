@@ -40,9 +40,9 @@ public class IntakeLowerIfRaised extends Command {
 			return true;
 		}
 		if(timeSinceInitialized() >= 1){
-    		return true;
-    	}
-        return false;
+			return true;
+		}
+		return false;
 	}
 
 	// Called once after isFinished returns true

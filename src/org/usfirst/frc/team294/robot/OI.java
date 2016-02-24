@@ -68,7 +68,7 @@ public class OI {
         rightJoystickButton5.whenPressed(new ShiftUp());
         
         rightJoystickButton3 = new JoystickButton(rightJoystick, 3);
-        rightJoystickButton3.whenPressed(new ShooterArmMoveToSetLocation(85));
+        rightJoystickButton3.whenPressed(new ShooterArmMoveToSetLocation(78));
         
         rightJoystickButton2 = new JoystickButton(rightJoystick, 2);
         rightJoystickButton2.whenPressed(new ShooterArmMoveToSetLocation(0));
@@ -119,6 +119,8 @@ public class OI {
         SmartDashboard.putData("Shooter Arm -50", new ShooterArmMoveToSetLocation(-50));
         
         SmartDashboard.putData("Load Ball", new LoadBallSequence());
+        
+        SmartDashboard.putData("Drive 1000 Units", new DriveDistance(1, 1000));
     }
 
     public Joystick getleftJoystick() {

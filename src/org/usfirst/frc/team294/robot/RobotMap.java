@@ -27,8 +27,8 @@ public class RobotMap {
 	public static int ballSensor = 0;
 
    // Pneumatic controller PCM IDs
-    public static int shifterSolenoidFwd = 1;
-    public static int shifterSolenoidRev = 0;
+    public static int shifterSolenoidFwd = 0;
+    public static int shifterSolenoidRev = 1;
 //    public static int shooterPistonFwd = 3;  // Old code for double solenoid on prototype bot
 //    public static int shooterPistonRev = 2;
     public static int intakeSolenoidFwd = 2;

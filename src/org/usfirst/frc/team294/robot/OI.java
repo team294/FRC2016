@@ -40,48 +40,34 @@ public class OI {
     // button.whenReleased(new ExampleCommand());
 
 
-    // Creates Joystick variables
-    public Joystick leftJoystick;
-    public JoystickButton leftJoystickButton2;
-    public JoystickButton leftJoystickTrigger;
+    // Joystick controls
+    public Joystick leftJoystick = new Joystick(0);
+    public Joystick rightJoystick = new Joystick(1);
+    public Joystick coJoystick = new Joystick(2);
     
-    public Joystick rightJoystick;
-    public JoystickButton rightJoystickButton4;
-    public JoystickButton rightJoystickButton5;
-    public JoystickButton rightJoystickButton3;
-    public JoystickButton rightJoystickButton2;
-    public JoystickButton rightJoystickTrigger;
-    
-    public Joystick thirdJoystick;
+    // Joystick buttons
+    Button[] left = new Button[13];
+    Button[] right = new Button[13];
+    Button[] co = new Button[13];
     
     public OI() {
-        //Instantiates all objects for joysticks and buttons
+        // Create buttons
+        for (int i=1; i<13; i++) {
+            left[i] = new JoystickButton(leftJoystick, i);
+            right[i] = new JoystickButton(rightJoystick, i);
+            co[i] = new JoystickButton(coJoystick, i);
+        }
 
-        rightJoystick = new Joystick(1);
-        rightJoystickTrigger = new JoystickButton(rightJoystick, 1);
-        rightJoystickTrigger.whenPressed(new ShootBall());
-        
-        rightJoystickButton4 = new JoystickButton(rightJoystick, 4);
-        rightJoystickButton4.whenPressed(new ShiftDown());
-        
-        rightJoystickButton5 = new JoystickButton(rightJoystick, 5);
-        rightJoystickButton5.whenPressed(new ShiftUp());
-        
-        rightJoystickButton3 = new JoystickButton(rightJoystick, 3);
-        rightJoystickButton3.whenPressed(new ShooterArmMoveToSetLocation(78));
-        
-        rightJoystickButton2 = new JoystickButton(rightJoystick, 2);
-        rightJoystickButton2.whenPressed(new ShooterArmMoveToSetLocation(0));
+        left[1].whenPressed(new ShiftDown());
+        right[1].whenPressed(new ShiftUp());
 
+        co[1].whenPressed(new ShootBall());
+        co[2].whenPressed(new ShooterArmMoveToSetLocation(78));
+        co[4].whenPressed(new ShooterArmMoveToSetLocation(0));
+        co[7].whenPressed(new LoadBallSequence());
+        co[10].whenPressed(new IntakeRaise());
+        co[11].whenPressed(new IntakeLower());
         
-        
-        leftJoystick = new Joystick(0);
-        
-        leftJoystickTrigger = new JoystickButton(leftJoystick, 1);
-        leftJoystickTrigger.whenPressed(new LoadBallSequence());
-        
-        thirdJoystick= new Joystick(2);
-
         // SmartDashboard Buttons
         SmartDashboard.putData("Autonomous Command", new AutonomousCommandGroup());
         
@@ -125,14 +111,5 @@ public class OI {
         
         SmartDashboard.putData("Drive 1000 Units", new DriveDistance(1, 1000));
     }
-
-    public Joystick getleftJoystick() {
-        return leftJoystick;
-    }
-
-    public Joystick getrightJoystick() {
-        return rightJoystick;
-    }
-    
 }
 

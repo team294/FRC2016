@@ -7,7 +7,6 @@ import org.usfirst.frc.team294.robot.utilities.ToleranceChecker;
 
 import com.kauailabs.navx.frc.AHRS;
 
-import edu.wpi.first.wpilibj.AnalogGyro;
 import edu.wpi.first.wpilibj.CANTalon;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.RobotDrive;
@@ -32,7 +31,6 @@ public class DriveTrain extends Subsystem implements PIDOutput {
     private final CANTalon rightMotor1 = new CANTalon(RobotMap.driveTrainRightMotor1);
     private final CANTalon rightMotor2 = new CANTalon(RobotMap.driveTrainRightMotor2);
     private final RobotDrive robotDrive = new RobotDrive(leftMotor2, rightMotor2);
-//    private final AnalogGyro gyro = new AnalogGyro(RobotMap.driveTrainGyro1);
     private AHRS ahrs;  // navX-mxp 9-axis IMU
     
     // PID contorller and parameters for turning using the navX
@@ -82,8 +80,6 @@ public class DriveTrain extends Subsystem implements PIDOutput {
         robotDrive.setSensitivity(0.5);
         robotDrive.setMaxOutput(1.0);
     	
-//        gyro.setSensitivity(0.007);
-        
         try {
             /* Communicate w/navX MXP via the MXP SPI Bus.                                     */
             /* Alternatively:  I2C.Port.kMXP, SerialPort.Port.kMXP or SerialPort.Port.kUSB     */
@@ -109,7 +105,6 @@ public class DriveTrain extends Subsystem implements PIDOutput {
         LiveWindow.addActuator("DriveTrain", "rightMotor1", rightMotor1);
         LiveWindow.addActuator("DriveTrain", "rightMotor2", rightMotor2);
         LiveWindow.addActuator("DriveTrain", "RotatePIDController", turnController);
-//        LiveWindow.addSensor("DriveTrain", "gyro1", gyro);
         LiveWindow.addSensor("DriveTrain", "navX-mxp", ahrs);
         
         /* Display 6-axis Processed Angle Data                                      */
@@ -194,17 +189,14 @@ public class DriveTrain extends Subsystem implements PIDOutput {
 	 * Returns the current angle of the gyro.
 	 */
 	public double getDegrees() {
-//		SmartDashboard.putNumber("gyro angle", gyro.getAngle());
 		SmartDashboard.putNumber("navX angle", ahrs.getAngle());
-//		return gyro.getAngle();
 		return ahrs.getAngle();
 	}
 	
 	/**
-	 * Resets the angle of the gyro and the NavX
+	 * Resets the angle of the NavX
 	 */
 	public void resetDegrees() {
-//		gyro.reset();
 		ahrs.reset();
 	}
 	

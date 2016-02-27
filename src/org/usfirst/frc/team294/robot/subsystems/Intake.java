@@ -55,13 +55,17 @@ public class Intake extends Subsystem {
     	if (!shooterArmConflicts()) {
     		intakeSolenoid.set(DoubleSolenoid.Value.kReverse);
     	}
+    	Robot.intake.intakeIsUp();
     }
     
     /**
      * Lower intake arm
      */
     public void lowerIntake() {
+    	if (!shooterArmConflicts()) {
     	intakeSolenoid.set(DoubleSolenoid.Value.kForward);
+    	}
+    	Robot.intake.intakeIsUp();
     }
 
     /**

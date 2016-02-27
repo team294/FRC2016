@@ -7,7 +7,6 @@ import org.usfirst.frc.team294.robot.utilities.ToleranceChecker;
 
 import com.kauailabs.navx.frc.AHRS;
 
-import edu.wpi.first.wpilibj.AnalogGyro;
 import edu.wpi.first.wpilibj.CANTalon;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.RobotDrive;
@@ -32,17 +31,16 @@ public class DriveTrain extends Subsystem implements PIDOutput {
     private final CANTalon rightMotor1 = new CANTalon(RobotMap.driveTrainRightMotor1);
     private final CANTalon rightMotor2 = new CANTalon(RobotMap.driveTrainRightMotor2);
     private final RobotDrive robotDrive = new RobotDrive(leftMotor2, rightMotor2);
-//    private final AnalogGyro gyro = new AnalogGyro(RobotMap.driveTrainGyro1);
     private AHRS ahrs;  // navX-mxp 9-axis IMU
     
     // PID contorller and parameters for turning using the navX
     PIDController turnController;
-    static final double kP = 0.06;
+    static final double kP = 0.04;
     static final double kI = 0.0;   //0.00025;
     static final double kD = 0.01;  //0.01;
     static final double kF = 0.00;
-    ToleranceChecker rotateTol = new ToleranceChecker(1.5, 5);
-//    static final double kToleranceDegrees = 1.5f;
+    static final double kToleranceDegrees = 1.5f;
+    ToleranceChecker rotateTol = new ToleranceChecker(kToleranceDegrees, 5);
 //    static final int kToleranceSamples = 5;  // These number of samples must be within tolerance to finish turn
 
     ToleranceChecker driveTol = new ToleranceChecker(100, 5);
@@ -82,8 +80,6 @@ public class DriveTrain extends Subsystem implements PIDOutput {
         robotDrive.setSensitivity(0.5);
         robotDrive.setMaxOutput(1.0);
     	
-//        gyro.setSensitivity(0.007);
-        
         try {
             /* Communicate w/navX MXP via the MXP SPI Bus.                                     */
             /* Alternatively:  I2C.Port.kMXP, SerialPort.Port.kMXP or SerialPort.Port.kUSB     */
@@ -99,7 +95,7 @@ public class DriveTrain extends Subsystem implements PIDOutput {
         turnController.setInputRange(0.0f,  360.0f);
         turnController.setContinuous(true);
         turnController.setOutputRange(-1.0, 1.0);
-//        turnController.setAbsoluteTolerance(kToleranceDegrees);  // PIDController.onTarget() method does not work!
+        turnController.setAbsoluteTolerance(kToleranceDegrees);  // PIDController.onTarget() method does not work!
 //        turnController.setToleranceBuffer(3);    
         
         
@@ -109,7 +105,6 @@ public class DriveTrain extends Subsystem implements PIDOutput {
         LiveWindow.addActuator("DriveTrain", "rightMotor1", rightMotor1);
         LiveWindow.addActuator("DriveTrain", "rightMotor2", rightMotor2);
         LiveWindow.addActuator("DriveTrain", "RotatePIDController", turnController);
-//        LiveWindow.addSensor("DriveTrain", "gyro1", gyro);
         LiveWindow.addSensor("DriveTrain", "navX-mxp", ahrs);
         
         /* Display 6-axis Processed Angle Data                                      */
@@ -194,17 +189,14 @@ public class DriveTrain extends Subsystem implements PIDOutput {
 	 * Returns the current angle of the gyro.
 	 */
 	public double getDegrees() {
-//		SmartDashboard.putNumber("gyro angle", gyro.getAngle());
 		SmartDashboard.putNumber("navX angle", ahrs.getAngle());
-//		return gyro.getAngle();
 		return ahrs.getAngle();
 	}
 	
 	/**
-	 * Resets the angle of the gyro and the NavX
+	 * Resets the angle of the NavX
 	 */
 	public void resetDegrees() {
-//		gyro.reset();
 		ahrs.reset();
 	}
 	
@@ -248,11 +240,12 @@ public class DriveTrain extends Subsystem implements PIDOutput {
 	public boolean turnDegreesPIDIsFinished() {
 		double err;
 		
-//		SmartDashboard.putNumber("PID error", turnController.getError());
-//		SmartDashboard.putNumber("PID avg error", turnController.getAvgError());
-//		SmartDashboard.putNumber("PID setpoint", turnController.getSetpoint());
-//		SmartDashboard.putNumber("PID power", turnController.get());
+		SmartDashboard.putNumber("PID error", turnController.getError());
+		SmartDashboard.putNumber("PID avg error", turnController.getAvgError());
+		SmartDashboard.putNumber("PID setpoint", turnController.getSetpoint());
+		SmartDashboard.putNumber("PID power", turnController.get());
 //		SmartDashboard.putBoolean("PID on target", turnController.onTarget());
+		SmartDashboard.putNumber("navX angle", ahrs.getAngle());
 	
 		err = Math.abs(turnController.getSetpoint() - ahrs.getAngle());
 		if (err > 180) { 

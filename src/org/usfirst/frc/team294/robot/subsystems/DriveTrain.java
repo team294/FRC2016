@@ -35,9 +35,9 @@ public class DriveTrain extends Subsystem implements PIDOutput {
     
     // PID contorller and parameters for turning using the navX
     PIDController turnController;
-    static final double kP = 0.04;
-    static final double kI = 0.0;   //0.00025;
-    static final double kD = 0.01;  //0.01;
+    static final double kP = 0.04;   // Parameters good for small angles:  0.04, 0.001, 0.1; For large angles, set I to 0?
+    static final double kI = 0.001;   //0.00025;
+    static final double kD = 0.1;  //0.01;
     static final double kF = 0.00;
     static final double kToleranceDegrees = 1.5f;
     ToleranceChecker rotateTol = new ToleranceChecker(kToleranceDegrees, 5);
@@ -94,7 +94,7 @@ public class DriveTrain extends Subsystem implements PIDOutput {
         turnController = new PIDController(kP, kI, kD, kF, ahrs, this);
         turnController.setInputRange(0.0f,  360.0f);
         turnController.setContinuous(true);
-        turnController.setOutputRange(-1.0, 1.0);
+        turnController.setOutputRange(-0.5, 0.5);
         turnController.setAbsoluteTolerance(kToleranceDegrees);  // PIDController.onTarget() method does not work!
 //        turnController.setToleranceBuffer(3);    
         
@@ -252,7 +252,7 @@ public class DriveTrain extends Subsystem implements PIDOutput {
 			err = Math.abs(360-err); 
 		}
 		
-//		SmartDashboard.putNumber("PID my error", err);
+		//		SmartDashboard.putNumber("PID my error", err);
 		
 //		if ( err <= kToleranceDegrees ) {
 //			nInToleranceSamples++;

@@ -131,11 +131,9 @@ public class Robot extends IterativeRobot {
 //		shooter.setPIDFromSmartDashboard();
 		shooter.updateSmartDashboard();
 
-        SmartDashboard.putNumber("Arm Position", shooterArm.getPos());
-        SmartDashboard.putNumber("Enc Position", shooterArm.getEncPos());
-        SmartDashboard.putNumber("Arm Angle", shooterArm.getAngle());
-//        shooterArm.setPIDFromSmartDashboard();
-		shooter.isBallLoaded();
+        shooterArm.setPIDFromSmartDashboard();
+        shooterArm.updateSmartDashboard();
+        shooter.isBallLoaded();
 		intake.intakeIsUp();
 	}
 

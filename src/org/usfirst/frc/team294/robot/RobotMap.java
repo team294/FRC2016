@@ -36,7 +36,7 @@ public class RobotMap {
     public static int shooterPiston = 4;
     
     // Range of motion for shooter arm
-    public static double shooterArmMinAngle=0;
+    public static double shooterArmMinAngle=0.0;
     public static double shooterArmMaxAngle=93.0;
 
     // Shooter arm setpoints

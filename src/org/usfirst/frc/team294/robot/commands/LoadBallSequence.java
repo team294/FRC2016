@@ -13,22 +13,7 @@ public class LoadBallSequence extends CommandGroup {
 
 	public  LoadBallSequence() {
 
-		addSequential(new Conditional(new IntakeLower(), null) {
-			protected boolean condition() {
-				return Robot.intake.intakeIsUp();
-			}
-		});
-
-		if(Robot.intake.intakeIsUp()){
-			addSequential(new IntakeLower());
-			addSequential(new WaitSeconds(1.5));
-		} 
-
-		// NEED TO UNCOMMENT AND TEST THIS WHEN THE ARM CODE IS READY
-
-		if(Robot.shooterArm.getAngle()>RobotMap.shooterArmMinAngle+2){
-			addSequential(new ShooterArmMoveToSetLocation(RobotMap.shooterArmBallLoadAngle)); 
-		}
+		addSequential(new IntakeLower());
 		addParallel(new IntakeSetToSpeed(1));
 		addParallel(new FlyWheelSetToSpeed(-1500));
 		addSequential(new WaitForBallLoaded());

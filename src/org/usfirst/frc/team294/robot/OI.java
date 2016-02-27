@@ -61,12 +61,13 @@ public class OI {
         left[1].whenPressed(new ShiftDown());
         right[1].whenPressed(new ShiftUp());
 
-        co[1].whenPressed(new ShootBall());
-        co[2].whenPressed(new ShooterArmMoveToSetLocation(78));
-        co[4].whenPressed(new ShooterArmMoveToSetLocation(0));
-        co[7].whenPressed(new LoadBallSequence());
+        co[3].whenPressed(new ShootBall());
+        co[6].whenPressed(new ShooterArmMoveToSetLocation(78));
+        co[7].whenPressed(new ShooterArmMoveToSetLocation(0));
+        co[5].whenPressed(new LoadBallSequence());
         co[10].whenPressed(new IntakeRaise());
-        co[11].whenPressed(new IntakeLower());
+        co[8].whenPressed(new IntakeLower());
+        co[4].whenPressed(new IntakeSetToSpeed(-1));
         
         // SmartDashboard Buttons
         SmartDashboard.putData("Autonomous Command", new AutonomousCommandGroup());

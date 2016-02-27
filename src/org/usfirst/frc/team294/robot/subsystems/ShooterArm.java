@@ -44,7 +44,7 @@ public class ShooterArm extends Subsystem {
 //		shooterArmMotor.setProfile(0);
 //		shooterArmMotor.setPID(10, 0.0, 0.0);  
 //		shooterArmMotor.setF(0.0);   
-		shooterArmMotor.setPID(12, 0.005, 0, 0, 20, 10000, 0);
+		shooterArmMotor.setPID(15, 0.005, 0, 0, 20, 10000, 0);
 		shooterArmMotor.configPeakOutputVoltage(+4.0f, -12.0f);
 		shooterArmMotor.changeControlMode(TalonControlMode.Position);
 		shooterArmMotor.configPotentiometerTurns(3);

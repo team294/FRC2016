@@ -55,7 +55,7 @@ public class OI {
 
         rightJoystick = new Joystick(1);
         rightJoystickButtonA = new JoystickButton(rightJoystick, 1);
-        rightJoystickButtonA.whileHeld(new DriveForwardDistance(0, 0));
+        rightJoystickButtonA.whileHeld(new DriveDistance(0, 0));
         rightJoystickButton4 = new JoystickButton(rightJoystick, 4);
         rightJoystickButton4.whileHeld(new ShiftDown());
         rightJoystickButton5 = new JoystickButton(rightJoystick, 5);
@@ -69,8 +69,8 @@ public class OI {
         SmartDashboard.putData("Autonomous Command", new AutonomousCommandGroup());
         
         SmartDashboard.putData("DriveWithJoysticks", new DriveWithJoysticks());
-        SmartDashboard.putData("DriveForward: driveForwardFast", new DriveForwardDistance(1.0, 1.0));
-        SmartDashboard.putData("DriveForward: driveForwardSlow", new DriveForwardDistance(0.5, 1.0));
+        SmartDashboard.putData("DriveForward: driveForwardFast", new DriveDistance(1.0, 1.0));
+        SmartDashboard.putData("DriveForward: driveForwardSlow", new DriveDistance(0.5, 1.0));
         SmartDashboard.putData("Rotate", new Rotate());
         SmartDashboard.putData("Rotate +90 PID", new RotateDegreesPID(90.0));
         SmartDashboard.putData("Rotate -90 PID", new RotateDegreesPID(-90.0));

@@ -34,7 +34,7 @@ public class ShooterArm extends Subsystem {
 	private double joyAbsSlope=(maxAngle/2-minAngle/2);
 	private double joyAbsYIntercept=maxAngle-joyAbsSlope;
 	
-	private double joyRelativeRate = 1;
+	private double joyRelativeRate = 15;
 	
 	private ToleranceChecker armTol = new ToleranceChecker(1.5, 5);
 
@@ -53,7 +53,6 @@ public class ShooterArm extends Subsystem {
 		shooterArmMotor.setForwardSoftLimit(minPosition-0.02);		// Limit in low position (slightly above 0 deg, and let gravity pull the arm down)
 		shooterArmMotor.enableForwardSoftLimit(true);
 		//shooterArmMotor.disableControl();
-//		shooterArmMotor.set(shooterArmMotor.getAnalogInPosition());
 		this.setupSmartDashboard(true);
 	}
 
@@ -179,7 +178,9 @@ public class ShooterArm extends Subsystem {
 			return;
 		}
 
-		moveAngleRelative(coJoystick.getY()*joyRelativeRate);
+		SmartDashboard.putNumber("Arm Joystick Y", coJoystick.getY());
+		
+		moveAngleRelative(-coJoystick.getY()*joyRelativeRate);
 	}
 	
 	/**

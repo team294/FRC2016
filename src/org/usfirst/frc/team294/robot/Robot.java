@@ -129,10 +129,10 @@ public class Robot extends IterativeRobot {
 		
 		// Uncomment the following 2 lines for debugging shooter motors.
 //		shooter.setPIDFromSmartDashboard();
-		shooter.updateSmartDashboard();
+//		shooter.updateSmartDashboard();
 
-        shooterArm.setPIDFromSmartDashboard();
-        shooterArm.updateSmartDashboard();
+//        shooterArm.setPIDFromSmartDashboard();
+//        shooterArm.updateSmartDashboard();
         shooter.isBallLoaded();
 		intake.intakeIsUp();
 	}

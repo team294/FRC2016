@@ -11,19 +11,21 @@ public class DriveAnglePID extends Command {
 	double degrees;
 	
 	/**
-	 * Rotate robot x degrees using navX-mxp
+	 * Rotate robot x degrees using navX-mxp.  Automatically shifts to low gear.
 	 * @param degrees Number of degrees to rotate (+ right, - left (I think))
 	 */
     public DriveAnglePID(double degrees) {
         // Use requires() here to declare subsystem dependencies
         // eg. requires(chassis);
         requires(Robot.driveTrain);
+        requires(Robot.shifter);
 
         this.degrees = degrees;
     }
 
     // Called just before this Command runs the first time
     protected void initialize() {
+    	Robot.shifter.shiftDown();
     	Robot.driveTrain.turnDegreesPIDStart(degrees);
     }
 

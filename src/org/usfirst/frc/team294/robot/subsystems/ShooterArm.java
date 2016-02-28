@@ -13,6 +13,7 @@ import edu.wpi.first.wpilibj.CANTalon.FeedbackDevice;
 import edu.wpi.first.wpilibj.CANTalon.TalonControlMode;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.command.Subsystem;
+import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**
@@ -54,6 +55,9 @@ public class ShooterArm extends Subsystem {
 		shooterArmMotor.enableForwardSoftLimit(true);
 		//shooterArmMotor.disableControl();
 		this.setupSmartDashboard(true);
+		  
+    	// Add the subsystem to the LiveWindow
+        LiveWindow.addActuator("ShooterArm", "shooterArmMotor", shooterArmMotor);
 	}
 
 	// Put methods for controlling this subsystem
@@ -206,13 +210,14 @@ public class ShooterArm extends Subsystem {
      */
     public void updateSmartDashboard() {
         SmartDashboard.putNumber("Arm Position", getPos());
-        SmartDashboard.putNumber("Enc Position", getEncPos());
+//        SmartDashboard.putNumber("Enc Position", getEncPos());
         SmartDashboard.putNumber("Arm Angle", getAngle());
         SmartDashboard.putNumber("Arm Angle2", getAngle());
 		SmartDashboard.putNumber("Going Towards", shooterArmMotor.getSetpoint());
 		SmartDashboard.putNumber("Arm Error", shooterArmMotor.getError());
-		SmartDashboard.putBoolean("Arm Talon Mode", shooterArmMotor.getControlMode()==TalonControlMode.Position);
+//		SmartDashboard.putBoolean("Arm Talon Mode", shooterArmMotor.getControlMode()==TalonControlMode.Position);
 		SmartDashboard.putNumber("Arm motor voltage", shooterArmMotor.getOutputVoltage());
+		SmartDashboard.putNumber("Arm talon bus voltage", shooterArmMotor.getBusVoltage());
     }
     
 	/**

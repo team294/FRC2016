@@ -11,6 +11,7 @@ import edu.wpi.first.wpilibj.CANTalon;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.RobotDrive;
 import edu.wpi.first.wpilibj.SPI;
+import edu.wpi.first.wpilibj.CANTalon.FeedbackDevice;
 import edu.wpi.first.wpilibj.CANTalon.TalonControlMode;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.PIDController;
@@ -35,11 +36,16 @@ public class DriveTrain extends Subsystem implements PIDOutput {
     
     // PID contorller and parameters for turning using the navX
     PIDController turnController;
-    static final double kP = 0.04;   // Parameters good for small angles:  0.04, 0.001, 0.1; For large angles, set I to 0?
-    static final double kI = 0.001;   //0.00025;
-    static final double kD = 0.1;  //0.01;
     static final double kF = 0.00;
     static final double kToleranceDegrees = 1.5f;
+    // Parameters for small turns
+    static final double kPSmall = 0.04;   // Parameters good for small angles:  0.04, 0.001, 0.1
+    static final double kISmall = 0.001;   
+    static final double kDSmall = 0.1;  
+    // Parameters for large turns
+    static final double kPLarge = 0.03;   // Parameters sort of good for large angles:  0.03, 0, 0.05; For large angles, set I to 0?
+    static final double kILarge = 0.0001;   //0.00025;
+    static final double kDLarge = 0.04;  //0.01;
     ToleranceChecker rotateTol = new ToleranceChecker(kToleranceDegrees, 5);
 //    static final int kToleranceSamples = 5;  // These number of samples must be within tolerance to finish turn
 
@@ -55,18 +61,23 @@ public class DriveTrain extends Subsystem implements PIDOutput {
     	super();
     	
     	// Set up subsystem components
-        leftMotor2.setFeedbackDevice(CANTalon.FeedbackDevice.QuadEncoder);
-        rightMotor2.setFeedbackDevice(CANTalon.FeedbackDevice.QuadEncoder);
+        leftMotor2.setFeedbackDevice(FeedbackDevice.CtreMagEncoder_Relative);
+        rightMotor2.setFeedbackDevice(FeedbackDevice.CtreMagEncoder_Relative);
+        leftMotor2.configEncoderCodesPerRev(100);
+        rightMotor2.configEncoderCodesPerRev(100);
+        leftMotor2.configNominalOutputVoltage(+0.0f, -0.0f);
+        rightMotor2.configNominalOutputVoltage(+0.0f, -0.0f);
+        leftMotor2.configPeakOutputVoltage(+12.0f, -12.0f);
+        rightMotor2.configPeakOutputVoltage(+12.0f, -12.0f);
+        
+//        motorTop.reverseSensor(true);
 
         setDriveControlByPower();
         
-//      shooterMotorTop.reverseSensor(true);
         rightMotor2.setProfile(0);      
-//      shooterMotorTop.reverseSensor(true);
-        leftMotor2.setProfile(0);
-      
-        rightMotor2.setPID(0.0, 0.0, 0.0);  // ProtoBot:  0.020, 0.0002, 2.0;  ProtoBoard:  0.005, 0.00008, 0.00001
-        leftMotor2.setPID(0.0, 0.0, 0.0);  // ProtoBot:  0.020, 0.0002, 2.0;  ProtoBoard:  0.005, 0.00008, 0.00001
+        leftMotor2.setProfile(0);      
+        rightMotor2.setPID(0.2, 0.0, 0.0);  // ProtoBot:  0.020, 0.0002, 2.0;  ProtoBoard:  0.005, 0.00008, 0.00001
+        leftMotor2.setPID(0.2, 0.0, 0.0);  // ProtoBot:  0.020, 0.0002, 2.0;  ProtoBoard:  0.005, 0.00008, 0.00001
         rightMotor2.setF(0.0);   // ProtoBot:  0.035;  ProtoBoard:  0.025
         leftMotor2.setF(0.0);   // ProtoBot:  0.035;  ProtoBoard:  0.025
       
@@ -91,7 +102,7 @@ public class DriveTrain extends Subsystem implements PIDOutput {
         ahrs.zeroYaw();
         
         // Implement PID controller for turning
-        turnController = new PIDController(kP, kI, kD, kF, ahrs, this);
+        turnController = new PIDController(kPSmall, kISmall, kDSmall, kF, ahrs, this);
         turnController.setInputRange(0.0f,  360.0f);
         turnController.setContinuous(true);
         turnController.setOutputRange(-0.5, 0.5);
@@ -130,6 +141,8 @@ public class DriveTrain extends Subsystem implements PIDOutput {
     public void setDriveControlByPower() {
         leftMotor2.changeControlMode(TalonControlMode.PercentVbus);    	
         rightMotor2.changeControlMode(TalonControlMode.PercentVbus);
+        leftMotor2.configPeakOutputVoltage(+12.0f, -12.0f);
+        rightMotor2.configPeakOutputVoltage(+12.0f, -12.0f);
     }
     
     /**
@@ -220,6 +233,14 @@ public class DriveTrain extends Subsystem implements PIDOutput {
 //		nInToleranceSamples = 0;
 		rotateTol.reset();
 		turnController.reset();
+		
+		if (degrees<30) {
+	        turnController.setPID(kPSmall, kISmall, kDSmall);
+		} else {
+	        turnController.setPID(kPLarge, kILarge, kDLarge);
+		}
+		
+		turnController.reset();
 		turnController.setSetpoint(d);
 		turnController.enable();
 	}
@@ -285,14 +306,18 @@ public class DriveTrain extends Subsystem implements PIDOutput {
 	public void driveDistancePIDStart(double distance){
 		rightMotor2.changeControlMode(TalonControlMode.Position);
 		leftMotor2.changeControlMode(TalonControlMode.Position);
-        rightMotor2.setPID(0.020, 0.0002, 2.0);  // ProtoBot:  0.020, 0.0002, 2.0;  ProtoBoard:  0.005, 0.00008, 0.00001
-        leftMotor2.setPID(0.020, 0.0002, 2.0);  // ProtoBot:  0.020, 0.0002, 2.0;  ProtoBoard:  0.005, 0.00008, 0.00001
-        rightMotor2.setF(0.035);   // ProtoBot:  0.035;  ProtoBoard:  0.025
-        leftMotor2.setF(0.035);   // ProtoBot:  0.035;  ProtoBoard:  0.025
-		rightMotor2.set(distance);
+//        rightMotor2.setPID(0.020, 0.00, 0);  // ProtoBot:  0.020, 0.0002, 2.0;  ProtoBoard:  0.005, 0.00008, 0.00001
+//        leftMotor2.setPID(0.020, 0.00, 0);  // ProtoBot:  0.020, 0.0002, 2.0;  ProtoBoard:  0.005, 0.00008, 0.00001
+//        rightMotor2.setF(0.0);   // ProtoBot:  0.035;  ProtoBoard:  0.025
+//        leftMotor2.setF(0.0);   // ProtoBot:  0.035;  ProtoBoard:  0.025
+        leftMotor2.configPeakOutputVoltage(+6.0f, -6.0f);
+        rightMotor2.configPeakOutputVoltage(+6.0f, -6.0f);
+        leftMotor2.setPosition(0);
+        rightMotor2.setPosition(0);
 		leftMotor2.set(distance);
-		rightMotor2.enableControl();
-		leftMotor2.enableControl();
+        rightMotor2.set(distance);
+//		rightMotor2.enableControl();
+//		leftMotor2.enableControl();
 	}
 	
 	/**
@@ -326,21 +351,31 @@ public class DriveTrain extends Subsystem implements PIDOutput {
 	 * Stops the PID Control of Driving the robot forward
 	 */
 	public void driveDistancePIDCancel(){
-		rightMotor2.disableControl();
-		leftMotor2.disableControl();
-		setDriveControlByPower();
-		rightMotor2.setPID(0.0, 0.0, 0.0);  // ProtoBot:  0.020, 0.0002, 2.0;  ProtoBoard:  0.005, 0.00008, 0.00001
-        leftMotor2.setPID(0.0, 0.0, 0.0);  // ProtoBot:  0.020, 0.0002, 2.0;  ProtoBoard:  0.005, 0.00008, 0.00001
-        rightMotor2.setF(0.0);   // ProtoBot:  0.035;  ProtoBoard:  0.025
-        leftMotor2.setF(0.0);   // ProtoBot:  0.035;  ProtoBoard:  0.025
+//		rightMotor2.disableControl();
+//		leftMotor2.disableControl();
+		stop();
 	}
 
 	public int getLeftEncoder() {
+		SmartDashboard.putNumber("Left Setpoint", leftMotor2.getSetpoint());
+		SmartDashboard.putNumber("Left Position", leftMotor2.getPosition());
 		SmartDashboard.putNumber("Left Encoder Position", leftMotor2.getEncPosition());
+		SmartDashboard.putNumber("Left Get", leftMotor2.get());
+		SmartDashboard.putNumber("Left Error", leftMotor2.getError());
+		SmartDashboard.putNumber("Left Output Voltage", leftMotor2.getOutputVoltage());
+		SmartDashboard.putNumber("Left Speed", leftMotor2.getSpeed());
+
 		return leftMotor2.getEncPosition();
 	}
 	public int getRightEncoder() {
+		SmartDashboard.putNumber("Right Setpoint", rightMotor2.getSetpoint());
+		SmartDashboard.putNumber("Right Position", rightMotor2.getPosition());
 		SmartDashboard.putNumber("Right Encoder Position", rightMotor2.getEncPosition());
+		SmartDashboard.putNumber("Right Get", rightMotor2.get());
+		SmartDashboard.putNumber("Right Error", rightMotor2.getError());
+		SmartDashboard.putNumber("Right Output Voltage", rightMotor2.getOutputVoltage());
+		SmartDashboard.putNumber("Right Speed", rightMotor2.getSpeed());
+
 		return rightMotor2.getEncPosition();
 	}
 

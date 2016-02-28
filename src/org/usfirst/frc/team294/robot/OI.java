@@ -73,8 +73,8 @@ public class OI {
         SmartDashboard.putData("Autonomous Command", new AutonomousCommandGroup());
         
         SmartDashboard.putData("DriveWithJoysticks", new DriveWithJoysticks());
-        SmartDashboard.putData("DriveForward: driveForwardFast", new DriveDistance(1.0, 1.0));
-        SmartDashboard.putData("DriveForward: driveForwardSlow", new DriveDistance(0.5, 1.0));
+        SmartDashboard.putData("DriveForward: driveForwardFast", new DriveDistance(1.0, 100000.0));
+        SmartDashboard.putData("DriveForward: driveForwardSlow", new DriveDistance(0.5, 10000.0));
         SmartDashboard.putData("Rotate +90 PID", new DriveAnglePID(90.0));
         SmartDashboard.putData("Rotate -90 PID", new DriveAnglePID(-90.0));
         SmartDashboard.putData("Rotate +5 PID", new DriveAnglePID(5.0));

@@ -31,8 +31,10 @@ public class ShooterArm extends Subsystem {
 	private double maxAngle=RobotMap.shooterArmMaxAngle;
 	private double anglesPerPos=(90-minAngle)/(deg90Position-minPosition);
 	
-	private double slope=(maxAngle/2-minAngle/2);
-	private double yIntercept=maxAngle-slope;
+	private double joyAbsSlope=(maxAngle/2-minAngle/2);
+	private double joyAbsYIntercept=maxAngle-joyAbsSlope;
+	
+	private double joyRelativeRate = 15;
 	
 	private ToleranceChecker armTol = new ToleranceChecker(1.5, 5);
 
@@ -41,11 +43,9 @@ public class ShooterArm extends Subsystem {
 		
 		shooterArmMotor.setFeedbackDevice(CANTalon.FeedbackDevice.AnalogPot);
 		//shooterArmMotor.reverseSensor(true); 
-//		shooterArmMotor.setProfile(0);
-//		shooterArmMotor.setPID(10, 0.0, 0.0);  
-//		shooterArmMotor.setF(0.0);   
-		shooterArmMotor.setPID(12, 0.005, 0, 0, 20, 10000, 0);
-		shooterArmMotor.configPeakOutputVoltage(+4.0f, -12.0f);
+		//shooterArmMotor.setPID(12, 0.005, 0, 0, 20, 10000, 0);  // Good values without elastic
+		shooterArmMotor.setPID(40, 0.1, 0, 0, 20, 10000, 0);  // Good values with elastic bands
+		shooterArmMotor.configPeakOutputVoltage(+5.0f, -10.0f);
 		shooterArmMotor.changeControlMode(TalonControlMode.Position);
 		shooterArmMotor.configPotentiometerTurns(3);
 		shooterArmMotor.setReverseSoftLimit(deg90Position-0.06);		// Limit in high position (slightly more than 90 deg, 0.06 rotations)
@@ -53,7 +53,6 @@ public class ShooterArm extends Subsystem {
 		shooterArmMotor.setForwardSoftLimit(minPosition-0.02);		// Limit in low position (slightly above 0 deg, and let gravity pull the arm down)
 		shooterArmMotor.enableForwardSoftLimit(true);
 		//shooterArmMotor.disableControl();
-//		shooterArmMotor.set(shooterArmMotor.getAnalogInPosition());
 		this.setupSmartDashboard(true);
 	}
 
@@ -137,11 +136,6 @@ public class ShooterArm extends Subsystem {
 	 * @return true = arm is at the setpoint
 	 */
 	public boolean moveToAngleIsFinished() {
-		SmartDashboard.putNumber("Going Towards", shooterArmMotor.getSetpoint());
-		SmartDashboard.putNumber("Arm Error", shooterArmMotor.getError());
-		SmartDashboard.putNumber("Arm Reading", shooterArmMotor.get());
-		SmartDashboard.putBoolean("Arm Talon Mode", shooterArmMotor.getControlMode()==TalonControlMode.Position);
-		
 		return armTol.success( getAngle() - convertPosToAngle(shooterArmMotor.getSetpoint()) );  
 	}
 	
@@ -167,14 +161,26 @@ public class ShooterArm extends Subsystem {
 		//stickVal=thirdJoystick.getY();
 	}
 
-	public void moveArmWithJoystick(Joystick thirdJoystick){
+	public void moveArmWithJoystickAbsolute(Joystick coJoystick){
 		// Don't move if the shooter arm is disabled.
 		if (!Robot.shooterArmEnabled) {
 			SmartDashboard.putNumber("Set position", -9999);			
 			return;
 		}
 
-		moveToAngle((slope*thirdJoystick.getY())+yIntercept);
+		moveToAngle((joyAbsSlope*coJoystick.getY())+joyAbsYIntercept);		
+	}
+	
+	public void moveArmWithJoystickRelative(Joystick coJoystick) {
+		// Don't move if the shooter arm is disabled.
+		if (!Robot.shooterArmEnabled) {
+			SmartDashboard.putNumber("Set position", -9999);			
+			return;
+		}
+
+		SmartDashboard.putNumber("Arm Joystick Y", coJoystick.getY());
+		
+		moveAngleRelative(-coJoystick.getY()*joyRelativeRate);
 	}
 	
 	/**
@@ -193,6 +199,20 @@ public class ShooterArm extends Subsystem {
 			SmartDashboard.putNumber("Shooter Arm I", shooterArmMotor.getI());
 			SmartDashboard.putNumber("Shooter Arm D", shooterArmMotor.getD());
 		}
+    }
+    
+    /**
+     * Updates ShooterArm parameters on SmartDashboard.
+     */
+    public void updateSmartDashboard() {
+        SmartDashboard.putNumber("Arm Position", getPos());
+        SmartDashboard.putNumber("Enc Position", getEncPos());
+        SmartDashboard.putNumber("Arm Angle", getAngle());
+        SmartDashboard.putNumber("Arm Angle2", getAngle());
+		SmartDashboard.putNumber("Going Towards", shooterArmMotor.getSetpoint());
+		SmartDashboard.putNumber("Arm Error", shooterArmMotor.getError());
+		SmartDashboard.putBoolean("Arm Talon Mode", shooterArmMotor.getControlMode()==TalonControlMode.Position);
+		SmartDashboard.putNumber("Arm motor voltage", shooterArmMotor.getOutputVoltage());
     }
     
 	/**

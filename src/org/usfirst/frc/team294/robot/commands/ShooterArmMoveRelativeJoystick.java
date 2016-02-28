@@ -5,37 +5,28 @@ import org.usfirst.frc.team294.robot.Robot;
 import edu.wpi.first.wpilibj.command.Command;
 
 /**
- * Rotate robot x degrees using navX-mxp
+ *
  */
-public class DriveAnglePID extends Command {
-	double degrees;
-	
-	/**
-	 * Rotate robot x degrees using navX-mxp.  Automatically shifts to low gear.
-	 * @param degrees Number of degrees to rotate (+ right, - left (I think))
-	 */
-    public DriveAnglePID(double degrees) {
+public class ShooterArmMoveRelativeJoystick extends Command {
+
+    public ShooterArmMoveRelativeJoystick() {
         // Use requires() here to declare subsystem dependencies
         // eg. requires(chassis);
-        requires(Robot.driveTrain);
-        requires(Robot.shifter);
-
-        this.degrees = degrees;
+    	requires(Robot.shooterArm);
     }
 
     // Called just before this Command runs the first time
     protected void initialize() {
-    	Robot.shifter.shiftDown();
-    	Robot.driveTrain.turnDegreesPIDStart(degrees);
     }
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
+    	Robot.shooterArm.moveArmWithJoystickRelative(Robot.oi.coJoystick);
     }
 
     // Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished() {
-        return Robot.driveTrain.turnDegreesPIDIsFinished();
+        return false;
     }
 
     // Called once after isFinished returns true
@@ -45,7 +36,5 @@ public class DriveAnglePID extends Command {
     // Called when another command which requires one or more of the same
     // subsystems is scheduled to run
     protected void interrupted() {
-    	Robot.driveTrain.turnDegreesPIDCancel();
-    	Robot.driveTrain.stop();
     }
 }

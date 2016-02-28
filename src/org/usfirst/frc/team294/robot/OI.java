@@ -41,10 +41,10 @@ public class OI {
 
 
     // Joystick controls
-    public Joystick leftJoystick = new Joystick(0);
-    public Joystick rightJoystick = new Joystick(1);
-    public Joystick coPanel = new Joystick(2);
-    public Joystick coJoystick = new Joystick(3);
+    public static Joystick leftJoystick = new Joystick(0);
+    public static Joystick rightJoystick = new Joystick(1);
+    public static Joystick coPanel = new Joystick(2);
+    public static Joystick coJoystick = new Joystick(3);
     
     // Joystick buttons
     Button[] left = new Button[13];
@@ -63,19 +63,21 @@ public class OI {
 
         left[1].whenPressed(new ShiftDown());
         right[1].whenPressed(new ShiftUp());
-
-        coP[1].whenPressed(new ShootBall());
-        coP[2].whenPressed(new ShooterArmMoveToSetLocation(78));
-        coP[4].whenPressed(new ShooterArmMoveToSetLocation(0));
-        coP[7].whenPressed(new LoadBallSequence());
+        
+        
+        coP[3].whenPressed(new ShootBall());
+        coP[6].whenPressed(new ShooterArmMoveToSetLocation(78));
+        coP[7].whenPressed(new ShooterArmMoveToSetLocation(0));
+        coP[5].whenPressed(new LoadBallSequence());
         coP[10].whenPressed(new IntakeRaise());
-        coP[11].whenPressed(new IntakeLower());
+        coP[8].whenPressed(new IntakeLower());
+        coP[4].whenPressed(new IntakeSetToSpeed(-1));
         
         // SmartDashboard Buttons
         SmartDashboard.putData("Autonomous Command", new AutonomousCommandGroup());
         
         SmartDashboard.putData("DriveWithJoysticks", new DriveWithJoysticks());
-        SmartDashboard.putData("DriveForward: driveForwardFast", new DriveDistance(1.0, 1.0));
+        SmartDashboard.putData("DriveForward: driveForwardFast", new DriveDistance(1.0, 10.0));
         SmartDashboard.putData("DriveForward: driveForwardSlow", new DriveDistance(0.5, 1.0));
         SmartDashboard.putData("Rotate +90 PID", new DriveAnglePID(90.0));
         SmartDashboard.putData("Rotate -90 PID", new DriveAnglePID(-90.0));
@@ -93,6 +95,7 @@ public class OI {
         SmartDashboard.putData("Start FlyWheels", new FlyWheelSetToSpeed(4500));
         SmartDashboard.putData("Intake FlyWheels", new FlyWheelSetToSpeed(-2500));
         SmartDashboard.putData("Start Top FlyWheel only", new FlyWheelSetToSpeed(4500, 0));
+        SmartDashboard.putData("Start Bottom FlyWheel only", new FlyWheelSetToSpeed(0, 4500));
         SmartDashboard.putData("Stop FlyWheels", new FlyWheelSetToSpeed(0));
         
         SmartDashboard.putData("Intake Raise", new IntakeRaise());
@@ -109,6 +112,7 @@ public class OI {
         SmartDashboard.putData("Shooter Arm 0", new ShooterArmMoveToSetLocation(0));
         //REMOVE THIS BUTTON ONLY FOR TESTING.
         SmartDashboard.putData("Shooter Arm -50", new ShooterArmMoveToSetLocation(-50));
+        SmartDashboard.putData("Shooter Arm Joystick Relative", new ShooterArmMoveRelativeJoystick());
         
         SmartDashboard.putData("Load Ball", new LoadBallSequence());
         

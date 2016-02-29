@@ -97,6 +97,8 @@ public class Shooter extends Subsystem {
     public void setSpeed(double topSpeed, double bottomSpeed){
     	motorTop.set(topSpeed);
     	motorBottom.set(bottomSpeed);
+    	motorTop.clearIAccum();
+    	motorBottom.clearIAccum();
     	SmartDashboard.putNumber("ShootTop Setpoint", motorTop.getSetpoint());
 		SmartDashboard.putNumber("ShootBot Setpoint", motorBottom.getSetpoint());   	
     }
@@ -187,8 +189,8 @@ public class Shooter extends Subsystem {
 		SmartDashboard.putNumber("ShootBot Speed", motorBottom.getSpeed());
 		SmartDashboard.putNumber("ShootBot Error", motorBottom.getError());		
 
-		SmartDashboard.putNumber("ShootTop Speed2", motorTop.getSpeed());
-		SmartDashboard.putNumber("ShootBot Speed2", motorBottom.getSpeed());    
+//		SmartDashboard.putNumber("ShootTop Speed2", motorTop.getSpeed());
+//		SmartDashboard.putNumber("ShootBot Speed2", motorBottom.getSpeed());    
     }
     
 	/**

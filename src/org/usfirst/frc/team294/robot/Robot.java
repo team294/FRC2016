@@ -3,6 +3,7 @@ package org.usfirst.frc.team294.robot;
 import edu.wpi.first.wpilibj.CANTalon;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.IterativeRobot;
+import edu.wpi.first.wpilibj.PowerDistributionPanel;
 import edu.wpi.first.wpilibj.Preferences;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
@@ -38,6 +39,8 @@ public class Robot extends IterativeRobot {
 	public static double armCalMinPosition;
 	public static double armCal90DegPosition;
 	public static boolean shooterArmEnabled;
+	
+	public static PowerDistributionPanel panel;
 	
 	/**
 	 * This function is run when the robot is first started up and should be
@@ -85,6 +88,8 @@ public class Robot extends IterativeRobot {
 		SmartDashboard.putData(shooter);
 		SmartDashboard.putData(intake);
 		SmartDashboard.putData(vision);
+		
+		panel = new PowerDistributionPanel();
 	}
 
 	/**
@@ -129,13 +134,10 @@ public class Robot extends IterativeRobot {
 		
 		// Uncomment the following 2 lines for debugging shooter motors.
 //		shooter.setPIDFromSmartDashboard();
-		shooter.updateSmartDashboard();
+//		shooter.updateSmartDashboard();
 
 //        shooterArm.setPIDFromSmartDashboard();
         shooterArm.updateSmartDashboard();
-        
-        shooter.isBallLoaded();
-		intake.intakeIsUp();
 		
 		double ballAxis = OI.coPanel.getRawAxis(4);
 		
@@ -177,7 +179,11 @@ public class Robot extends IterativeRobot {
 		}else if(ballAxis > pos10 && ballAxis < 1){
 			System.out.println(11);
 		}
+//        shooter.isBallLoaded();
+//		intake.intakeIsUp();
 		
+		SmartDashboard.putNumber("Panel voltage", panel.getVoltage());
+		SmartDashboard.putNumber("Panel arm current", panel.getCurrent(0));
 	}
 
 	/**

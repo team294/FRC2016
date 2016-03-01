@@ -45,7 +45,7 @@ public class Shooter extends Subsystem {
         motorTop.configNominalOutputVoltage(+0.0f, -0.0f);
         motorTop.configPeakOutputVoltage(+12.0f, -12.0f);
 //        motorTop.setPID(0.010, 0.00005, 0); motorTop.setF(0.020); // Better
-        motorTop.setPID(0.010, 0.00015, 0, 0.020, 10000, 1000, 0); // Limit windup -- best
+        motorTop.setPID(0.010, 0.00015, 0, 0.020, 10000, 50, 0); // Limit windup -- best
         motorTop.changeControlMode(TalonControlMode.Speed);
 
         motorBottom.setFeedbackDevice(FeedbackDevice.CtreMagEncoder_Relative);
@@ -53,7 +53,7 @@ public class Shooter extends Subsystem {
         motorBottom.reverseSensor(true);
         motorBottom.configNominalOutputVoltage(+0.0f, -0.0f);
         motorBottom.configPeakOutputVoltage(+12.0f, -12.0f);
-        motorBottom.setPID(0.010, 0.00015, 0, 0.020, 10000, 1000, 0); // Limit windup -- best
+        motorBottom.setPID(0.010, 0.00015, 0, 0.020, 10000, 50, 0); // Limit windup -- best
         motorBottom.changeControlMode(TalonControlMode.Speed);
                 
 //        ballPiston.set(DoubleSolenoid.Value.kReverse);
@@ -77,7 +77,9 @@ public class Shooter extends Subsystem {
 	 * will prevent the controller from changing speeds properly.
      * @param speed RPM to set both top and bottom motors.  + = eject ball, - = load ball.
 	 */
-    public void setSpeed(double speed){
+    public void setSpeed(double speed) {
+    	motorTop.enableControl();
+    	motorBottom.enableControl();
     	motorTop.set(speed);
     	motorBottom.set(speed);
     	motorTop.clearIAccum();
@@ -94,13 +96,23 @@ public class Shooter extends Subsystem {
      * @param topSpeed RPM to set top motor.  + = eject ball, - = load ball.
      * @param bottomSpeed RPM to set bottom motor.  + = eject ball, - = load ball.
 	 */
-    public void setSpeed(double topSpeed, double bottomSpeed){
+    public void setSpeed(double topSpeed, double bottomSpeed) {
+    	motorTop.enableControl();
+    	motorBottom.enableControl();
     	motorTop.set(topSpeed);
     	motorBottom.set(bottomSpeed);
     	motorTop.clearIAccum();
     	motorBottom.clearIAccum();
     	SmartDashboard.putNumber("ShootTop Setpoint", motorTop.getSetpoint());
 		SmartDashboard.putNumber("ShootBot Setpoint", motorBottom.getSetpoint());   	
+    }
+    
+    /**
+     * Stops the flywheels using break mode of the talon.
+     */
+    public void stopFlyWheels() {
+    	motorTop.disableControl();
+    	motorBottom.disableControl();
     }
     
     /** 

@@ -34,7 +34,7 @@ public class LoadBallSequence extends CommandGroup {
     	addSequential(new WaitForBallLoaded());
     	addSequential(new WaitSeconds(.5));
     	addParallel(new IntakeSetToSpeed(0)); 
-    	addSequential(new FlyWheelSetToSpeed(0));
+    	addSequential(new FlyWheelStop());
     	    	
         // Add Commands here:
         // e.g. addSequential(new Command1());

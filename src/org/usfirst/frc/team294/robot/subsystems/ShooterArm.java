@@ -13,6 +13,7 @@ import edu.wpi.first.wpilibj.CANTalon.FeedbackDevice;
 import edu.wpi.first.wpilibj.CANTalon.TalonControlMode;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.command.Subsystem;
+import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**
@@ -54,6 +55,9 @@ public class ShooterArm extends Subsystem {
 		shooterArmMotor.enableForwardSoftLimit(true);
 		//shooterArmMotor.disableControl();
 		this.setupSmartDashboard(true);
+		  
+    	// Add the subsystem to the LiveWindow
+        LiveWindow.addActuator("ShooterArm", "shooterArmMotor", shooterArmMotor);
 	}
 
 	// Put methods for controlling this subsystem
@@ -197,22 +201,23 @@ public class ShooterArm extends Subsystem {
 			SmartDashboard.putNumber("Shooter Arm I", shooterArmMotor.getI());
 			SmartDashboard.putNumber("Shooter Arm D", shooterArmMotor.getD());
 		}
-	}
-
-	/**
-	 * Updates ShooterArm parameters on SmartDashboard.
-	 */
-	public void updateSmartDashboard() {
-		SmartDashboard.putNumber("Arm Position", getPos());
-		SmartDashboard.putNumber("Enc Position", getEncPos());
-		SmartDashboard.putNumber("Arm Angle", getAngle());
-		SmartDashboard.putNumber("Arm Angle2", getAngle());
+    }
+    
+    /**
+     * Updates ShooterArm parameters on SmartDashboard.
+     */
+    public void updateSmartDashboard() {
+        SmartDashboard.putNumber("Arm Position", getPos());
+//        SmartDashboard.putNumber("Enc Position", getEncPos());
+        SmartDashboard.putNumber("Arm Angle", getAngle());
+        SmartDashboard.putNumber("Arm Angle2", getAngle());
 		SmartDashboard.putNumber("Going Towards", shooterArmMotor.getSetpoint());
 		SmartDashboard.putNumber("Arm Error", shooterArmMotor.getError());
-		SmartDashboard.putBoolean("Arm Talon Mode", shooterArmMotor.getControlMode()==TalonControlMode.Position);
+//		SmartDashboard.putBoolean("Arm Talon Mode", shooterArmMotor.getControlMode()==TalonControlMode.Position);
 		SmartDashboard.putNumber("Arm motor voltage", shooterArmMotor.getOutputVoltage());
-	}
-
+		SmartDashboard.putNumber("Arm talon bus voltage", shooterArmMotor.getBusVoltage());
+    }
+    
 	/**
 	 * Set shooter motor setpoint and PIDF parameters from the SmartDashboard.  To use this method,
 	 * be sure to previously call shooter.setupSmartDashboard(true) during robot init.

@@ -4,7 +4,6 @@ import org.usfirst.frc.team294.robot.Robot;
 import org.usfirst.frc.team294.robot.utilities.ToleranceChecker;
 
 import edu.wpi.first.wpilibj.command.Command;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**
  * Turn shooter flywheels on or off.
@@ -39,6 +38,7 @@ public class FlyWheelSetToSpeed extends Command {
 
     // Called just before this Command runs the first time
     protected void initialize() {
+//    	System.out.println("FlyWheelSetToSpeed " + topSpeed + " " + bottomSpeed );
     	Robot.shooter.setSpeed(topSpeed, bottomSpeed);
     	sTol.reset();
     }
@@ -50,8 +50,6 @@ public class FlyWheelSetToSpeed extends Command {
     // Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished() {
     	double err;
-    	
-    	Robot.shooter.updateSmartDashboard();
 
     	err = Math.abs(topSpeed - Robot.shooter.getTopFlyWheelSpeed()) + Math.abs(bottomSpeed - Robot.shooter.getBottomFlyWheelSpeed()) ; 
     	return sTol.success(err);
@@ -59,7 +57,7 @@ public class FlyWheelSetToSpeed extends Command {
 
     // Called once after isFinished returns true
     protected void end() {
-    	
+//    	System.out.println("FlyWheeSetToSpeed end");
     }
 
     // Called when another command which requires one or more of the same

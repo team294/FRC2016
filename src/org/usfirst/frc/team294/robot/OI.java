@@ -43,31 +43,36 @@ public class OI {
     // Joystick controls
     public Joystick leftJoystick = new Joystick(0);
     public Joystick rightJoystick = new Joystick(1);
-    public Joystick coJoystick = new Joystick(2);
+    public Joystick coPanel = new Joystick(2);
+    public Joystick coJoystick = new Joystick(3);
     
     // Joystick buttons
-    Button[] left = new Button[13];
-    Button[] right = new Button[13];
-    Button[] co = new Button[13];
-    
+    Button[] left = new Button[15];
+    Button[] right = new Button[15];
+    Button[] coP = new Button[15];
+    Button[] coJ = new Button[15];
+
     public OI() {
         // Create buttons
-        for (int i=1; i<13; i++) {
+        for (int i=1; i<15; i++) {
             left[i] = new JoystickButton(leftJoystick, i);
             right[i] = new JoystickButton(rightJoystick, i);
-            co[i] = new JoystickButton(coJoystick, i);
+            coP[i] = new JoystickButton(coPanel, i);
+            coJ[i] = new JoystickButton(coJoystick, i);
         }
 
         left[1].whenPressed(new ShiftDown());
         right[1].whenPressed(new ShiftUp());
 
-        co[3].whenPressed(new ShootBall());
-        co[6].whenPressed(new ShooterArmMoveToSetLocation(78));
-        co[7].whenPressed(new ShooterArmMoveToSetLocation(0));
-        co[5].whenPressed(new LoadBallSequence());
-        co[10].whenPressed(new IntakeRaise());
-        co[8].whenPressed(new IntakeLower());
-        co[4].whenPressed(new IntakeSetToSpeed(-1));
+        coP[4].whenPressed(new ShootBall());
+        coP[6].whenPressed(new ShooterArmMoveToSetLocation(78));
+        coP[7].whenPressed(new ShooterArmMoveToSetLocation(78));
+        coP[3].whenPressed(new ShooterArmMoveToSetLocation(0));
+        coP[12].whenPressed(new LoadBallSequence());
+        coP[9].whenPressed(new IntakeRaise());
+        coP[11].whenPressed(new IntakeLower());
+        coP[13].whenPressed(new IntakeSetToSpeed(-1));
+        coP[14].whenPressed(new IntakeSetToSpeed(0));
         
         // SmartDashboard Buttons
         SmartDashboard.putData("Autonomous Command", new AutonomousCommandGroup());

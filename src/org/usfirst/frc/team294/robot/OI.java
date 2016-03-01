@@ -47,14 +47,14 @@ public class OI {
     public Joystick coJoystick = new Joystick(3);
     
     // Joystick buttons
-    Button[] left = new Button[13];
-    Button[] right = new Button[13];
-    Button[] coP = new Button[13];
-    Button[] coJ = new Button[13];
+    Button[] left = new Button[15];
+    Button[] right = new Button[15];
+    Button[] coP = new Button[15];
+    Button[] coJ = new Button[15];
 
     public OI() {
         // Create buttons
-        for (int i=1; i<13; i++) {
+        for (int i=1; i<15; i++) {
             left[i] = new JoystickButton(leftJoystick, i);
             right[i] = new JoystickButton(rightJoystick, i);
             coP[i] = new JoystickButton(coPanel, i);

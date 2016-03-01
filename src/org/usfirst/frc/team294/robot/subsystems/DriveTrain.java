@@ -69,6 +69,8 @@ public class DriveTrain extends Subsystem implements PIDOutput {
         rightMotor2.configNominalOutputVoltage(+0.0f, -0.0f);
         leftMotor2.configPeakOutputVoltage(+12.0f, -12.0f);
         rightMotor2.configPeakOutputVoltage(+12.0f, -12.0f);
+        leftMotor2.setVoltageRampRate(40);
+        rightMotor2.setVoltageRampRate(40);
         
 //        motorTop.reverseSensor(true);
 

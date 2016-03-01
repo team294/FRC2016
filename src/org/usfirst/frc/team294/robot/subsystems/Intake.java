@@ -21,7 +21,8 @@ public class Intake extends Subsystem {
     	super();
     	
     	// Set up subsystem components
-
+    	intakeMotor.setVoltageRampRate(50);
+    	
     	// Add the subsystem to the LiveWindow
         LiveWindow.addActuator("Intake", "Intake Motor", intakeMotor);
         LiveWindow.addActuator("Intake", "Intake Solenoid", intakeSolenoid);

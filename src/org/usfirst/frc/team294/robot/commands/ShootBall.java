@@ -29,7 +29,7 @@ public class ShootBall extends CommandGroup {
     	addSequential(new ShooterPistonOut(true)); //When wheels are full speed, use piston to push the ball into fly wheels
     	addSequential(new WaitSeconds(1.0));
     	addSequential(new ShooterPistonOut(false));
-    	addSequential(new FlyWheelSetToSpeed(0)); //Stops the fly wheels from spinning
+    	addSequential(new FlyWheelStop()); //Stops the fly wheels from spinning
     	
     }
 }

@@ -41,10 +41,10 @@ public class OI {
 
 
     // Joystick controls
-    public static Joystick leftJoystick = new Joystick(0);
-    public static Joystick rightJoystick = new Joystick(1);
-    public static Joystick coPanel = new Joystick(2);
-    public static Joystick coJoystick = new Joystick(3);
+    public Joystick leftJoystick = new Joystick(0);
+    public Joystick rightJoystick = new Joystick(1);
+    public Joystick coPanel = new Joystick(2);
+    public Joystick coJoystick = new Joystick(3);
     
     // Joystick buttons
     Button[] left = new Button[13];
@@ -66,12 +66,14 @@ public class OI {
         
         
         coP[3].whenPressed(new ShootBall());
-        coP[6].whenPressed(new ShooterArmMoveToSetLocation(78));
+        coP[6].whenPressed(new ShooterArmMoveToSetLocation(RobotMap.shootingAngle));
         coP[7].whenPressed(new ShooterArmMoveToSetLocation(0));
         coP[5].whenPressed(new LoadBallSequence());
         coP[10].whenPressed(new IntakeRaise());
         coP[8].whenPressed(new IntakeLower());
         coP[4].whenPressed(new IntakeSetToSpeed(-1));
+        
+        coJ[1].whenPressed(new ShooterArmMoveRelativeJoystick());
         
         // SmartDashboard Buttons
         SmartDashboard.putData("Autonomous Command", new AutonomousCommandGroup());

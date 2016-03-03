@@ -137,6 +137,7 @@ public class Robot extends IterativeRobot {
 //		shooter.updateSmartDashboard();
 
 //        shooterArm.setPIDFromSmartDashboard();
+		
         shooterArm.updateSmartDashboard();
 		
         
@@ -185,8 +186,8 @@ public class Robot extends IterativeRobot {
 //        shooter.isBallLoaded();
 //		intake.intakeIsUp();
 		
-		SmartDashboard.putNumber("Panel voltage", panel.getVoltage());
-		SmartDashboard.putNumber("Panel arm current", panel.getCurrent(0));
+//		SmartDashboard.putNumber("Panel voltage", panel.getVoltage());
+//		SmartDashboard.putNumber("Panel arm current", panel.getCurrent(0));
 	}
 
 	/**

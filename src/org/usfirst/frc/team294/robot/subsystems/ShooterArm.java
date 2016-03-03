@@ -45,7 +45,7 @@ public class ShooterArm extends Subsystem {
 		shooterArmMotor.setFeedbackDevice(CANTalon.FeedbackDevice.AnalogPot);
 		//shooterArmMotor.reverseSensor(true); 
 		//shooterArmMotor.setPID(12, 0.005, 0, 0, 20, 10000, 0);  // Good values without elastic
-		shooterArmMotor.setPID(40, 0.1, 0, 0, 20, 10000, 0);  // Good values with elastic bands
+		shooterArmMotor.setPID(40, 0.1, 0, 0, 20, 50, 0);  // Good values with elastic bands
 		shooterArmMotor.configPeakOutputVoltage(+5.0f, -10.0f);
 		shooterArmMotor.changeControlMode(TalonControlMode.Position);
 		shooterArmMotor.configPotentiometerTurns(3);

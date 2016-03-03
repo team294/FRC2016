@@ -47,14 +47,14 @@ public class OI {
     public Joystick coJoystick = new Joystick(3);
     
     // Joystick buttons
-    Button[] left = new Button[13];
-    Button[] right = new Button[13];
-    Button[] coP = new Button[13];
-    Button[] coJ = new Button[13];
-    
+    Button[] left = new Button[15];
+    Button[] right = new Button[15];
+    Button[] coP = new Button[15];
+    Button[] coJ = new Button[15];
+
     public OI() {
         // Create buttons
-        for (int i=1; i<13; i++) {
+        for (int i=1; i<15; i++) {
             left[i] = new JoystickButton(leftJoystick, i);
             right[i] = new JoystickButton(rightJoystick, i);
             coP[i] = new JoystickButton(coPanel, i);
@@ -63,17 +63,16 @@ public class OI {
 
         left[1].whenPressed(new ShiftDown());
         right[1].whenPressed(new ShiftUp());
-        
-        
-        coP[3].whenPressed(new ShootBall());
+
+        coP[4].whenPressed(new ShootBall());
         coP[6].whenPressed(new ShooterArmMoveToSetLocation(RobotMap.shootingAngle));
-        coP[7].whenPressed(new ShooterArmMoveToSetLocation(0));
-        coP[5].whenPressed(new LoadBallSequence());
-        coP[10].whenPressed(new IntakeRaise());
-        coP[8].whenPressed(new IntakeLower());
-        coP[4].whenPressed(new IntakeSetToSpeed(-1));
-        
-        coJ[1].whenPressed(new ShooterArmMoveRelativeJoystick());
+        coP[7].whenPressed(new ShooterArmMoveToSetLocation(RobotMap.shootingAngle));
+        coP[3].whenPressed(new ShooterArmMoveToSetLocation(0));
+        coP[12].whenPressed(new LoadBallSequence());
+        coP[9].whenPressed(new IntakeRaise());
+        coP[11].whenPressed(new IntakeLower());
+        coP[13].whenPressed(new IntakeSetToSpeed(-1));
+        coP[14].whenPressed(new IntakeSetToSpeed(0));
         
         // SmartDashboard Buttons
         SmartDashboard.putData("Autonomous Command", new AutonomousCommandGroup());
@@ -98,7 +97,7 @@ public class OI {
         SmartDashboard.putData("Intake FlyWheels", new FlyWheelSetToSpeed(-2500));
         SmartDashboard.putData("Start Top FlyWheel only", new FlyWheelSetToSpeed(4500, 0));
         SmartDashboard.putData("Start Bottom FlyWheel only", new FlyWheelSetToSpeed(0, 4500));
-        SmartDashboard.putData("Stop FlyWheels", new FlyWheelSetToSpeed(0));
+        SmartDashboard.putData("Stop FlyWheels", new FlyWheelStop());
         
         SmartDashboard.putData("Intake Raise", new IntakeRaise());
         SmartDashboard.putData("Intake Lower", new IntakeLower());

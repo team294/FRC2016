@@ -78,8 +78,13 @@ public class OI {
         SmartDashboard.putData("Autonomous Command", new AutonomousCommandGroup());
         
         SmartDashboard.putData("DriveWithJoysticks", new DriveWithJoysticks());
-        SmartDashboard.putData("DriveForward: driveForwardFast", new DriveDistance(1.0, 100000.0));
-        SmartDashboard.putData("DriveForward: driveForwardSlow", new DriveDistance(0.5, 10000.0));
+        SmartDashboard.putData("DriveTalon: driveForward 5 revs", new DriveDistance(1.0, 5.0));
+        SmartDashboard.putData("DriveTalon: driveForward 1 rev", new DriveDistance(0.5, 1.0));
+        SmartDashboard.putData("DriveStraightNxp: 5 revs fast", new DriveStraightDistance(0.75, 5.0));
+        SmartDashboard.putData("DriveStraightNxp: 5 revs slow", new DriveStraightDistance(0.4, 5.0));
+        SmartDashboard.putData("DriveStraightNxp: 1 rev fast", new DriveStraightDistance(0.75, 1.0));
+        SmartDashboard.putData("DriveStraightNxp: 1 rev slow", new DriveStraightDistance(0.4, 1.0));
+        
         SmartDashboard.putData("Rotate +90 PID", new DriveAnglePID(90.0));
         SmartDashboard.putData("Rotate -90 PID", new DriveAnglePID(-90.0));
         SmartDashboard.putData("Rotate +5 PID", new DriveAnglePID(5.0));
@@ -115,8 +120,6 @@ public class OI {
         SmartDashboard.putData("Shooter Arm Joystick Relative", new ShooterArmMoveRelativeJoystick());
         
         SmartDashboard.putData("Load Ball", new LoadBallSequence());
-        
-        SmartDashboard.putData("Drive 1000 Units", new DriveDistance(1, 1000));
     }
 }
 

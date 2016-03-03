@@ -47,14 +47,10 @@ public class DriveTrain extends Subsystem implements PIDOutput {
     static final double kILarge = 0.0001;   //0.00025;
     static final double kDLarge = 0.04;  //0.01;
     ToleranceChecker rotateTol = new ToleranceChecker(kToleranceDegrees, 5);
-//    static final int kToleranceSamples = 5;  // These number of samples must be within tolerance to finish turn
 
-    ToleranceChecker driveTol = new ToleranceChecker(100, 5);
+    // Parameters for driving forward to distance using talon PID
+    ToleranceChecker driveTalonTol = new ToleranceChecker(100, 5);
     
-//    static final double kDriveTolerance = 100.0f;
-//    int nDriveInToleranceSamples;
-    
-//    int nInToleranceSamples;  // Number of successive measurements that were in tolerance
 
     public DriveTrain() {
     	// Call the Subsystem constructor
@@ -71,15 +67,17 @@ public class DriveTrain extends Subsystem implements PIDOutput {
         rightMotor2.configPeakOutputVoltage(+12.0f, -12.0f);
         leftMotor2.setVoltageRampRate(40);
         rightMotor2.setVoltageRampRate(40);
+        // With these settings, the encoder reads 4000 ticks per revolution.
         
-//        motorTop.reverseSensor(true);
+//        leftMotor2.reverseSensor(true);
+//        rightMotor2.reverseSensor(true);
 
         setDriveControlByPower();
         
         rightMotor2.setProfile(0);      
         leftMotor2.setProfile(0);      
-        rightMotor2.setPID(0.2, 0.0, 0.0);  // ProtoBot:  0.020, 0.0002, 2.0;  ProtoBoard:  0.005, 0.00008, 0.00001
-        leftMotor2.setPID(0.2, 0.0, 0.0);  // ProtoBot:  0.020, 0.0002, 2.0;  ProtoBoard:  0.005, 0.00008, 0.00001
+        rightMotor2.setPID(0.5, 0.0, 0.0);  // ProtoBot:  0.020, 0.0002, 2.0;  ProtoBoard:  0.005, 0.00008, 0.00001
+        leftMotor2.setPID(0.5, 0.0, 0.0);  // ProtoBot:  0.020, 0.0002, 2.0;  ProtoBoard:  0.005, 0.00008, 0.00001
         rightMotor2.setF(0.0);   // ProtoBot:  0.035;  ProtoBoard:  0.025
         leftMotor2.setF(0.0);   // ProtoBot:  0.035;  ProtoBoard:  0.025
       
@@ -88,7 +86,6 @@ public class DriveTrain extends Subsystem implements PIDOutput {
         leftMotor1.set(leftMotor2.getDeviceID());
         rightMotor1.set(rightMotor2.getDeviceID());        
         
-        robotDrive.setSafetyEnabled(true);
         robotDrive.setExpiration(0.1);
         robotDrive.setSensitivity(0.5);
         robotDrive.setMaxOutput(1.0);
@@ -145,6 +142,7 @@ public class DriveTrain extends Subsystem implements PIDOutput {
         rightMotor2.changeControlMode(TalonControlMode.PercentVbus);
         leftMotor2.configPeakOutputVoltage(+12.0f, -12.0f);
         rightMotor2.configPeakOutputVoltage(+12.0f, -12.0f);
+        robotDrive.setSafetyEnabled(true);
     }
     
     /**
@@ -277,13 +275,6 @@ public class DriveTrain extends Subsystem implements PIDOutput {
 		
 		//		SmartDashboard.putNumber("PID my error", err);
 		
-//		if ( err <= kToleranceDegrees ) {
-//			nInToleranceSamples++;
-//		} else {
-//			nInToleranceSamples = 0;
-//		}
-
-//		if ( nInToleranceSamples >= kToleranceSamples ) {
 		if ( rotateTol.success(err) ) {
 			turnController.reset();
 			rotateTol.reset();
@@ -306,20 +297,22 @@ public class DriveTrain extends Subsystem implements PIDOutput {
 	 * @param distance (eg. 5000 encoder units)
 	 */
 	public void driveDistancePIDStart(double distance){
+        robotDrive.setSafetyEnabled(false);
 		rightMotor2.changeControlMode(TalonControlMode.Position);
 		leftMotor2.changeControlMode(TalonControlMode.Position);
 //        rightMotor2.setPID(0.020, 0.00, 0);  // ProtoBot:  0.020, 0.0002, 2.0;  ProtoBoard:  0.005, 0.00008, 0.00001
 //        leftMotor2.setPID(0.020, 0.00, 0);  // ProtoBot:  0.020, 0.0002, 2.0;  ProtoBoard:  0.005, 0.00008, 0.00001
 //        rightMotor2.setF(0.0);   // ProtoBot:  0.035;  ProtoBoard:  0.025
 //        leftMotor2.setF(0.0);   // ProtoBot:  0.035;  ProtoBoard:  0.025
-        leftMotor2.configPeakOutputVoltage(+6.0f, -6.0f);
-        rightMotor2.configPeakOutputVoltage(+6.0f, -6.0f);
+        leftMotor2.configPeakOutputVoltage(+9.0f, -9.0f);
+        rightMotor2.configPeakOutputVoltage(+9.0f, -9.0f);
         leftMotor2.setPosition(0);
         rightMotor2.setPosition(0);
 		leftMotor2.set(distance);
         rightMotor2.set(distance);
 //		rightMotor2.enableControl();
 //		leftMotor2.enableControl();
+        driveTalonTol.reset();
 	}
 	
 	/**
@@ -330,18 +323,10 @@ public class DriveTrain extends Subsystem implements PIDOutput {
 		double errRight;
 		double errLeft;
 
-		//err = Math.abs(turnController.getSetpoint() - ahrs.getAngle());
 		errRight = Math.abs(rightMotor2.getError());
 		errLeft = Math.abs(leftMotor2.getError());
 		
-//		if ( errLeft <= kDriveTolerance && errRight <= kDriveTolerance) {
-//			nDriveInToleranceSamples++;
-//		} else {
-//			nDriveInToleranceSamples = 0;
-//		}
-//
-//		if ( nDriveInToleranceSamples >= kToleranceSamples ) {
-		if ( driveTol.success(errLeft+errRight) ) {
+		if ( driveTalonTol.success(errLeft+errRight) ) {
 			driveDistancePIDCancel();
 			return true;
 		} else {
@@ -356,8 +341,20 @@ public class DriveTrain extends Subsystem implements PIDOutput {
 //		rightMotor2.disableControl();
 //		leftMotor2.disableControl();
 		stop();
+        robotDrive.setSafetyEnabled(true);
 	}
 
+	/**
+	 * Reset encoder positions to 0.
+	 */
+	public void resetEncoders() {
+        leftMotor2.setPosition(0);
+        rightMotor2.setPosition(0);
+	}
+	
+	/*
+	 * Get left encoder position.  4000 ticks = 1 revolution.
+	 */
 	public int getLeftEncoder() {
 		SmartDashboard.putNumber("Left Setpoint", leftMotor2.getSetpoint());
 		SmartDashboard.putNumber("Left Position", leftMotor2.getPosition());
@@ -369,6 +366,10 @@ public class DriveTrain extends Subsystem implements PIDOutput {
 
 		return leftMotor2.getEncPosition();
 	}
+	
+	/*
+	 * Get right encoder position.  4000 ticks = 1 revolution.
+	 */
 	public int getRightEncoder() {
 		SmartDashboard.putNumber("Right Setpoint", rightMotor2.getSetpoint());
 		SmartDashboard.putNumber("Right Position", rightMotor2.getPosition());

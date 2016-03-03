@@ -132,15 +132,22 @@ public class Robot extends IterativeRobot {
 	public void teleopPeriodic() {
 		Scheduler.getInstance().run();
 		
-		// Uncomment the following 2 lines for debugging shooter motors.
+		// Uncomment the following 2 lines for debugging shooter motors PIDs.
 //		shooter.setPIDFromSmartDashboard();
 //		shooter.updateSmartDashboard();
 
-//        shooterArm.setPIDFromSmartDashboard();
-//        shooterArm.updateSmartDashboard();
-//        shooter.isBallLoaded();
+		// Uncomment the following 2 lines for debugging the arm motor PID.
+//      shooterArm.setPIDFromSmartDashboard();
+//      shooterArm.updateSmartDashboard();
+		
+		// Uncomment the following line to see intake information
+//      shooter.isBallLoaded();
 //		intake.intakeIsUp();
 		
+		// Uncomment the following 2 lines to see drive train data
+    	driveTrain.getLeftEncoder();
+    	driveTrain.getRightEncoder();
+
 //		SmartDashboard.putNumber("Panel voltage", panel.getVoltage());
 //		SmartDashboard.putNumber("Panel arm current", panel.getCurrent(0));
 	}

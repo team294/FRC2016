@@ -72,14 +72,16 @@ public class DriveTrain extends Subsystem implements PIDOutput {
         leftMotor2.setVoltageRampRate(40);
         rightMotor2.setVoltageRampRate(40);
         
-//        motorTop.reverseSensor(true);
+        
+        leftMotor2.reverseSensor(true);
+        rightMotor2.reverseSensor(true);
 
         setDriveControlByPower();
         
         rightMotor2.setProfile(0);      
         leftMotor2.setProfile(0);      
-        rightMotor2.setPID(0.2, 0.0, 0.0);  // ProtoBot:  0.020, 0.0002, 2.0;  ProtoBoard:  0.005, 0.00008, 0.00001
-        leftMotor2.setPID(0.2, 0.0, 0.0);  // ProtoBot:  0.020, 0.0002, 2.0;  ProtoBoard:  0.005, 0.00008, 0.00001
+        rightMotor2.setPID(2, 0.0, 0.0);  // ProtoBot:  0.020, 0.0002, 2.0;  ProtoBoard:  0.005, 0.00008, 0.00001
+        leftMotor2.setPID(2, 0.0, 0.0);  // ProtoBot:  0.020, 0.0002, 2.0;  ProtoBoard:  0.005, 0.00008, 0.00001
         rightMotor2.setF(0.0);   // ProtoBot:  0.035;  ProtoBoard:  0.025
         leftMotor2.setF(0.0);   // ProtoBot:  0.035;  ProtoBoard:  0.025
       
@@ -154,6 +156,8 @@ public class DriveTrain extends Subsystem implements PIDOutput {
      * @param rightStick Right joystick
      */
     public void driveWithJoystick(Joystick leftStick, Joystick rightStick) {
+        leftMotor2.clearStickyFaults();
+        rightMotor2.clearStickyFaults();
     	robotDrive.tankDrive(leftStick, rightStick);
     }
 
@@ -314,8 +318,8 @@ public class DriveTrain extends Subsystem implements PIDOutput {
 //        leftMotor2.setF(0.0);   // ProtoBot:  0.035;  ProtoBoard:  0.025
         leftMotor2.configPeakOutputVoltage(+6.0f, -6.0f);
         rightMotor2.configPeakOutputVoltage(+6.0f, -6.0f);
-        leftMotor2.setPosition(0);
-        rightMotor2.setPosition(0);
+//        leftMotor2.setPosition(0);
+//        rightMotor2.setPosition(0);
 		leftMotor2.set(distance);
         rightMotor2.set(distance);
 //		rightMotor2.enableControl();
@@ -342,7 +346,7 @@ public class DriveTrain extends Subsystem implements PIDOutput {
 //
 //		if ( nDriveInToleranceSamples >= kToleranceSamples ) {
 		if ( driveTol.success(errLeft+errRight) ) {
-			driveDistancePIDCancel();
+			//driveDistancePIDCancel();
 			return true;
 		} else {
 			return false;
@@ -366,6 +370,8 @@ public class DriveTrain extends Subsystem implements PIDOutput {
 		SmartDashboard.putNumber("Left Error", leftMotor2.getError());
 		SmartDashboard.putNumber("Left Output Voltage", leftMotor2.getOutputVoltage());
 		SmartDashboard.putNumber("Left Speed", leftMotor2.getSpeed());
+		
+		SmartDashboard.putBoolean("Left Mode Position", TalonControlMode.Position == leftMotor2.getControlMode());
 
 		return leftMotor2.getEncPosition();
 	}
@@ -377,6 +383,8 @@ public class DriveTrain extends Subsystem implements PIDOutput {
 		SmartDashboard.putNumber("Right Error", rightMotor2.getError());
 		SmartDashboard.putNumber("Right Output Voltage", rightMotor2.getOutputVoltage());
 		SmartDashboard.putNumber("Right Speed", rightMotor2.getSpeed());
+
+		SmartDashboard.putBoolean("Right Mode Position", TalonControlMode.Position == rightMotor2.getControlMode());
 
 		return rightMotor2.getEncPosition();
 	}

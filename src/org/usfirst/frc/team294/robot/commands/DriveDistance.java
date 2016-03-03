@@ -34,7 +34,8 @@ public class DriveDistance extends Command {
 
     // Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished() {
-        return Robot.driveTrain.driveDistancePIDIsFinished();
+        //return Robot.driveTrain.driveDistancePIDIsFinished();
+    	return false;
     }
 
     // Called once after isFinished returns true
@@ -44,7 +45,7 @@ public class DriveDistance extends Command {
     // Called when another command which requires one or more of the same
     // subsystems is scheduled to run
     protected void interrupted() {
-    	Robot.driveTrain.driveDistancePIDCancel();
-    	Robot.driveTrain.stop();
+//    	Robot.driveTrain.driveDistancePIDCancel();
+//    	Robot.driveTrain.stop();
     }
 }

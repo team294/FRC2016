@@ -6,28 +6,41 @@ import org.usfirst.frc.team294.robot.RobotMap;
 import edu.wpi.first.wpilibj.command.Command;
 
 /**
- * Moves the shooter arm on the shortest path that is out of the way of the intake. Takes no parameters. 
+ * Moves the shooter arm on the shortest path that is out of the way of the intake 
  * If the path lengths are equal, moves the shooter arm down. If the arm doesn't interfere with the intake
- * does nothing.
+ * does nothing.  The input parameter moveCond also checks other conditions to see if the intake should move.
  */
 public class ShooterArmMoveAwayFromIntake extends Command {
 	private boolean needToMoveArm;
+	private condition moveCond;
 
+	public static enum condition {
+		ifIntakeNotInWay,
+		ifIntakeNotInWayAndIntakeIsUp
+	}
+	
 	/**
-	 * Moves the shooter arm on the shortest path that is out of the way of the intake. Takes no parameters. 
-	 * If the path lengths are equal, moves the shooter arm down. If the arm doesn't interfere with the intake
-	 * does nothing.
+	 * Moves the shooter arm on the shortest path that is out of the way of the intake. 
+	 * If the path lengths are equal, moves the shooter arm down. 
+	 * Does nothing if moveCond is not true.
+	 * @param moveCond = ifIntakeNotInWay or ifIntakeNotInWayAndIntakeIsUp (preface with ShooterArmMoveAwayFromIntake.condition. )
 	 */
-    public ShooterArmMoveAwayFromIntake() {
+    public ShooterArmMoveAwayFromIntake(condition moveCond) {
         // Use requires() here to declare subsystem dependencies
         // eg. requires(chassis);
     	requires(Robot.shooterArm);
     	requires(Robot.intake);
+    	
+    	this.moveCond = moveCond;
     }
 
     // Called just before this Command runs the first time
     protected void initialize() {
     	needToMoveArm = Robot.intake.shooterArmConflicts();
+    	if (moveCond==condition.ifIntakeNotInWayAndIntakeIsUp) {
+    		needToMoveArm = (needToMoveArm && Robot.intake.intakeIsUp());
+    	}
+    	
 		if(needToMoveArm) {
 	    	Robot.intake.setSpeed(0);
 

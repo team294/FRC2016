@@ -2,7 +2,6 @@ package org.usfirst.frc.team294.robot.commands;
 
 import org.usfirst.frc.team294.robot.Robot;
 import org.usfirst.frc.team294.robot.RobotMap;
-import org.usfirst.frc.team294.robot.commands.control.Conditional;
 
 import edu.wpi.first.wpilibj.command.CommandGroup;
 
@@ -12,26 +11,14 @@ import edu.wpi.first.wpilibj.command.CommandGroup;
 public class LoadBallSequence extends CommandGroup {
     
     public  LoadBallSequence() {
+    	addSequential(new ShooterArmMoveAwayFromIntake(ShooterArmMoveAwayFromIntake.condition.ifIntakeNotInWayAndIntakeIsUp));  // Also waits for move to finish
+    	addSequential(new IntakeLowerIfRaised());  // Also waits for move to finish
+    	addSequential(new ShooterArmMoveToSetLocation(RobotMap.shooterArmBallLoadAngle));
     	
-    	addSequential(new Conditional(new IntakeLower(), null) {
-    		protected boolean condition() {
-    			return Robot.intake.intakeIsUp();
-    		}
-    		});
-    	
-//    	if(Robot.intake.intakeIsUp()){
-//    		addSequential(new IntakeLower());
-//    		addSequential(new WaitSeconds(2));
-//    	} 
-
-    	// NEED TO UNCOMMENT AND TEST THIS WHEN THE ARM CODE IS READY
-    	
-//    	if(Robot.shooterArm.getAngle()>RobotMap.shooterArmMinAngle+2){
-//    		addSequential(new ShooterArmMoveToSetLocation(RobotMap.shooterArmBallLoadAngle)); 
-//    	}
     	addParallel(new IntakeSetToSpeed(1));
     	addParallel(new FlyWheelSetToSpeed(-1500));
     	addSequential(new WaitForBallLoaded());
+    	
     	addSequential(new WaitSeconds(.5));
     	addParallel(new IntakeSetToSpeed(0)); 
     	addSequential(new FlyWheelStop());

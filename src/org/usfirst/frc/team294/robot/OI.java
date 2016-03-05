@@ -103,7 +103,7 @@ public class OI {
         SmartDashboard.putData("Start Bottom FlyWheel only", new FlyWheelSetToSpeed(0, 4500));
         SmartDashboard.putData("Stop FlyWheels", new FlyWheelStop());
         
-        SmartDashboard.putData("Intake Raise", new IntakeRaise());
+        SmartDashboard.putData("Intake Raise", new IntakeRaiseWithArmMoveIfNeeded());
         SmartDashboard.putData("Intake Lower", new IntakeLower());
         SmartDashboard.putData("Intake Motor Stop", new IntakeMotorStop());
         SmartDashboard.putData("Intake Rollers In", new IntakeSetToSpeed(1));

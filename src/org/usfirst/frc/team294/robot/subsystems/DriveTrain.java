@@ -152,6 +152,8 @@ public class DriveTrain extends Subsystem implements PIDOutput {
      * @param rightStick Right joystick
      */
     public void driveWithJoystick(Joystick leftStick, Joystick rightStick) {
+        leftMotor2.clearStickyFaults();
+        rightMotor2.clearStickyFaults();
     	robotDrive.tankDrive(leftStick, rightStick);
     }
 
@@ -363,6 +365,8 @@ public class DriveTrain extends Subsystem implements PIDOutput {
 		SmartDashboard.putNumber("Left Error", leftMotor2.getError());
 		SmartDashboard.putNumber("Left Output Voltage", leftMotor2.getOutputVoltage());
 		SmartDashboard.putNumber("Left Speed", leftMotor2.getSpeed());
+		
+		SmartDashboard.putBoolean("Left Mode Position", TalonControlMode.Position == leftMotor2.getControlMode());
 
 		return leftMotor2.getEncPosition();
 	}
@@ -378,6 +382,8 @@ public class DriveTrain extends Subsystem implements PIDOutput {
 		SmartDashboard.putNumber("Right Error", rightMotor2.getError());
 		SmartDashboard.putNumber("Right Output Voltage", rightMotor2.getOutputVoltage());
 		SmartDashboard.putNumber("Right Speed", rightMotor2.getSpeed());
+
+		SmartDashboard.putBoolean("Right Mode Position", TalonControlMode.Position == rightMotor2.getControlMode());
 
 		return rightMotor2.getEncPosition();
 	}

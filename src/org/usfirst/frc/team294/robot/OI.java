@@ -65,8 +65,8 @@ public class OI {
         right[1].whenPressed(new ShiftUp());
 
         coP[4].whenPressed(new ShootBall());
-        coP[6].whenPressed(new ShooterArmMoveToSetLocation(78));
-        coP[7].whenPressed(new ShooterArmMoveToSetLocation(78));
+        coP[6].whenPressed(new ShooterArmMoveToSetLocation(RobotMap.shootingAngle));
+        coP[7].whenPressed(new ShooterArmMoveToSetLocation(RobotMap.shootingAngle));
         coP[3].whenPressed(new ShooterArmMoveToSetLocation(0));
         coP[12].whenPressed(new LoadBallSequence());
         coP[9].whenPressed(new IntakeRaise());
@@ -84,7 +84,6 @@ public class OI {
         SmartDashboard.putData("DriveStraightNxp: 5 revs slow", new DriveStraightDistance(0.4, 5.0));
         SmartDashboard.putData("DriveStraightNxp: 1 rev fast", new DriveStraightDistance(0.75, 1.0));
         SmartDashboard.putData("DriveStraightNxp: 1 rev slow", new DriveStraightDistance(0.4, 1.0));
-        
         SmartDashboard.putData("Rotate +90 PID", new DriveAnglePID(90.0));
         SmartDashboard.putData("Rotate -90 PID", new DriveAnglePID(-90.0));
         SmartDashboard.putData("Rotate +5 PID", new DriveAnglePID(5.0));
@@ -101,6 +100,7 @@ public class OI {
         SmartDashboard.putData("Start FlyWheels", new FlyWheelSetToSpeed(4500));
         SmartDashboard.putData("Intake FlyWheels", new FlyWheelSetToSpeed(-2500));
         SmartDashboard.putData("Start Top FlyWheel only", new FlyWheelSetToSpeed(4500, 0));
+        SmartDashboard.putData("Start Bottom FlyWheel only", new FlyWheelSetToSpeed(0, 4500));
         SmartDashboard.putData("Stop FlyWheels", new FlyWheelStop());
         
         SmartDashboard.putData("Intake Raise", new IntakeRaise());

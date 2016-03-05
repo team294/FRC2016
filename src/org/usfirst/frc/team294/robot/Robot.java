@@ -138,7 +138,7 @@ public class Robot extends IterativeRobot {
 
 		// Uncomment the following 2 lines for debugging the arm motor PID.
 //      shooterArm.setPIDFromSmartDashboard();
-//      shooterArm.updateSmartDashboard();
+      shooterArm.updateSmartDashboard();
 		        
         //This code here is the code for changing the angle using the TOP of the 3 knobs.  The switch next to it
         //applies the angle to the robot.  This code SHOULD GO IN A COMMAND.  I created it here as a concept.

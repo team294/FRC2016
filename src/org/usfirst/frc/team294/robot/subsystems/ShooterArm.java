@@ -142,9 +142,9 @@ public class ShooterArm extends Subsystem {
 	public void moveOutOfIntakesWay(){
 		if(Robot.intake.shooterArmConflicts()){
 		if(Math.abs(Robot.shooterArm.getAngle()-RobotMap.upperBoundAngleToAvoid)<Math.abs(Robot.shooterArm.getAngle()-RobotMap.lowerBoundAngleToAvoid)){
-			moveToAngle(RobotMap.upperBoundAngleToAvoid);
+			moveToAngle(RobotMap.upperBoundAngleToAvoid+3);
 		} else {
-			moveToAngle(RobotMap.lowerBoundAngleToAvoid);
+			moveToAngle(RobotMap.lowerBoundAngleToAvoid-3);
 		}
 		} else{
 			
@@ -200,8 +200,7 @@ public class ShooterArm extends Subsystem {
 
 		SmartDashboard.putNumber("Arm Joystick Y", coJoystick.getY());
 		
-		//moveAngleRelative(-coJoystick.getY()*joyRelativeRate);
-		moveAngleRelative(coJoystick.getY()*joyRelativeRate);
+		moveAngleRelative(-coJoystick.getY()*joyRelativeRate);
 	}
 	
 	/**

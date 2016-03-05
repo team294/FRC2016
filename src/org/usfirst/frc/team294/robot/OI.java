@@ -116,8 +116,9 @@ public class OI {
         SmartDashboard.putData("Shooter Arm 135", new ShooterArmMoveToSetLocation(135));
         SmartDashboard.putData("Shooter Arm 0", new ShooterArmMoveToSetLocation(0));
         //REMOVE THIS BUTTON ONLY FOR TESTING.
-        SmartDashboard.putData("Shooter Arm -50", new ShooterArmMoveToSetLocation(-50));
+        //SmartDashboard.putData("Shooter Arm -50", new ShooterArmMoveToSetLocation(-50));
         SmartDashboard.putData("Shooter Arm Joystick Relative", new ShooterArmMoveRelativeJoystick());
+        SmartDashboard.putData("Shooter Arm keep out!", new ShooterArmMoveAwayFromIntake());
         
         SmartDashboard.putData("Load Ball", new LoadBallSequence());
     }

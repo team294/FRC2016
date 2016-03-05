@@ -135,6 +135,22 @@ public class ShooterArm extends Subsystem {
 	}
 
 	/**
+	 * Moves the shooter arm on the shortest path that is out of the way of the intake. Takes no parameters. 
+	 * If the path lengths are equal, moves the shooter arm down. If the arm doesn't interfere with the intake
+	 * does nothing.
+	 */
+	public void moveOutOfIntakesWay(){
+		if(Robot.intake.shooterArmConflicts()){
+		if(Math.abs(Robot.shooterArm.getAngle()-RobotMap.upperBoundAngleToAvoid)<Math.abs(Robot.shooterArm.getAngle()-RobotMap.lowerBoundAngleToAvoid)){
+			moveToAngle(RobotMap.upperBoundAngleToAvoid);
+		} else {
+			moveToAngle(RobotMap.lowerBoundAngleToAvoid);
+		}
+		} else{
+			
+		}
+	}
+	/**
 	 * Returns true if the arm angle has been within tolerance of its moveToAngle setpoint consistently
 	 * while repeatedly calling this method.  Put this method in the calling command's isFinished() method.
 	 * @return true = arm is at the setpoint

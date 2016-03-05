@@ -132,15 +132,14 @@ public class Robot extends IterativeRobot {
 	public void teleopPeriodic() {
 		Scheduler.getInstance().run();
 		
-		// Uncomment the following 2 lines for debugging shooter motors.
+		// Uncomment the following 2 lines for debugging shooter motors PIDs.
 //		shooter.setPIDFromSmartDashboard();
 //		shooter.updateSmartDashboard();
 
-//        shooterArm.setPIDFromSmartDashboard();
-		
-        shooterArm.updateSmartDashboard();
-		
-        
+		// Uncomment the following 2 lines for debugging the arm motor PID.
+//      shooterArm.setPIDFromSmartDashboard();
+//      shooterArm.updateSmartDashboard();
+		        
         //This code here is the code for changing the angle using the TOP of the 3 knobs.  The switch next to it
         //applies the angle to the robot.  This code SHOULD GO IN A COMMAND.  I created it here as a concept.
 //		double ballAxis = OI.coPanel.getRawAxis(4);
@@ -183,9 +182,16 @@ public class Robot extends IterativeRobot {
 //		}else if(ballAxis > pos10 && ballAxis < 1){
 //			System.out.println(11);
 //		}
+
+		
+		// Other printouts
 //        shooter.isBallLoaded();
 //		intake.intakeIsUp();
 		
+		// Uncomment the following 2 lines to see drive train data
+    	driveTrain.getLeftEncoder();
+    	driveTrain.getRightEncoder();
+
 //		SmartDashboard.putNumber("Panel voltage", panel.getVoltage());
 //		SmartDashboard.putNumber("Panel arm current", panel.getCurrent(0));
 	}

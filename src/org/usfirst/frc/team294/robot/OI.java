@@ -113,7 +113,7 @@ public class OI {
         SmartDashboard.putData("Stop FlyWheels", new FlyWheelStop());
         
         SmartDashboard.putData("Intake Raise", new IntakeRaiseWithArmMoveIfNeeded());
-        SmartDashboard.putData("Intake Lower", new IntakeLower());
+        SmartDashboard.putData("Intake Lower", new IntakeLowerIfRaised());
         SmartDashboard.putData("Intake Motor Stop", new IntakeMotorStop());
         SmartDashboard.putData("Intake Rollers In", new IntakeSetToSpeed(1));
         SmartDashboard.putData("Intake Rollers Out", new IntakeSetToSpeed(-1));
@@ -130,7 +130,7 @@ public class OI {
         //REMOVE THIS BUTTON ONLY FOR TESTING.
         //SmartDashboard.putData("Shooter Arm -50", new ShooterArmMoveToSetLocation(-50));
         SmartDashboard.putData("Shooter Arm Joystick Relative", new ShooterArmMoveRelativeJoystick());
-        SmartDashboard.putData("Shooter Arm keep out!", new ShooterArmMoveAwayFromIntake());
+        SmartDashboard.putData("Shooter Arm keep out!", new ShooterArmMoveAwayFromIntake(ShooterArmMoveAwayFromIntake.condition.ifIntakeNotInWay));
         
         SmartDashboard.putData("Load Ball", new LoadBallSequence());
     }

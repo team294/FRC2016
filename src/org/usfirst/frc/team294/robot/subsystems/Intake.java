@@ -62,7 +62,9 @@ public class Intake extends Subsystem {
      * Lower intake arm
      */
     public void lowerIntake() {
-    	intakeSolenoid.set(DoubleSolenoid.Value.kForward);
+    	if (!shooterArmConflicts()) {
+        	intakeSolenoid.set(DoubleSolenoid.Value.kForward);    		
+    	}
     }
 
     /**

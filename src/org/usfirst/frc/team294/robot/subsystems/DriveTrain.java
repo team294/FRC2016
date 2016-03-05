@@ -69,7 +69,7 @@ public class DriveTrain extends Subsystem implements PIDOutput {
         rightMotor2.setVoltageRampRate(40);
         // With these settings, the encoder reads 4000 ticks per revolution.
         
-//        leftMotor2.reverseSensor(true);
+        leftMotor2.reverseSensor(true);
 //        rightMotor2.reverseSensor(true);
 
         setDriveControlByPower();
@@ -171,7 +171,7 @@ public class DriveTrain extends Subsystem implements PIDOutput {
 	 */
 	public void driveForward(double speed) {
 		setDriveControlByPower();
-		robotDrive.drive(speed, 0);
+		robotDrive.drive(-speed, 0);
 	}
 
 	/**
@@ -180,11 +180,11 @@ public class DriveTrain extends Subsystem implements PIDOutput {
 	 */
 	public void driveBackward(double speed) {
 		setDriveControlByPower();
-		robotDrive.drive(-1.0*speed, 0);
+		robotDrive.drive(speed, 0);
 	}
 	
 	/**
-	 * Drive the motors at "outputMagnitude" and "curve". 
+	 * Drive the motors at "speed" and "curve". 
 	 * Both outputMagnitude and curve are -1.0 to +1.0 values, where 0.0 represents stopped and not turning. 
 	 * curve < 0 will turn left and curve > 0 will turn right. The algorithm for steering provides a constant
 	 * turn radius for any normal speed range, both forward and backward. Increasing m_sensitivity causes 
@@ -197,7 +197,7 @@ public class DriveTrain extends Subsystem implements PIDOutput {
 	 */
 	public void driveCurve(double speed, double curve) {
 		setDriveControlByPower();
-		robotDrive.drive(speed, curve);
+		robotDrive.drive(-speed, curve);
 	}
 	
 	/**
@@ -357,7 +357,7 @@ public class DriveTrain extends Subsystem implements PIDOutput {
 	/*
 	 * Get left encoder position.  4000 ticks = 1 revolution.
 	 */
-	public int getLeftEncoder() {
+	public double getLeftEncoder() {
 		SmartDashboard.putNumber("Left Setpoint", leftMotor2.getSetpoint());
 		SmartDashboard.putNumber("Left Position", leftMotor2.getPosition());
 		SmartDashboard.putNumber("Left Encoder Position", leftMotor2.getEncPosition());
@@ -368,13 +368,13 @@ public class DriveTrain extends Subsystem implements PIDOutput {
 		
 		SmartDashboard.putBoolean("Left Mode Position", TalonControlMode.Position == leftMotor2.getControlMode());
 
-		return leftMotor2.getEncPosition();
+		return leftMotor2.getPosition();
 	}
 	
 	/*
 	 * Get right encoder position.  4000 ticks = 1 revolution.
 	 */
-	public int getRightEncoder() {
+	public double getRightEncoder() {
 		SmartDashboard.putNumber("Right Setpoint", rightMotor2.getSetpoint());
 		SmartDashboard.putNumber("Right Position", rightMotor2.getPosition());
 		SmartDashboard.putNumber("Right Encoder Position", rightMotor2.getEncPosition());
@@ -385,7 +385,7 @@ public class DriveTrain extends Subsystem implements PIDOutput {
 
 		SmartDashboard.putBoolean("Right Mode Position", TalonControlMode.Position == rightMotor2.getControlMode());
 
-		return rightMotor2.getEncPosition();
+		return rightMotor2.getPosition();
 	}
 
     public void initDefaultCommand() {

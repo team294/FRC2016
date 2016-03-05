@@ -25,7 +25,7 @@ public class IntakeRaiseWithArmMoveIfNeeded extends CommandGroup {
         // a CommandGroup containing them would require both the chassis and the
         // arm.
     	
-    	addSequential(new ShooterArmMoveAwayFromIntake());
+    	addSequential(new ShooterArmMoveAwayFromIntake(ShooterArmMoveAwayFromIntake.condition.ifIntakeNotInWay));
     	addSequential(new IntakeRaise());
     }
 }

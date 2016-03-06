@@ -53,7 +53,7 @@ public class OI {
     Button[] coP = new Button[15];
     Button[] coJ = new Button[15];
     
-    //Button[] xbB = new Button[10];
+    Button[] xbB = new Button[15];
 
     public OI() {
         // Create buttons
@@ -62,19 +62,17 @@ public class OI {
             right[i] = new JoystickButton(rightJoystick, i);
             coP[i] = new JoystickButton(coPanel, i);
             coJ[i] = new JoystickButton(coJoystick, i);
+            xbB[i] = new JoystickButton(xboxController, i);
         }
-//        for(int i=1; i<10; i++){
-//        	xbB[i] = new JoystickButton(xboxController, i);
-//        }
         
-//        xbB[5].whenPressed(new LoadBallSequence());
-//        xbB[6].whenPressed(new IntakeSetToSpeed(-1));
-//        xbB[9].whenPressed(new FlyWheelSetToSpeed(0));
-//        xbB[10].whenPressed(new ShooterArmPistonOverride());
-//        xbB[4].whenPressed(new ShooterArmMoveToSetLocation(RobotMap.shootingAngle));
-//        xbB[1].whenPressed(new ShooterArmMoveToSetLocation(0));
-//        xbB[3].whenPressed(new IntakeRaise());
-//        xbB[2].whenPressed(new IntakeLower());
+        xbB[5].whenPressed(new LoadBallSequence());
+        xbB[6].whenPressed(new IntakeSetToSpeed(-1));
+        xbB[9].whenPressed(new FlyWheelSetToSpeed(0));
+        xbB[10].whenPressed(new ShooterArmPistonOverride());
+        xbB[4].whenPressed(new ShooterArmMoveToSetLocation(RobotMap.shootingAngle));
+        xbB[1].whenPressed(new ShooterArmMoveToSetLocation(0));
+        xbB[3].whenPressed(new IntakeRaise());
+        xbB[2].whenPressed(new IntakeLower());
 
         left[1].whenPressed(new ShiftDown());
         right[1].whenPressed(new ShiftUp());

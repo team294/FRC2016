@@ -1,28 +1,13 @@
 package org.usfirst.frc.team294.robot.commands;
 
-import org.usfirst.frc.team294.robot.Robot;
-import org.usfirst.frc.team294.robot.RobotMap;
-
 import edu.wpi.first.wpilibj.command.CommandGroup;
 
 /**
  *
  */
-public class LoadBallSequence extends CommandGroup {
+public class IntakeRaiseWithArmMoveIfNeeded extends CommandGroup {
     
-    public  LoadBallSequence() {
-    	addSequential(new ShooterArmMoveAwayFromIntake(ShooterArmMoveAwayFromIntake.condition.ifIntakeNotInWayAndIntakeIsUp));  // Also waits for move to finish
-    	addSequential(new IntakeLowerIfRaised());  // Also waits for move to finish
-    	addSequential(new ShooterArmMoveToSetLocation(RobotMap.shooterArmBallLoadAngle));
-    	
-    	addParallel(new IntakeSetToSpeed(1));
-    	addParallel(new FlyWheelSetToSpeed(-1500));
-    	addSequential(new WaitForBallLoaded());
-    	
-    	addSequential(new WaitSeconds(.5));
-    	addParallel(new IntakeSetToSpeed(0)); 
-    	addSequential(new FlyWheelStop());
-    	    	
+    public  IntakeRaiseWithArmMoveIfNeeded() {
         // Add Commands here:
         // e.g. addSequential(new Command1());
         //      addSequential(new Command2());
@@ -39,5 +24,8 @@ public class LoadBallSequence extends CommandGroup {
         // e.g. if Command1 requires chassis, and Command2 requires arm,
         // a CommandGroup containing them would require both the chassis and the
         // arm.
+    	
+    	addSequential(new ShooterArmMoveAwayFromIntake(ShooterArmMoveAwayFromIntake.condition.ifIntakeNotInWay));
+    	addSequential(new IntakeRaise());
     }
 }

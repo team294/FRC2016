@@ -8,11 +8,11 @@ import edu.wpi.first.wpilibj.command.Command;
 /**
  *
  */
-public class LowerShooterArmIfRaised extends Command {
+public class ShooterArmLowerIfRaised extends Command {
 	boolean shooterArmLowered=false;
 	double minimumTime=2.0;
 
-    public LowerShooterArmIfRaised() {
+    public ShooterArmLowerIfRaised() {
         // Use requires() here to declare subsystem dependencies
         // eg. requires(chassis);
     	requires(Robot.shooterArm);

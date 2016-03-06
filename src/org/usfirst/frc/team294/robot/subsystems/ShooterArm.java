@@ -184,8 +184,7 @@ public class ShooterArm extends Subsystem {
 
 		SmartDashboard.putNumber("Arm Joystick Y", coJoystick.getY());
 		
-		//moveAngleRelative(-coJoystick.getY()*joyRelativeRate);
-		moveAngleRelative(coJoystick.getY()*joyRelativeRate);
+		moveAngleRelative(-coJoystick.getY()*joyRelativeRate);
 	}
 	
 	/**

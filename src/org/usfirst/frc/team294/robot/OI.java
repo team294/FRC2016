@@ -134,5 +134,13 @@ public class OI {
         
         SmartDashboard.putData("Load Ball", new LoadBallSequence());
     }
+    
+    public void updateSmartDashboard() {
+    	int i;
+    	
+    	for (i=0; i<coPanel.getAxisCount(); i++) {
+        	SmartDashboard.putNumber("CoPanel Axis " + i, coPanel.getRawAxis(i));
+    	}    	
+    }
 }
 

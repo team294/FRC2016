@@ -140,6 +140,7 @@ public class Robot extends IterativeRobot {
 //      shooterArm.setPIDFromSmartDashboard();
 //      shooterArm.updateSmartDashboard();
 		        
+		oi.updateSmartDashboard();
         //This code here is the code for changing the angle using the TOP of the 3 knobs.  The switch next to it
         //applies the angle to the robot.  This code SHOULD GO IN A COMMAND.  I created it here as a concept.
 //		double ballAxis = OI.coPanel.getRawAxis(4);
@@ -185,8 +186,8 @@ public class Robot extends IterativeRobot {
 
 		
 		// Other printouts
-//        shooter.isBallLoaded();
-//		intake.intakeIsUp();
+        shooter.isBallLoaded();
+		intake.intakeIsUp();
 		
 		// Uncomment the following 2 lines to see drive train data
     	driveTrain.getLeftEncoder();

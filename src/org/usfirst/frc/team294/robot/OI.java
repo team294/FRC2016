@@ -45,12 +45,15 @@ public class OI {
     public Joystick rightJoystick = new Joystick(1);
     public Joystick coPanel = new Joystick(2);
     public Joystick coJoystick = new Joystick(3);
+    public Joystick xboxController = new Joystick(4);
     
     // Joystick buttons
     Button[] left = new Button[15];
     Button[] right = new Button[15];
     Button[] coP = new Button[15];
     Button[] coJ = new Button[15];
+    
+    //Button[] xbB = new Button[10];
 
     public OI() {
         // Create buttons
@@ -60,6 +63,18 @@ public class OI {
             coP[i] = new JoystickButton(coPanel, i);
             coJ[i] = new JoystickButton(coJoystick, i);
         }
+//        for(int i=1; i<10; i++){
+//        	xbB[i] = new JoystickButton(xboxController, i);
+//        }
+        
+//        xbB[5].whenPressed(new LoadBallSequence());
+//        xbB[6].whenPressed(new IntakeSetToSpeed(-1));
+//        xbB[9].whenPressed(new FlyWheelSetToSpeed(0));
+//        xbB[10].whenPressed(new ShooterArmPistonOverride());
+//        xbB[4].whenPressed(new ShooterArmMoveToSetLocation(RobotMap.shootingAngle));
+//        xbB[1].whenPressed(new ShooterArmMoveToSetLocation(0));
+//        xbB[3].whenPressed(new IntakeRaise());
+//        xbB[2].whenPressed(new IntakeLower());
 
         left[1].whenPressed(new ShiftDown());
         right[1].whenPressed(new ShiftUp());
@@ -73,6 +88,8 @@ public class OI {
         coP[11].whenPressed(new IntakeLower());
         coP[13].whenPressed(new IntakeSetToSpeed(-1));
         coP[14].whenPressed(new IntakeSetToSpeed(0));
+        
+        coJ[1].whileHeld(new ShooterArmMoveRelativeJoystick());
         
         // SmartDashboard Buttons
         SmartDashboard.putData("Autonomous Command", new AutonomousCommandGroup());

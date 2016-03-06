@@ -42,6 +42,9 @@ public class Robot extends IterativeRobot {
 	
 	public static PowerDistributionPanel panel;
 	
+	//public static Command shootBall = new ShootBall();
+	//public static Command setFlyWheels = new FlyWheelSetToSpeed(4500);
+	
 	/**
 	 * This function is run when the robot is first started up and should be
 	 * used for any initialization code.
@@ -135,11 +138,19 @@ public class Robot extends IterativeRobot {
 		// Uncomment the following 2 lines for debugging shooter motors.
 //		shooter.setPIDFromSmartDashboard();
 //		shooter.updateSmartDashboard();
-
 //        shooterArm.setPIDFromSmartDashboard();
+//        shooterArm.updateSmartDashboard();
 		
-        shooterArm.updateSmartDashboard();
+        
+        //Here is where the triggers are processed, so when they are over a certain threshold, it will run a command.
+//		if(oi.xboxController.getRawAxis(2) > .90){
+//			setFlyWheels.start();		//This one will rev the fly wheels up to 4500 RPM
+//		}
+//		if(oi.xboxController.getRawAxis(3) > .90){
+//			shootBall.start();			//This will do the shooting sequence
+//		}
 		
+        
         
         //This code here is the code for changing the angle using the TOP of the 3 knobs.  The switch next to it
         //applies the angle to the robot.  This code SHOULD GO IN A COMMAND.  I created it here as a concept.

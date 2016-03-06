@@ -219,6 +219,9 @@ public class ShooterArm extends Subsystem {
 //		SmartDashboard.putBoolean("Arm Talon Mode", shooterArmMotor.getControlMode()==TalonControlMode.Position);
 		SmartDashboard.putNumber("Arm motor voltage", shooterArmMotor.getOutputVoltage());
 		SmartDashboard.putNumber("Arm talon bus voltage", shooterArmMotor.getBusVoltage());
+		
+		//This should reposition the arm to whatever angle that the user inputs.
+		//moveToAngle(SmartDashboard.getNumber("Set angle"));
     }
     
 	/**
@@ -230,6 +233,7 @@ public class ShooterArm extends Subsystem {
 		shooterArmMotor.setP(SmartDashboard.getNumber("Shooter Arm P"));
 		shooterArmMotor.setI(SmartDashboard.getNumber("Shooter Arm I"));
 		shooterArmMotor.setD(SmartDashboard.getNumber("Shooter Arm D"));
+		
     }
 
 	public void initDefaultCommand() {

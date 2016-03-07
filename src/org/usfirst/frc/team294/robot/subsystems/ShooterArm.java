@@ -45,8 +45,8 @@ public class ShooterArm extends Subsystem {
 		shooterArmMotor.setFeedbackDevice(CANTalon.FeedbackDevice.AnalogPot);
 		//shooterArmMotor.reverseSensor(true); 
 		//shooterArmMotor.setPID(12, 0.005, 0, 0, 20, 10000, 0);  // Good values without elastic
-		shooterArmMotor.setPID(40, 0.1, 0, 0, 20, 50, 0);  // Good values with elastic bands
-		shooterArmMotor.configPeakOutputVoltage(+5.0f, -10.0f);
+		shooterArmMotor.setPID(43, 0.1, 0, 0, 20, 50, 0);  // Good values with elastic bands
+		shooterArmMotor.configPeakOutputVoltage(+6.0f, -10.0f);
 		shooterArmMotor.changeControlMode(TalonControlMode.Position);
 		shooterArmMotor.configPotentiometerTurns(3);
 		shooterArmMotor.setReverseSoftLimit(deg90Position-0.06);		// Limit in high position (slightly more than 90 deg, 0.06 rotations)
@@ -218,6 +218,9 @@ public class ShooterArm extends Subsystem {
 //		SmartDashboard.putBoolean("Arm Talon Mode", shooterArmMotor.getControlMode()==TalonControlMode.Position);
 		SmartDashboard.putNumber("Arm motor voltage", shooterArmMotor.getOutputVoltage());
 		SmartDashboard.putNumber("Arm talon bus voltage", shooterArmMotor.getBusVoltage());
+		
+		//This should reposition the arm to whatever angle that the user inputs.
+		//moveToAngle(SmartDashboard.getNumber("Set angle"));
     }
     
 	/**
@@ -229,6 +232,7 @@ public class ShooterArm extends Subsystem {
 		shooterArmMotor.setP(SmartDashboard.getNumber("Shooter Arm P"));
 		shooterArmMotor.setI(SmartDashboard.getNumber("Shooter Arm I"));
 		shooterArmMotor.setD(SmartDashboard.getNumber("Shooter Arm D"));
+		
     }
 
 	public void initDefaultCommand() {

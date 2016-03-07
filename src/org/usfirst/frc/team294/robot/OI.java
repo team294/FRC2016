@@ -67,12 +67,12 @@ public class OI {
         
         xbB[5].whenPressed(new LoadBallSequence());
         xbB[6].whenPressed(new IntakeSetToSpeed(-1));
-        xbB[9].whenPressed(new FlyWheelSetToSpeed(0));
-        xbB[10].whenPressed(new ShooterArmPistonOverride());
+        xbB[9].whenPressed(new StopFlyAndIntake());
+        xbB[10].whenPressed(new ShooterPistonOverride());
         xbB[4].whenPressed(new ShooterArmMoveToSetLocation(RobotMap.shootingAngle));
-        xbB[1].whenPressed(new ShooterArmMoveToSetLocation(0));
-        xbB[3].whenPressed(new IntakeRaise());
-        xbB[2].whenPressed(new IntakeLower());
+        xbB[1].whenPressed(new ShooterArmMoveToSetLocation(RobotMap.shooterArmBallCruiseAngle));
+        xbB[3].whenPressed(new IntakeRaiseWithArmMoveIfNeeded());
+        xbB[2].whenPressed(new IntakeLowerIfRaised());
 
         left[1].whenPressed(new ShiftDown());
         right[1].whenPressed(new ShiftUp());
@@ -80,10 +80,10 @@ public class OI {
         coP[4].whenPressed(new ShootBall());
         coP[6].whenPressed(new ShooterArmMoveToSetLocation(RobotMap.shootingAngle));
         coP[7].whenPressed(new ShooterArmMoveToSetLocation(RobotMap.shootingAngle));
-        coP[3].whenPressed(new ShooterArmMoveToSetLocation(0));
+        coP[3].whenPressed(new ShooterArmMoveToSetLocation(RobotMap.shooterArmBallCruiseAngle));
         coP[12].whenPressed(new LoadBallSequence());
-        coP[9].whenPressed(new IntakeRaise());
-        coP[11].whenPressed(new IntakeLower());
+        coP[9].whenPressed(new IntakeRaiseWithArmMoveIfNeeded());
+        coP[11].whenPressed(new IntakeLowerIfRaised());
         coP[13].whenPressed(new IntakeSetToSpeed(-1));
         coP[14].whenPressed(new IntakeSetToSpeed(0));
         

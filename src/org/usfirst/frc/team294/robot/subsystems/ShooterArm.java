@@ -93,6 +93,12 @@ public class ShooterArm extends Subsystem {
 	 * @param angle Desired target angle, in degrees.  0 = horizontal, + = up, - = down
 	 */
 	public void moveToAngle(double angle) {
+		if(angle > 45){
+    		SmartDashboard.putBoolean("useCamera1", false);
+    	}else{
+    		SmartDashboard.putBoolean("useCamera1", true);
+    	}
+		
 		// Don't move if the shooter arm is disabled.
 		if (!Robot.shooterArmEnabled) {
 			SmartDashboard.putNumber("Set position", -9999);			

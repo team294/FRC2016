@@ -180,7 +180,7 @@ public class Robot extends IterativeRobot {
 //		}else if(ballAxis > pos9 && ballAxis < pos11){
 //			System.out.println(10);
 //		}else if(ballAxis > pos10 && ballAxis < 1){
-//			System.out.println(11);
+//		System.out.println(11);
 //		}
 
 		
@@ -194,6 +194,8 @@ public class Robot extends IterativeRobot {
 
 //		SmartDashboard.putNumber("Panel voltage", panel.getVoltage());
 //		SmartDashboard.putNumber("Panel arm current", panel.getCurrent(0));
+    	SmartDashboard.putBoolean("Top Knob Minus Two Degrees", oi.readTopKnob()==OI.TopKnob.minus2degrees);
+    	SmartDashboard.putBoolean("TestA", oi.readMiddleKnob()==OI.MiddleKnob.testA);
 	}
 
 	/**

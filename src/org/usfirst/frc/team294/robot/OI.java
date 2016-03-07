@@ -40,7 +40,21 @@ public class OI {
 	// button.whenReleased(new ExampleCommand());
 
 	//Threshold position checker
-	double[] switchThreshold=new double[]{0.0,0.004,0.012,0.0235,0.035,0.047,0.059,0.071,0.083,0.0945,0.106,0.114};
+	//For top and bottom knobs unless otherwise specified
+	double[] knobThreshold=new double[]{-0.911,-0.731,-0.551,-0.367,-0.1835,-0.0035,0.1775,0.3605,0.5455,0.7285,0.91};
+	//For middle knob only
+	double[] middleKnobThreshold=new double[] {-0.751,-0.25,0.2525,0.7525};
+
+	public enum TopKnob {
+		noChange, minus2degrees, plus2degrees 
+	}
+	public enum MiddleKnob{
+		testA,testB,testC
+	}
+	TopKnob[] TopKnobPositions = new TopKnob[] {TopKnob.minus2degrees, TopKnob.noChange, TopKnob.plus2degrees, TopKnob.noChange,
+			TopKnob.noChange, TopKnob.noChange, TopKnob.noChange, TopKnob.noChange, TopKnob.noChange, TopKnob.noChange, TopKnob.noChange};
+	MiddleKnob[] MiddleKnobPositions = new MiddleKnob[] {MiddleKnob.testA, MiddleKnob.testB, MiddleKnob.testC,MiddleKnob.testA};
+
 	// Joystick controls
 	public Joystick leftJoystick = new Joystick(0);
 	public Joystick rightJoystick = new Joystick(1);
@@ -143,4 +157,31 @@ public class OI {
 			SmartDashboard.putNumber("CoPanel Axis " + i, coPanel.getRawAxis(i));
 		}    	
 	}
+
+	public TopKnob readTopKnob() {
+		double knobReading;
+		int i=0;
+		knobReading = coPanel.getRawAxis(4);
+		int len=knobThreshold.length;
+		for(i=0;i<len; i++) {
+			if (knobReading<knobThreshold[i]) break;
+		}
+		SmartDashboard.putNumber("Top Knob Position", i);
+		SmartDashboard.putNumber("Knob Reading", knobReading);
+		if(i==len)return TopKnobPositions[len-1];
+		return TopKnobPositions[i];
+	}
+	public MiddleKnob readMiddleKnob(){
+		double knobReading2;
+		int i=0;knobReading2 = coPanel.getRawAxis(6);
+		int len=middleKnobThreshold.length;
+		for(i=0;i<len; i++) {
+			if (knobReading2<middleKnobThreshold[i]) break;
+		}
+		SmartDashboard.putNumber("Middle Knob Position", i);
+		SmartDashboard.putNumber("Middle Knob Reading", knobReading2);
+		if(i==len)return MiddleKnobPositions[len-1];
+		return MiddleKnobPositions[i];
+	}
+
 }

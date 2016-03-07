@@ -5,9 +5,9 @@ import edu.wpi.first.wpilibj.command.CommandGroup;
 /**
  *
  */
-public class ShooterArmPistonOverride extends CommandGroup {
+public class ShooterPistonOverride extends CommandGroup {
     
-    public ShooterArmPistonOverride() {
+    public ShooterPistonOverride() {
     	addSequential(new ShooterPistonOut(true));
     	addSequential(new WaitSeconds(.1));
     	addSequential(new ShooterPistonOut(false));

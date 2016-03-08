@@ -46,26 +46,36 @@ public class OI {
 	double[] middleKnobThreshold=new double[] {-0.751,-0.25,0.2525,0.7525};
 
 	public enum TopKnob {
-		noChange, minus2degrees, plus2degrees 
+		minus6degrees,minus5degrees,minus4degrees,minus2degrees,minus3degrees,minus1degree,noChange,
+		plus1degree, plus2degrees,plus3degrees,plus4degrees,plus5degrees
 	}
 	public enum MiddleKnob{
 		testA,testB,testC
 	}
-	TopKnob[] TopKnobPositions = new TopKnob[] {TopKnob.minus2degrees, TopKnob.noChange, TopKnob.plus2degrees, TopKnob.noChange,
-			TopKnob.noChange, TopKnob.noChange, TopKnob.noChange, TopKnob.noChange, TopKnob.noChange, TopKnob.noChange, TopKnob.noChange};
+	public enum BottomKnob {
+		noChange, minus2degrees, plus2degrees 
+	}
+	TopKnob[] TopKnobPositions = new TopKnob[] {TopKnob.minus6degrees, TopKnob.minus5degrees, TopKnob.minus4degrees, TopKnob.minus3degrees,
+			TopKnob.minus2degrees, TopKnob.minus1degree, TopKnob.noChange, TopKnob.plus1degree, TopKnob.plus2degrees, TopKnob.plus3degrees, TopKnob.plus4degrees,
+			TopKnob.plus5degrees};
 	MiddleKnob[] MiddleKnobPositions = new MiddleKnob[] {MiddleKnob.testA, MiddleKnob.testB, MiddleKnob.testC,MiddleKnob.testA};
+	BottomKnob[] BottomKnobPositions= new BottomKnob[] {BottomKnob.minus2degrees, BottomKnob.noChange, BottomKnob.plus2degrees,BottomKnob.noChange,
+			BottomKnob.noChange, BottomKnob.noChange, BottomKnob.noChange, BottomKnob.noChange, BottomKnob.noChange, BottomKnob.noChange, BottomKnob.noChange
+	};
 
 	// Joystick controls
 	public Joystick leftJoystick = new Joystick(0);
 	public Joystick rightJoystick = new Joystick(1);
 	public Joystick coPanel = new Joystick(2);
 	public Joystick coJoystick = new Joystick(3);
+	public Joystick xboxController = new Joystick(4);
 
 	// Joystick buttons
 	Button[] left = new Button[15];
 	Button[] right = new Button[15];
 	Button[] coP = new Button[15];
 	Button[] coJ = new Button[15];
+
 	Button[] xbB = new Button[15];
 
 	public OI() {
@@ -75,6 +85,7 @@ public class OI {
 			right[i] = new JoystickButton(rightJoystick, i);
 			coP[i] = new JoystickButton(coPanel, i);
 			coJ[i] = new JoystickButton(coJoystick, i);
+			xbB[i] = new JoystickButton(xboxController, i);
 		}
 
 		xbB[5].whenPressed(new LoadBallSequence());
@@ -104,7 +115,7 @@ public class OI {
 		// SmartDashboard Buttons
 		SmartDashboard.putData("Autonomous Command", new AutonomousCommandGroup());
 
-		//	        SmartDashboard.putNumber("Go rotations", 1.0);
+		//        SmartDashboard.putNumber("Go rotations", 1.0);
 
 		SmartDashboard.putData("DriveWithJoysticks", new DriveWithJoysticks());
 		SmartDashboard.putData("Drive fwd 0.5 speed", new DriveCurve(0.5, 0));
@@ -162,15 +173,6 @@ public class OI {
 		SmartDashboard.putData("Load Ball", new LoadBallSequence());
 	}
 
-
-	public void updateSmartDashboard() {
-		int i;
-
-		for (i=0; i<coPanel.getAxisCount(); i++) {
-			SmartDashboard.putNumber("CoPanel Axis " + i, coPanel.getRawAxis(i));
-		}    	
-	}
-
 	public TopKnob readTopKnob() {
 		double knobReading;
 		int i=0;
@@ -195,5 +197,18 @@ public class OI {
 		SmartDashboard.putNumber("Middle Knob Reading", knobReading2);
 		if(i==len)return MiddleKnobPositions[len-1];
 		return MiddleKnobPositions[i];
+	}
+	public BottomKnob readBottomKnob() {
+		double knobReading;
+		int i=0;
+		knobReading = coPanel.getRawAxis(4);
+		int len=knobThreshold.length;
+		for(i=0;i<len; i++) {
+			if (knobReading<knobThreshold[i]) break;
+		}
+		SmartDashboard.putNumber("Bottom Knob Position", i);
+		SmartDashboard.putNumber("Knob Reading", knobReading);
+		if(i==len)return BottomKnobPositions[len-1];
+		return BottomKnobPositions[i];
 	}
 }

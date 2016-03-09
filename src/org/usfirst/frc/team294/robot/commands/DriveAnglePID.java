@@ -18,14 +18,12 @@ public class DriveAnglePID extends Command {
         // Use requires() here to declare subsystem dependencies
         // eg. requires(chassis);
         requires(Robot.driveTrain);
-        requires(Robot.shifter);
 
         this.degrees = degrees;
     }
 
     // Called just before this Command runs the first time
     protected void initialize() {
-    	Robot.shifter.shiftDown();
     	Robot.driveTrain.turnDegreesPIDStart(degrees);
     }
 

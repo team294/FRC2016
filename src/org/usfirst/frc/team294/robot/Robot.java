@@ -139,13 +139,13 @@ public class Robot extends IterativeRobot {
 		
 		// Uncomment the following 2 lines for debugging shooter motors PIDs.
 //		shooter.setPIDFromSmartDashboard();
-		shooter.updateSmartDashboard();
+//		shooter.updateSmartDashboard();
 		
-		oi.updateSmartDashboard();
+//		oi.updateSmartDashboard();
 
 // Uncomment the following 2 lines for debugging the arm motor PID.
 //        shooterArm.setPIDFromSmartDashboard();
-        shooterArm.updateSmartDashboard();
+//        shooterArm.updateSmartDashboard();
         
         //Here is where the triggers are processed, so when they are over a certain threshold, it will run a command.
 		if(oi.xboxController.getRawAxis(2) > .90){
@@ -199,14 +199,13 @@ public class Robot extends IterativeRobot {
 //			System.out.println(11);
 //		}
 
-		
 		// Other printouts
         shooter.isBallLoaded();
 		intake.intakeIsUp();
 		
 		// Uncomment the following 2 lines to see drive train data
-    	driveTrain.getLeftEncoder();
-    	driveTrain.getRightEncoder();
+//    	driveTrain.getLeftEncoder();
+//    	driveTrain.getRightEncoder();
 
 //		SmartDashboard.putNumber("Panel voltage", panel.getVoltage());
 //		SmartDashboard.putNumber("Panel arm current", panel.getCurrent(0));

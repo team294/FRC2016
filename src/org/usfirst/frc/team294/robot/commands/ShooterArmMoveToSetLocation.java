@@ -10,19 +10,21 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
  *
  */
 public class ShooterArmMoveToSetLocation extends Command {
-	double angleToMove;
+	double angleRequested, angleToMove;
+	
     public ShooterArmMoveToSetLocation(double angle) {
         // Use requires() here to declare subsystem dependencies
         // eg. requires(chassis);
     	
-    	this.angleToMove = angle; 
+    	angleRequested = angle; 
     	requires(Robot.shooterArm); 
     	requires(Robot.intake);
     }
 
     // Called just before this Command runs the first time
     protected void initialize() {
-    	
+    	angleToMove = angleRequested;
+
     	if(angleToMove == RobotMap.shootingAngle){
     		switch(Robot.oi.readTopKnob()){
     		case minus1degree:

@@ -138,16 +138,16 @@ public class Robot extends IterativeRobot {
 		Scheduler.getInstance().run();
 
 		// Uncomment the following 2 lines for debugging shooter motors PIDs.
-		//		shooter.setPIDFromSmartDashboard();
-		shooter.updateSmartDashboard();
+//		shooter.setPIDFromSmartDashboard();
+//		shooter.updateSmartDashboard();
+		
+//		oi.updateSmartDashboard();
 
-		oi.updateSmartDashboard();
-
-		// Uncomment the following 2 lines for debugging the arm motor PID.
-		//        shooterArm.setPIDFromSmartDashboard();
-		shooterArm.updateSmartDashboard();
-
-		//Here is where the triggers are processed, so when they are over a certain threshold, it will run a command.
+// Uncomment the following 2 lines for debugging the arm motor PID.
+//        shooterArm.setPIDFromSmartDashboard();
+        shooterArm.updateSmartDashboard();
+        
+        //Here is where the triggers are processed, so when they are over a certain threshold, it will run a command.
 		if(oi.xboxController.getRawAxis(2) > .90){
 			setFlyWheels.start();		//This one will rev the fly wheels up to 4500 RPM
 		}
@@ -155,14 +155,13 @@ public class Robot extends IterativeRobot {
 			shootBall.start();			//This will do the shooting sequence
 		}
 
-
 		// Other printouts
 		shooter.isBallLoaded();
 		intake.intakeIsUp();
 
 		// Uncomment the following 2 lines to see drive train data
-		driveTrain.getLeftEncoder();
-		driveTrain.getRightEncoder();
+//    	driveTrain.getLeftEncoder();
+//    	driveTrain.getRightEncoder();
 
 		//		SmartDashboard.putNumber("Panel voltage", panel.getVoltage());
 		//		SmartDashboard.putNumber("Panel arm current", panel.getCurrent(0));

@@ -145,7 +145,7 @@ public class Robot extends IterativeRobot {
 
 // Uncomment the following 2 lines for debugging the arm motor PID.
 //        shooterArm.setPIDFromSmartDashboard();
-//        shooterArm.updateSmartDashboard();
+        shooterArm.updateSmartDashboard();
         
         //Here is where the triggers are processed, so when they are over a certain threshold, it will run a command.
 		if(oi.xboxController.getRawAxis(2) > .90){

@@ -24,6 +24,8 @@ import org.usfirst.frc.team294.robot.subsystems.*;
 public class Robot extends IterativeRobot {
 
 	Command autonomousCommand;
+	Command shootBall;
+	Command setFlyWheels;
 
 	public static OI oi;
 	// Creates the SubSystem onjects
@@ -41,6 +43,7 @@ public class Robot extends IterativeRobot {
 	public static boolean shooterArmEnabled;
 	
 	public static PowerDistributionPanel panel;
+	
 	
 	/**
 	 * This function is run when the robot is first started up and should be
@@ -79,6 +82,8 @@ public class Robot extends IterativeRobot {
 		// instantiate the command used for the autonomous period
 
 		autonomousCommand = new AutonomousCommandGroup();
+		shootBall = new ShootBall();
+		setFlyWheels = new FlyWheelSetToSpeed(4500);
 		
 		// Display active commands and subsystem status on SmartDashboard
 		SmartDashboard.putData(Scheduler.getInstance());
@@ -134,13 +139,23 @@ public class Robot extends IterativeRobot {
 		
 		// Uncomment the following 2 lines for debugging shooter motors PIDs.
 //		shooter.setPIDFromSmartDashboard();
-//		shooter.updateSmartDashboard();
-
-		// Uncomment the following 2 lines for debugging the arm motor PID.
-//      shooterArm.setPIDFromSmartDashboard();
-//      shooterArm.updateSmartDashboard();
-		        
+		shooter.updateSmartDashboard();
+		
 		oi.updateSmartDashboard();
+
+// Uncomment the following 2 lines for debugging the arm motor PID.
+//        shooterArm.setPIDFromSmartDashboard();
+        shooterArm.updateSmartDashboard();
+        
+        //Here is where the triggers are processed, so when they are over a certain threshold, it will run a command.
+		if(oi.xboxController.getRawAxis(2) > .90){
+			setFlyWheels.start();		//This one will rev the fly wheels up to 4500 RPM
+		}
+		if(oi.xboxController.getRawAxis(3) > .90){
+			shootBall.start();			//This will do the shooting sequence
+		}
+		
+        
         //This code here is the code for changing the angle using the TOP of the 3 knobs.  The switch next to it
         //applies the angle to the robot.  This code SHOULD GO IN A COMMAND.  I created it here as a concept.
 //		double ballAxis = OI.coPanel.getRawAxis(4);

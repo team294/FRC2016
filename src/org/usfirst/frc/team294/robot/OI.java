@@ -50,17 +50,17 @@ public class OI {
 		plus1degree, plus2degrees,plus3degrees,plus4degrees,plus5degrees
 	}
 	public enum MiddleKnob{
-		testA,testB,testC
+		PositionOne,PositionTwo,PositionThree,PositionFour,PositionFive
 	}
 	public enum BottomKnob {
-		noChange, minus2degrees, plus2degrees 
+		LowBar,Portcullis,Ramparts,Moat,RockWall, RoughTerrain,DrawBridge,SallyPort,ChevalDeFrise,noChange
 	}
 	TopKnob[] TopKnobPositions = new TopKnob[] {TopKnob.minus6degrees, TopKnob.minus5degrees, TopKnob.minus4degrees, TopKnob.minus3degrees,
 			TopKnob.minus2degrees, TopKnob.minus1degree, TopKnob.noChange, TopKnob.plus1degree, TopKnob.plus2degrees, TopKnob.plus3degrees, TopKnob.plus4degrees,
 			TopKnob.plus5degrees};
-	MiddleKnob[] MiddleKnobPositions = new MiddleKnob[] {MiddleKnob.testA, MiddleKnob.testB, MiddleKnob.testC,MiddleKnob.testA};
-	BottomKnob[] BottomKnobPositions= new BottomKnob[] {BottomKnob.minus2degrees, BottomKnob.noChange, BottomKnob.plus2degrees,BottomKnob.noChange,
-			BottomKnob.noChange, BottomKnob.noChange, BottomKnob.noChange, BottomKnob.noChange, BottomKnob.noChange, BottomKnob.noChange, BottomKnob.noChange
+	MiddleKnob[] MiddleKnobPositions = new MiddleKnob[] {MiddleKnob.PositionOne, MiddleKnob.PositionTwo, MiddleKnob.PositionThree,MiddleKnob.PositionFour, MiddleKnob.PositionFive};
+	BottomKnob[] BottomKnobPositions= new BottomKnob[] {BottomKnob.Portcullis, BottomKnob.ChevalDeFrise, BottomKnob.Ramparts,BottomKnob.Moat,
+			BottomKnob.DrawBridge, BottomKnob.SallyPort, BottomKnob.RockWall, BottomKnob.RoughTerrain, BottomKnob.LowBar, BottomKnob.noChange, BottomKnob.noChange
 	};
 
 	// Joystick controls

@@ -211,4 +211,11 @@ public class OI {
 		if(i==len)return BottomKnobPositions[len-1];
 		return BottomKnobPositions[i];
 	}
+    public void updateSmartDashboard() {
+    	int i;
+    	
+    	for (i=0; i<coPanel.getAxisCount(); i++) {
+        	SmartDashboard.putNumber("CoPanel Axis " + i, coPanel.getRawAxis(i));
+    	}    	
+    }
 }

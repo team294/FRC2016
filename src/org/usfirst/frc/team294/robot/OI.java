@@ -79,6 +79,16 @@ public class OI {
 
         left[1].whenPressed(new ShiftDown());
         right[1].whenPressed(new ShiftUp());
+
+        coP[4].whenPressed(new ShootBall());
+        coP[6].whenPressed(new ShooterArmMoveToSetLocation(RobotMap.shootingAngle));
+        coP[7].whenPressed(new ShooterArmMoveToSetLocation(RobotMap.shootingAngle));
+        coP[3].whenPressed(new ShooterArmMoveToSetLocation(RobotMap.shooterArmBallCruiseAngle));
+        coP[12].whenPressed(new LoadBallSequence());
+        coP[9].whenPressed(new IntakeRaiseWithArmMoveIfNeeded());
+        coP[11].whenPressed(new IntakeLowerIfRaised());
+        coP[13].whenPressed(new IntakeSetToSpeed(-1));
+        coP[14].whenPressed(new IntakeSetToSpeed(0));
         
         coP[1].whenPressed(new ShootBall());
         coP[2].whenPressed(new ShooterPistonOverride());
@@ -90,7 +100,7 @@ public class OI {
         coP[12].whenPressed(new StopFlyAndIntake());
         coP[14].whenPressed(new IntakeRaiseWithArmMoveIfNeeded());
         coP[13].whenPressed(new IntakeLowerIfRaised());
-
+        
         coJ[1].whileHeld(new ShooterArmMoveRelativeJoystick());
         
         // SmartDashboard Buttons
@@ -104,14 +114,15 @@ public class OI {
         SmartDashboard.putData("Drive right 0.5 speed", new DriveCurve(0.5, 0.5));
         SmartDashboard.putData("DriveTalon: driveForward 5 revs", new DriveDistance(1.0, 5.0));
         SmartDashboard.putData("DriveTalon: driveForward 1 rev", new DriveDistance(0.5, 1.0));
-//        SmartDashboard.putData("DriveStraightNxp: 10 revs fast", new DriveStraightDistance(0.75, 10.0));
-//        SmartDashboard.putData("DriveStraightNxp: 10 revs slow", new DriveStraightDistance(0.4, 10.0));
-//        SmartDashboard.putData("DriveStraightNxp: 5 revs fast", new DriveStraightDistance(0.75, 5.0));
-//        SmartDashboard.putData("DriveStraightNxp: 5 revs slow", new DriveStraightDistance(0.4, 5.0));
-//        SmartDashboard.putData("DriveStraightNxp: 1 rev fast", new DriveStraightDistance(0.75, 1.0));
-//        SmartDashboard.putData("DriveStraightNxp: 1 rev slow", new DriveStraightDistance(0.4, 1.0));
-//        SmartDashboard.putData("DriveStraightNxp: -5 revs fast", new DriveStraightDistance(0.75, -5.0));
-//        SmartDashboard.putData("DriveStraightNxp: -5 revs slow", new DriveStraightDistance(0.4, -5.0));
+        SmartDashboard.putData("DriveStraightNxp: 10 revs fast", new DriveStraightDistance(1.0, 10.0, DriveStraightDistance.Units.rotations));
+        SmartDashboard.putData("DriveStraightNxp: 10 revs slow", new DriveStraightDistance(0.6, 10.0, DriveStraightDistance.Units.rotations));
+        SmartDashboard.putData("DriveStraightNxp: 5 revs fast", new DriveStraightDistance(1.0, 5.0, DriveStraightDistance.Units.rotations));
+        SmartDashboard.putData("DriveStraightNxp: 5 revs slow", new DriveStraightDistance(0.6, 5.0, DriveStraightDistance.Units.rotations));
+        SmartDashboard.putData("DriveStraightNxp: 1 rev fast", new DriveStraightDistance(1.0, 1.0, DriveStraightDistance.Units.rotations));
+        SmartDashboard.putData("DriveStraightNxp: 1 rev slow", new DriveStraightDistance(0.6, 1.0, DriveStraightDistance.Units.rotations));
+        SmartDashboard.putData("DriveStraightNxp: -5 revs fast", new DriveStraightDistance(1.0, -5.0, DriveStraightDistance.Units.rotations));
+        SmartDashboard.putData("DriveStraightNxp: -5 revs slow", new DriveStraightDistance(0.6, -5.0, DriveStraightDistance.Units.rotations));
+        SmartDashboard.putData("DriveStraightNxp: 10 feet slow", new DriveStraightDistance(0.6, 120.0, DriveStraightDistance.Units.inches));
         SmartDashboard.putData("Rotate +90 PID", new DriveAnglePID(90.0));
         SmartDashboard.putData("Rotate -90 PID", new DriveAnglePID(-90.0));
         SmartDashboard.putData("Rotate +5 PID", new DriveAnglePID(5.0));
@@ -152,5 +163,13 @@ public class OI {
         SmartDashboard.putData("Shooter Arm keep out!", new ShooterArmMoveAwayFromIntake(ShooterArmMoveAwayFromIntake.condition.ifIntakeNotInWay));
         
         SmartDashboard.putData("Load Ball", new LoadBallSequence());
+    }
+    
+    public void updateSmartDashboard() {
+    	int i;
+    	
+    	for (i=0; i<coPanel.getAxisCount(); i++) {
+        	SmartDashboard.putNumber("CoPanel Axis " + i, coPanel.getRawAxis(i));
+    	}    	
     }
 }

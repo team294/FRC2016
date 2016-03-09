@@ -140,6 +140,10 @@ public class Robot extends IterativeRobot {
 		// Uncomment the following 2 lines for debugging shooter motors PIDs.
 //		shooter.setPIDFromSmartDashboard();
 		shooter.updateSmartDashboard();
+		
+		oi.updateSmartDashboard();
+
+// Uncomment the following 2 lines for debugging the arm motor PID.
 //        shooterArm.setPIDFromSmartDashboard();
         shooterArm.updateSmartDashboard();
         
@@ -150,7 +154,6 @@ public class Robot extends IterativeRobot {
 		if(oi.xboxController.getRawAxis(3) > .90){
 			shootBall.start();			//This will do the shooting sequence
 		}
-		
 		
         
         //This code here is the code for changing the angle using the TOP of the 3 knobs.  The switch next to it
@@ -198,8 +201,8 @@ public class Robot extends IterativeRobot {
 
 		
 		// Other printouts
-//        shooter.isBallLoaded();
-//		intake.intakeIsUp();
+        shooter.isBallLoaded();
+		intake.intakeIsUp();
 		
 		// Uncomment the following 2 lines to see drive train data
     	driveTrain.getLeftEncoder();

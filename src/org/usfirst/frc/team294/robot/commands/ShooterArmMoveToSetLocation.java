@@ -14,6 +14,49 @@ double angleToMove ;
     public ShooterArmMoveToSetLocation(double angle) {
         // Use requires() here to declare subsystem dependencies
         // eg. requires(chassis);
+    	
+    	if(angle == RobotMap.shootingAngle){
+    		switch(Robot.oi.readTopKnob()){
+    		case minus1degree:
+    			angle -= 1;
+    			break;
+    		case minus2degrees:
+    			angle -= 2;
+    			break;
+    		case minus3degrees:
+    			angle -= 3;
+    			break;
+    		case minus4degrees:
+    			angle -= 4;
+    			break;
+    		case minus5degrees:
+    			angle -= 5;
+    			break;
+    		case minus6degrees:
+    			angle -= 6;
+    			break;
+    		case noChange:
+    			break;
+    		case plus1degree:
+    			angle += 1;
+    			break;
+    		case plus2degrees:
+    			angle += 2;
+    			break;
+    		case plus3degrees:
+    			angle += 3;
+    			break;
+    		case plus4degrees:
+    			angle += 4;
+    			break;
+    		case plus5degrees:
+    			angle += 5;
+    			break;
+    		default:
+    			break;
+    		}
+    	}
+    	
     	this.angleToMove = angle; 
     	requires(Robot.shooterArm); 
     	requires(Robot.intake);

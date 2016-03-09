@@ -62,6 +62,7 @@ public class OI {
 	BottomKnob[] BottomKnobPositions= new BottomKnob[] {BottomKnob.Portcullis, BottomKnob.ChevalDeFrise, BottomKnob.Ramparts,BottomKnob.Moat,
 			BottomKnob.DrawBridge, BottomKnob.SallyPort, BottomKnob.RockWall, BottomKnob.RoughTerrain, BottomKnob.LowBar, BottomKnob.noChange, BottomKnob.noChange
 	};
+	
 
 	// Joystick controls
 	public Joystick leftJoystick = new Joystick(0);
@@ -70,15 +71,14 @@ public class OI {
 	public Joystick coJoystick = new Joystick(3);
 	public Joystick xboxController = new Joystick(4);
 
-	// Joystick buttons
-	Button[] left = new Button[15];
-	Button[] right = new Button[15];
-	Button[] coP = new Button[15];
-	Button[] coJ = new Button[15];
-
-	Button[] xbB = new Button[15];
-
+	
 	public OI() {
+		Button[] left = new Button[15];
+	    Button[] right = new Button[15];
+	    Button[] coP = new Button[15];
+	    Button[] coJ = new Button[15];
+	    Button[] xbB = new Button[15];
+		
 		// Create buttons
 		for (int i=1; i<15; i++) {
 			left[i] = new JoystickButton(leftJoystick, i);
@@ -86,6 +86,9 @@ public class OI {
 			coP[i] = new JoystickButton(coPanel, i);
 			coJ[i] = new JoystickButton(coJoystick, i);
 			xbB[i] = new JoystickButton(xboxController, i);
+			
+			left[i].whenPressed(new ShiftDown());
+			right[i].whenPressed(new ShiftUp());
 		}
 
 		xbB[5].whenPressed(new LoadBallSequence());

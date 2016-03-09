@@ -35,23 +35,23 @@ public class Robot extends IterativeRobot {
 	public static Shooter shooter;
 	public static Intake intake;
 	public static Vision vision;
-	
+
 	//for preferences armMin position, arm 90 degree position
 	Preferences prefs;
 	public static double armCalMinPosition;
 	public static double armCal90DegPosition;
 	public static boolean shooterArmEnabled;
-	
+
 	public static PowerDistributionPanel panel;
-	
-	
+
+
 	/**
 	 * This function is run when the robot is first started up and should be
 	 * used for any initialization code.
 	 */
 	public void robotInit() {
 		RobotMap.init();
-		
+
 		//Get preferences from robot flash memory
 		prefs = Preferences.getInstance();
 		armCalMinPosition = prefs.getDouble("armCalMinPosition", 0);
@@ -62,7 +62,7 @@ public class Robot extends IterativeRobot {
 		} else {
 			shooterArmEnabled = true;
 		}
-		
+
 		//Instantiates the subsystems
 		driveTrain = new DriveTrain();
 		shifter = new Shifter();
@@ -72,7 +72,7 @@ public class Robot extends IterativeRobot {
 		vision = new Vision();
 
 		shooter.setupSmartDashboard(true);
-		
+
 		// OI must be constructed after subsystems. If the OI creates Commands
 		// (which it very likely will), subsystems are not guaranteed to be
 		// constructed yet. Thus, their requires() statements may grab null
@@ -84,7 +84,7 @@ public class Robot extends IterativeRobot {
 		autonomousCommand = new AutonomousCommandGroup();
 		shootBall = new ShootBall();
 		setFlyWheels = new FlyWheelSetToSpeed(4500);
-		
+
 		// Display active commands and subsystem status on SmartDashboard
 		SmartDashboard.putData(Scheduler.getInstance());
 		SmartDashboard.putData(driveTrain);
@@ -93,7 +93,7 @@ public class Robot extends IterativeRobot {
 		SmartDashboard.putData(shooter);
 		SmartDashboard.putData(intake);
 		SmartDashboard.putData(vision);
-		
+
 		panel = new PowerDistributionPanel();
 	}
 
@@ -136,18 +136,18 @@ public class Robot extends IterativeRobot {
 	 */
 	public void teleopPeriodic() {
 		Scheduler.getInstance().run();
-		
+
 		// Uncomment the following 2 lines for debugging shooter motors PIDs.
-//		shooter.setPIDFromSmartDashboard();
+		//		shooter.setPIDFromSmartDashboard();
 		shooter.updateSmartDashboard();
-		
+
 		oi.updateSmartDashboard();
 
-// Uncomment the following 2 lines for debugging the arm motor PID.
-//        shooterArm.setPIDFromSmartDashboard();
-        shooterArm.updateSmartDashboard();
-        
-        //Here is where the triggers are processed, so when they are over a certain threshold, it will run a command.
+		// Uncomment the following 2 lines for debugging the arm motor PID.
+		//        shooterArm.setPIDFromSmartDashboard();
+		shooterArm.updateSmartDashboard();
+
+		//Here is where the triggers are processed, so when they are over a certain threshold, it will run a command.
 		if(oi.xboxController.getRawAxis(2) > .90){
 			setFlyWheels.start();		//This one will rev the fly wheels up to 4500 RPM
 		}
@@ -155,17 +155,62 @@ public class Robot extends IterativeRobot {
 			shootBall.start();			//This will do the shooting sequence
 		}
 
-		
-		// Other printouts
-        shooter.isBallLoaded();
-		intake.intakeIsUp();
-		
-		// Uncomment the following 2 lines to see drive train data
-    	driveTrain.getLeftEncoder();
-    	driveTrain.getRightEncoder();
 
-//		SmartDashboard.putNumber("Panel voltage", panel.getVoltage());
-//		SmartDashboard.putNumber("Panel arm current", panel.getCurrent(0));
+		//This code here is the code for changing the angle using the TOP of the 3 knobs.  The switch next to it
+		//applies the angle to the robot.  This code SHOULD GO IN A COMMAND.  I created it here as a concept.
+		//		double ballAxis = OI.coPanel.getRawAxis(4);
+		//		
+		//		double pos0 = 0.0;
+		//		double pos1 = 0.007874015748031496;
+		//		double pos2 = 0.015748031496062992;
+		//		double pos3 = 0.031496062992125984;
+		//		double pos4 = 0.03937007874015748;
+		//		double pos5 = 0.05511811023622047;
+		//		double pos6 = 0.06299212598425197;
+		//		double pos7 = 0.07874015748031496;
+		//		double pos8 = 0.08661417322834646;
+		//		double pos9 = 0.10236220472440945;
+		//		double pos10 = 0.11023622047244094;
+		//		double pos11 = 0.11811023622047244;
+		//		
+		//		if(ballAxis == 0){
+		//			System.out.println(0);
+		//		}else if(ballAxis > pos0 && ballAxis < pos2){
+		//			System.out.println(1);
+		//		}else if(ballAxis > pos1 && ballAxis < pos3){
+		//			System.out.println(2);
+		//		}else if(ballAxis > pos2 && ballAxis < pos4){
+		//			System.out.println(3);
+		//		}else if(ballAxis > pos3 && ballAxis < pos5){
+		//			System.out.println(4);
+		//		}else if(ballAxis > pos4 && ballAxis < pos6){
+		//			System.out.println(5);
+		//		}else if(ballAxis > pos5 && ballAxis < pos7){
+		//			System.out.println(6);
+		//		}else if(ballAxis > pos6 && ballAxis < pos8){
+		//			System.out.println(7);
+		//		}else if(ballAxis > pos7 && ballAxis < pos9){
+		//			System.out.println(8);
+		//		}else if(ballAxis > pos8 && ballAxis < pos10){
+		//			System.out.println(9);
+		//		}else if(ballAxis > pos9 && ballAxis < pos11){
+		//			System.out.println(10);
+		//		}else if(ballAxis > pos10 && ballAxis < 1){
+		//		System.out.println(11);
+		//		}
+
+
+		// Other printouts
+		shooter.isBallLoaded();
+		intake.intakeIsUp();
+
+		// Uncomment the following 2 lines to see drive train data
+		driveTrain.getLeftEncoder();
+		driveTrain.getRightEncoder();
+
+		//		SmartDashboard.putNumber("Panel voltage", panel.getVoltage());
+		//		SmartDashboard.putNumber("Panel arm current", panel.getCurrent(0));
+		SmartDashboard.putBoolean("Top Knob Minus Two Degrees", oi.readTopKnob()==OI.TopKnob.minus2degrees);
 	}
 
 	/**

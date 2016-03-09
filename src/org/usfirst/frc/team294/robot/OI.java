@@ -104,14 +104,14 @@ public class OI {
         SmartDashboard.putData("Drive right 0.5 speed", new DriveCurve(0.5, 0.5));
         SmartDashboard.putData("DriveTalon: driveForward 5 revs", new DriveDistance(1.0, 5.0));
         SmartDashboard.putData("DriveTalon: driveForward 1 rev", new DriveDistance(0.5, 1.0));
-        SmartDashboard.putData("DriveStraightNxp: 10 revs fast", new DriveStraightDistance(0.75, 10.0));
-        SmartDashboard.putData("DriveStraightNxp: 10 revs slow", new DriveStraightDistance(0.4, 10.0));
-        SmartDashboard.putData("DriveStraightNxp: 5 revs fast", new DriveStraightDistance(0.75, 5.0));
-        SmartDashboard.putData("DriveStraightNxp: 5 revs slow", new DriveStraightDistance(0.4, 5.0));
-        SmartDashboard.putData("DriveStraightNxp: 1 rev fast", new DriveStraightDistance(0.75, 1.0));
-        SmartDashboard.putData("DriveStraightNxp: 1 rev slow", new DriveStraightDistance(0.4, 1.0));
-        SmartDashboard.putData("DriveStraightNxp: -5 revs fast", new DriveStraightDistance(0.75, -5.0));
-        SmartDashboard.putData("DriveStraightNxp: -5 revs slow", new DriveStraightDistance(0.4, -5.0));
+//        SmartDashboard.putData("DriveStraightNxp: 10 revs fast", new DriveStraightDistance(0.75, 10.0));
+//        SmartDashboard.putData("DriveStraightNxp: 10 revs slow", new DriveStraightDistance(0.4, 10.0));
+//        SmartDashboard.putData("DriveStraightNxp: 5 revs fast", new DriveStraightDistance(0.75, 5.0));
+//        SmartDashboard.putData("DriveStraightNxp: 5 revs slow", new DriveStraightDistance(0.4, 5.0));
+//        SmartDashboard.putData("DriveStraightNxp: 1 rev fast", new DriveStraightDistance(0.75, 1.0));
+//        SmartDashboard.putData("DriveStraightNxp: 1 rev slow", new DriveStraightDistance(0.4, 1.0));
+//        SmartDashboard.putData("DriveStraightNxp: -5 revs fast", new DriveStraightDistance(0.75, -5.0));
+//        SmartDashboard.putData("DriveStraightNxp: -5 revs slow", new DriveStraightDistance(0.4, -5.0));
         SmartDashboard.putData("Rotate +90 PID", new DriveAnglePID(90.0));
         SmartDashboard.putData("Rotate -90 PID", new DriveAnglePID(-90.0));
         SmartDashboard.putData("Rotate +5 PID", new DriveAnglePID(5.0));
@@ -154,4 +154,3 @@ public class OI {
         SmartDashboard.putData("Load Ball", new LoadBallSequence());
     }
 }
-

@@ -99,6 +99,7 @@ public class ShooterArm extends Subsystem {
 //    		SmartDashboard.putBoolean("useCamera1", true);
 //    	}
 		
+		
 		// Don't move if the shooter arm is disabled.
 		if (!Robot.shooterArmEnabled) {
 			SmartDashboard.putNumber("Set position", -9999);			

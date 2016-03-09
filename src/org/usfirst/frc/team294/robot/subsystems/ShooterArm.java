@@ -35,7 +35,7 @@ public class ShooterArm extends Subsystem {
 	private double joyAbsSlope=(maxAngle/2-minAngle/2);
 	private double joyAbsYIntercept=maxAngle-joyAbsSlope;
 	
-	private double joyRelativeRate = 15;
+	private double joyRelativeRate = 8;
 	
 	private ToleranceChecker armTol = new ToleranceChecker(1.5, 5);
 
@@ -93,11 +93,11 @@ public class ShooterArm extends Subsystem {
 	 * @param angle Desired target angle, in degrees.  0 = horizontal, + = up, - = down
 	 */
 	public void moveToAngle(double angle) {
-		if(angle > 45){
-    		SmartDashboard.putBoolean("useCamera1", false);
-    	}else{
-    		SmartDashboard.putBoolean("useCamera1", true);
-    	}
+//		if(angle > 35){
+//    		SmartDashboard.putBoolean("useCamera1", false);
+//    	}else{
+//    		SmartDashboard.putBoolean("useCamera1", true);
+//    	}
 		
 		// Don't move if the shooter arm is disabled.
 		if (!Robot.shooterArmEnabled) {

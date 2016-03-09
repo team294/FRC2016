@@ -63,6 +63,9 @@ public class OI {
             coP[i] = new JoystickButton(coPanel, i);
             coJ[i] = new JoystickButton(coJoystick, i);
             xbB[i] = new JoystickButton(xboxController, i);
+            
+            left[i].whenPressed(new ShiftDown());
+            right[i].whenPressed(new ShiftUp());
         }
         
         xbB[5].whenPressed(new LoadBallSequence());
@@ -76,17 +79,18 @@ public class OI {
 
         left[1].whenPressed(new ShiftDown());
         right[1].whenPressed(new ShiftUp());
-
-        coP[4].whenPressed(new ShootBall());
-        coP[6].whenPressed(new ShooterArmMoveToSetLocation(RobotMap.shootingAngle));
-        coP[7].whenPressed(new ShooterArmMoveToSetLocation(RobotMap.shootingAngle));
-        coP[3].whenPressed(new ShooterArmMoveToSetLocation(RobotMap.shooterArmBallCruiseAngle));
-        coP[12].whenPressed(new LoadBallSequence());
-        coP[9].whenPressed(new IntakeRaiseWithArmMoveIfNeeded());
-        coP[11].whenPressed(new IntakeLowerIfRaised());
-        coP[13].whenPressed(new IntakeSetToSpeed(-1));
-        coP[14].whenPressed(new IntakeSetToSpeed(0));
         
+        coP[1].whenPressed(new ShootBall());
+        coP[2].whenPressed(new ShooterPistonOverride());
+        coP[3].whenPressed(new ShooterArmMoveToSetLocation(RobotMap.shooterArmBallLoadAngle));
+        coP[6].whenPressed(new ShooterArmMoveToSetLocation(RobotMap.shootingAngle));
+        coP[7].whenPressed(new ShooterArmMoveToSetLocation(RobotMap.shooterArmBallCruiseAngle));
+        coP[11].whenPressed(new LoadBallSequence());
+        coP[9].whenPressed(new IntakeSetToSpeed(-1));
+        coP[12].whenPressed(new StopFlyAndIntake());
+        coP[14].whenPressed(new IntakeRaiseWithArmMoveIfNeeded());
+        coP[13].whenPressed(new IntakeLowerIfRaised());
+
         coJ[1].whileHeld(new ShooterArmMoveRelativeJoystick());
         
         // SmartDashboard Buttons

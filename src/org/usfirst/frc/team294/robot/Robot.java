@@ -150,51 +150,6 @@ public class Robot extends IterativeRobot {
 		if(oi.xboxController.getRawAxis(3) > .90){
 			shootBall.start();			//This will do the shooting sequence
 		}
-		
-		
-        
-        //This code here is the code for changing the angle using the TOP of the 3 knobs.  The switch next to it
-        //applies the angle to the robot.  This code SHOULD GO IN A COMMAND.  I created it here as a concept.
-//		double ballAxis = OI.coPanel.getRawAxis(4);
-//		
-//		double pos0 = 0.0;
-//		double pos1 = 0.007874015748031496;
-//		double pos2 = 0.015748031496062992;
-//		double pos3 = 0.031496062992125984;
-//		double pos4 = 0.03937007874015748;
-//		double pos5 = 0.05511811023622047;
-//		double pos6 = 0.06299212598425197;
-//		double pos7 = 0.07874015748031496;
-//		double pos8 = 0.08661417322834646;
-//		double pos9 = 0.10236220472440945;
-//		double pos10 = 0.11023622047244094;
-//		double pos11 = 0.11811023622047244;
-//		
-//		if(ballAxis == 0){
-//			System.out.println(0);
-//		}else if(ballAxis > pos0 && ballAxis < pos2){
-//			System.out.println(1);
-//		}else if(ballAxis > pos1 && ballAxis < pos3){
-//			System.out.println(2);
-//		}else if(ballAxis > pos2 && ballAxis < pos4){
-//			System.out.println(3);
-//		}else if(ballAxis > pos3 && ballAxis < pos5){
-//			System.out.println(4);
-//		}else if(ballAxis > pos4 && ballAxis < pos6){
-//			System.out.println(5);
-//		}else if(ballAxis > pos5 && ballAxis < pos7){
-//			System.out.println(6);
-//		}else if(ballAxis > pos6 && ballAxis < pos8){
-//			System.out.println(7);
-//		}else if(ballAxis > pos7 && ballAxis < pos9){
-//			System.out.println(8);
-//		}else if(ballAxis > pos8 && ballAxis < pos10){
-//			System.out.println(9);
-//		}else if(ballAxis > pos9 && ballAxis < pos11){
-//			System.out.println(10);
-//		}else if(ballAxis > pos10 && ballAxis < 1){
-//			System.out.println(11);
-//		}
 
 		
 		// Other printouts

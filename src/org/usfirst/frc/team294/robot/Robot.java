@@ -83,7 +83,7 @@ public class Robot extends IterativeRobot {
 		oi = new OI();
 
 		// instantiate the command used for the autonomous period
-		autonomousCommand = new AutonomousCommandGroup();
+		//autonomousCommand = new AutonomousCommandGroup();
 		
 		// instantiate commands for xbox triggers
 		shootBall = new ShootBall();
@@ -113,6 +113,8 @@ public class Robot extends IterativeRobot {
 
 	public void autonomousInit() {
 		// schedule the autonomous command (example)
+		autonomousCommand = oi.getAutonomousCommand();
+		
 		if (autonomousCommand != null)
 			autonomousCommand.start();
 	}

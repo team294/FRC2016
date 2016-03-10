@@ -3,6 +3,7 @@ package org.usfirst.frc.team294.robot;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.*;
+import edu.wpi.first.wpilibj.command.Command;
 
 import org.usfirst.frc.team294.robot.commands.*;
 
@@ -62,7 +63,19 @@ public class OI {
 	BottomKnob[] BottomKnobPositions= new BottomKnob[] {BottomKnob.Portcullis, BottomKnob.ChevalDeFrise, BottomKnob.Ramparts,BottomKnob.Moat,
 			BottomKnob.DrawBridge, BottomKnob.SallyPort, BottomKnob.RockWall, BottomKnob.RoughTerrain, BottomKnob.LowBar, BottomKnob.noChange, BottomKnob.noChange
 	};
-	
+	Command[] BottomKnobCommands = new Command[] {	
+		null, 		//Portcullis 
+		null, 		//ChevalDeFrise 
+		null, 		//Ramparts
+		null, 		//Moat
+		null, 		//DrawBridge 
+		null, 		//SallyPort
+		null, 		//RockWall 
+		null, 		//RoughTerrain 
+		new AutoLowBar(), 		//LowBar
+		null, 		//noChange 
+		null 		//noChange
+	};
 
 	// Joystick controls
 	public Joystick leftJoystick = new Joystick(0);
@@ -187,7 +200,11 @@ public class OI {
 		return MiddleKnobPositions[i];
 	}
 
-	public BottomKnob readBottomKnob() {
+	/**
+	 * Reads the bottom knob.
+	 * @return Raw position 0 (full ccw) to 11 (full cw)
+	 */
+	public int readBottomKnobRaw() {
 		double knobReading;
 		int i=0;
 		
@@ -202,8 +219,16 @@ public class OI {
         	SmartDashboard.putNumber("Knob Reading", knobReading);
         }
         
-		if(i==len)return BottomKnobPositions[len-1];
-		return BottomKnobPositions[i];
+		if(i==len)return (len-1);
+		return (i);
+	}
+
+	public BottomKnob readBottomKnob() {
+		return BottomKnobPositions[readBottomKnobRaw()];
+	}
+	
+	public Command getAutonomousCommand() {
+		return BottomKnobCommands[readBottomKnobRaw()];
 	}
 
     public void updateSmartDashboard() {

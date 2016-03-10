@@ -77,7 +77,11 @@ public class DriveStraightDistance extends Command {
     	
     	// Find speed to drive
     	distErr = ( (distance - Robot.driveTrain.getLeftEncoder()) + (distance - Robot.driveTrain.getRightEncoder())) / 2;
-    	SmartDashboard.putNumber("Left Error", distErr);
+    	
+        if (Robot.smartDashboardDebug) {
+        	SmartDashboard.putNumber("Drive Straight Error", distErr);
+        }
+        
     	driveTol.check(Math.abs(distErr));
     	
     	if (!driveTol.success()) {

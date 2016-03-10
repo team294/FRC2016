@@ -28,6 +28,7 @@ public class Robot extends IterativeRobot {
 	Command setFlyWheels;
 
 	public static OI oi;
+
 	// Creates the SubSystem onjects
 	public static DriveTrain driveTrain;
 	public static Shifter shifter;
@@ -36,13 +37,16 @@ public class Robot extends IterativeRobot {
 	public static Intake intake;
 	public static Vision vision;
 
+	public static PowerDistributionPanel panel;
+
+	// Turn on/off SmartDashboard debugging
+	public static boolean smartDashboardDebug = false;		// true to print lots of stuff on the SmartDashboard
+	
 	//for preferences armMin position, arm 90 degree position
 	Preferences prefs;
 	public static double armCalMinPosition;
 	public static double armCal90DegPosition;
-	public static boolean shooterArmEnabled;
-
-	public static PowerDistributionPanel panel;
+	public static boolean shooterArmEnabled;		// Safety disable arm if parameters are missing
 
 
 	/**
@@ -70,8 +74,7 @@ public class Robot extends IterativeRobot {
 		shooter = new Shooter();
 		intake = new Intake();
 		vision = new Vision();
-
-		shooter.setupSmartDashboard(true);
+		panel = new PowerDistributionPanel();
 
 		// OI must be constructed after subsystems. If the OI creates Commands
 		// (which it very likely will), subsystems are not guaranteed to be
@@ -80,8 +83,9 @@ public class Robot extends IterativeRobot {
 		oi = new OI();
 
 		// instantiate the command used for the autonomous period
-
 		autonomousCommand = new AutonomousCommandGroup();
+		
+		// instantiate commands for xbox triggers
 		shootBall = new ShootBall();
 		setFlyWheels = new FlyWheelSetToSpeed(4500);
 
@@ -93,8 +97,6 @@ public class Robot extends IterativeRobot {
 		SmartDashboard.putData(shooter);
 		SmartDashboard.putData(intake);
 		SmartDashboard.putData(vision);
-
-		panel = new PowerDistributionPanel();
 	}
 
 	/**
@@ -137,16 +139,6 @@ public class Robot extends IterativeRobot {
 	public void teleopPeriodic() {
 		Scheduler.getInstance().run();
 
-		// Uncomment the following 2 lines for debugging shooter motors PIDs.
-//		shooter.setPIDFromSmartDashboard();
-//		shooter.updateSmartDashboard();
-		
-//		oi.updateSmartDashboard();
-
-// Uncomment the following 2 lines for debugging the arm motor PID.
-//        shooterArm.setPIDFromSmartDashboard();
-        shooterArm.updateSmartDashboard();
-        
         //Here is where the triggers are processed, so when they are over a certain threshold, it will run a command.
 		if(oi.xboxController.getRawAxis(2) > .90){
 			setFlyWheels.start();		//This one will rev the fly wheels up to 4500 RPM
@@ -155,17 +147,35 @@ public class Robot extends IterativeRobot {
 			shootBall.start();			//This will do the shooting sequence
 		}
 
+		// Show arm angle
+        shooterArm.updateSmartDashboard();
+        
 		// Other printouts
 		shooter.isBallLoaded();
 		intake.intakeIsUp();
+		driveTrain.getDegrees();
+		
+		if (smartDashboardDebug) {
+			// Uncomment the following line to read coPanel knobs.
+//			oi.updateSmartDashboard();
 
-		// Uncomment the following 2 lines to see drive train data
-//    	driveTrain.getLeftEncoder();
-//    	driveTrain.getRightEncoder();
+			// Uncomment the following 2 lines for debugging shooter motors PIDs.
+//			shooter.setPIDFromSmartDashboard();
+			shooter.updateSmartDashboard();
+			
+			// Uncomment the following 2 lines for debugging the arm motor PID.
+//	        shooterArm.setPIDFromSmartDashboard();
 
-		//		SmartDashboard.putNumber("Panel voltage", panel.getVoltage());
-		//		SmartDashboard.putNumber("Panel arm current", panel.getCurrent(0));
-		SmartDashboard.putBoolean("Top Knob Minus Two Degrees", oi.readTopKnob()==OI.TopKnob.minus2degrees);
+			// Uncomment the following 2 lines to see drive train data
+//	    	driveTrain.getLeftEncoder();
+//	    	driveTrain.getRightEncoder();
+			
+			intake.updateSmartDashboard();
+
+			//		SmartDashboard.putNumber("Panel voltage", panel.getVoltage());
+			//		SmartDashboard.putNumber("Panel arm current", panel.getCurrent(0));
+		}
+
 	}
 
 	/**

@@ -1,5 +1,6 @@
 package org.usfirst.frc.team294.robot.subsystems;
 
+import org.usfirst.frc.team294.robot.Robot;
 import org.usfirst.frc.team294.robot.RobotMap;
 import org.usfirst.frc.team294.robot.commands.RecordBallState;
 import org.usfirst.frc.team294.robot.triggers.BallLoadedTrigger;
@@ -84,9 +85,12 @@ public class Shooter extends Subsystem {
     	motorBottom.set(speed);
     	motorTop.clearIAccum();
     	motorBottom.clearIAccum();
-    	SmartDashboard.putNumber("ShootTop Setpoint", motorTop.getSetpoint());
-		SmartDashboard.putNumber("ShootBot Setpoint", motorBottom.getSetpoint());   	
-    }
+
+		if (Robot.smartDashboardDebug) {
+	    	SmartDashboard.putNumber("ShootTop Setpoint", motorTop.getSetpoint());
+			SmartDashboard.putNumber("ShootBot Setpoint", motorBottom.getSetpoint());   	
+		}
+	}
     
 	/**
 	 * Set shooter motor speeds.  WARNING:  Keep speeds <= 4500 RPM to ensure that the PIDF
@@ -103,8 +107,11 @@ public class Shooter extends Subsystem {
     	motorBottom.set(bottomSpeed);
     	motorTop.clearIAccum();
     	motorBottom.clearIAccum();
-    	SmartDashboard.putNumber("ShootTop Setpoint", motorTop.getSetpoint());
-		SmartDashboard.putNumber("ShootBot Setpoint", motorBottom.getSetpoint());   	
+
+		if (Robot.smartDashboardDebug) {
+	    	SmartDashboard.putNumber("ShootTop Setpoint", motorTop.getSetpoint());
+			SmartDashboard.putNumber("ShootBot Setpoint", motorBottom.getSetpoint());   	
+		}
     }
     
     /**
@@ -186,7 +193,7 @@ public class Shooter extends Subsystem {
      * @return true = shooter has a ball
      */
     public boolean isBallLoaded(){
-    	SmartDashboard.putBoolean("BallSensor", ballSensor.get());
+//    	SmartDashboard.putBoolean("BallSensor", ballSensor.get());
     	SmartDashboard.putBoolean("Ball in shooter", ballIsLoaded);
     	return ballIsLoaded;
     }

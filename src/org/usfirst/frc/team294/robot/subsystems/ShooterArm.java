@@ -54,8 +54,7 @@ public class ShooterArm extends Subsystem {
 		shooterArmMotor.setForwardSoftLimit(minPosition-0.02);		// Limit in low position (slightly above 0 deg, and let gravity pull the arm down)
 		shooterArmMotor.enableForwardSoftLimit(true);
 		//shooterArmMotor.disableControl();
-		this.setupSmartDashboard(true);
-		  
+		
     	// Add the subsystem to the LiveWindow
         LiveWindow.addActuator("ShooterArm", "shooterArmMotor", shooterArmMotor);
 	}
@@ -101,14 +100,16 @@ public class ShooterArm extends Subsystem {
 		
 		
 		// Don't move if the shooter arm is disabled.
-		if (!Robot.shooterArmEnabled) {
-			SmartDashboard.putNumber("Set position", -9999);			
+		if (!Robot.shooterArmEnabled || Robot.intake.intakeSolenoidIsOff()) {
+			SmartDashboard.putNumber("Arm set angle", -9999);			
 			return;
 		}
 		
-		SmartDashboard.putNumber("Set angle", angle);
-		SmartDashboard.putNumber("Set position", convertAngleToPos(angle));
-
+		SmartDashboard.putNumber("Arm set angle", angle);
+        if (Robot.smartDashboardDebug) {
+        	SmartDashboard.putNumber("Arm set position", convertAngleToPos(angle));
+        }
+        
 		if(Robot.intake.intakeIsUp()){
 			if(Robot.shooterArm.getAngle()>=RobotMap.upperBoundAngleToAvoid&&angle<=RobotMap.upperBoundAngleToAvoid){
 				angle=(RobotMap.upperBoundAngleToAvoid+3);
@@ -175,7 +176,7 @@ public class ShooterArm extends Subsystem {
 	public void moveArmWithJoystickAbsolute(Joystick coJoystick){
 		// Don't move if the shooter arm is disabled.
 		if (!Robot.shooterArmEnabled) {
-			SmartDashboard.putNumber("Set position", -9999);			
+			SmartDashboard.putNumber("Arm set angle", -9999);			
 			return;
 		}
 
@@ -185,11 +186,11 @@ public class ShooterArm extends Subsystem {
 	public void moveArmWithJoystickRelative(Joystick coJoystick) {
 		// Don't move if the shooter arm is disabled.
 		if (!Robot.shooterArmEnabled) {
-			SmartDashboard.putNumber("Set position", -9999);			
+			SmartDashboard.putNumber("Arm set angle", -9999);			
 			return;
 		}
 
-		SmartDashboard.putNumber("Arm Joystick Y", coJoystick.getY());
+//		SmartDashboard.putNumber("Arm Joystick Y", coJoystick.getY());
 		
 		moveAngleRelative(-coJoystick.getY()*joyRelativeRate);
 	}
@@ -216,18 +217,22 @@ public class ShooterArm extends Subsystem {
      * Updates ShooterArm parameters on SmartDashboard.
      */
     public void updateSmartDashboard() {
-        SmartDashboard.putNumber("Arm Position", getPos());
-//        SmartDashboard.putNumber("Enc Position", getEncPos());
-        SmartDashboard.putNumber("Arm Angle", getAngle());
-        SmartDashboard.putNumber("Arm Angle2", getAngle());
-		SmartDashboard.putNumber("Going Towards", shooterArmMotor.getSetpoint());
-		SmartDashboard.putNumber("Arm Error", shooterArmMotor.getError());
-//		SmartDashboard.putBoolean("Arm Talon Mode", shooterArmMotor.getControlMode()==TalonControlMode.Position);
-		SmartDashboard.putNumber("Arm motor voltage", shooterArmMotor.getOutputVoltage());
-		SmartDashboard.putNumber("Arm talon bus voltage", shooterArmMotor.getBusVoltage());
-		
-		//This should reposition the arm to whatever angle that the user inputs.
-		//moveToAngle(SmartDashboard.getNumber("Set angle"));
+
+    	SmartDashboard.putNumber("Arm Angle", getAngle());
+
+        if (Robot.smartDashboardDebug) {
+	    	SmartDashboard.putNumber("Arm Position", getPos());
+	//        SmartDashboard.putNumber("Enc Position", getEncPos());
+	//        SmartDashboard.putNumber("Arm Angle2", getAngle());
+			SmartDashboard.putNumber("Arm Setpoint", shooterArmMotor.getSetpoint());
+			SmartDashboard.putNumber("Arm Error", shooterArmMotor.getError());
+	//		SmartDashboard.putBoolean("Arm Talon Mode", shooterArmMotor.getControlMode()==TalonControlMode.Position);
+			SmartDashboard.putNumber("Arm motor voltage", shooterArmMotor.getOutputVoltage());
+			SmartDashboard.putNumber("Arm talon bus voltage", shooterArmMotor.getBusVoltage());
+			
+			//This should reposition the arm to whatever angle that the user inputs.
+			//moveToAngle(SmartDashboard.getNumber("Set angle"));
+        }
     }
     
 	/**

@@ -22,7 +22,10 @@ public class LoadBallSequence extends CommandGroup {
     	addSequential(new WaitSeconds(.5));
     	addParallel(new IntakeSetToSpeed(0)); 
     	addSequential(new FlyWheelStop());
-    	    	
+
+    	addSequential(new WaitSeconds(.2));
+    	addSequential(new IntakeSetToSpeed(-1)); 
+
         // Add Commands here:
         // e.g. addSequential(new Command1());
         //      addSequential(new Command2());

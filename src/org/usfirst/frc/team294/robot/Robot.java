@@ -40,7 +40,7 @@ public class Robot extends IterativeRobot {
 	public static PowerDistributionPanel panel;
 
 	// Turn on/off SmartDashboard debugging
-	public static boolean smartDashboardDebug = false;		// true to print lots of stuff on the SmartDashboard
+	public static boolean smartDashboardDebug = true;		// true to print lots of stuff on the SmartDashboard
 	
 	//for preferences armMin position, arm 90 degree position
 	Preferences prefs;

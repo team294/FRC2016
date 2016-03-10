@@ -66,12 +66,12 @@ public class OI {
 	Command[] BottomKnobCommands = new Command[] {	
 		null, 		//Portcullis 
 		null, 		//ChevalDeFrise 
-		null, 		//Ramparts
-		null, 		//Moat
+		new AutoFastBarrier(), 		//Ramparts
+		new AutoFastBarrier(), 		//Moat
 		null, 		//DrawBridge 
 		null, 		//SallyPort
-		null, 		//RockWall 
-		null, 		//RoughTerrain 
+		new AutoFastBarrier(), 		//RockWall 
+		new AutoFastBarrier(), 		//RoughTerrain 
 		new AutoLowBar(), 		//LowBar
 		null, 		//noChange 
 		null 		//noChange

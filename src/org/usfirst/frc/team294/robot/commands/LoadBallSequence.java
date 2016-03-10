@@ -13,7 +13,7 @@ public class LoadBallSequence extends CommandGroup {
     public  LoadBallSequence() {
     	addSequential(new ShooterArmMoveAwayFromIntake(ShooterArmMoveAwayFromIntake.condition.ifIntakeNotInWayAndIntakeIsUp));  // Also waits for move to finish
     	addSequential(new IntakeLowerIfRaised());  // Also waits for move to finish
-    	addSequential(new ShooterArmMoveToSetLocation(RobotMap.shooterArmBallLoadAngle), 3);
+    	addSequential(new ShooterArmMoveToSetLocation(RobotMap.shooterArmBallLoadAngle), 0.75);
     	
     	addParallel(new IntakeSetToSpeed(1));
     	addParallel(new FlyWheelSetToSpeed(-1500));

@@ -26,7 +26,7 @@ public class DriveStraightDistance extends Command {
     
     // Steering settings
     private double angleErr, curve, sign;
-    private double kPangle = 0.018; 
+    private double kPangle = 0.018;    //0.018
     
     // Check if target has been reached
 //    ToleranceChecker driveTol = new ToleranceChecker(100, 5);

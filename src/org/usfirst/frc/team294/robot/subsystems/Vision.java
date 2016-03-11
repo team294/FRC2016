@@ -1,5 +1,7 @@
 package org.usfirst.frc.team294.robot.subsystems;
 
+import org.usfirst.frc.team294.robot.Robot;
+
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.networktables.NetworkTable;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -21,10 +23,12 @@ public class Vision extends Subsystem {
     public double[] getLines(){
     	double[] lines =  table.getNumberArray("height", defaultValue); 
     
-    	for (int i=0; i<lines.length; i++){
-    		SmartDashboard.putNumber("lines", lines[i]);
-    	}
-    	
+        if (Robot.smartDashboardDebug) {
+	    	for (int i=0; i<lines.length; i++){
+	    		SmartDashboard.putNumber("lines", lines[i]);
+	    	}
+        }
+        
     	return lines; 
     }
     

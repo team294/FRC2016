@@ -1,14 +1,24 @@
 package org.usfirst.frc.team294.robot.commands;
 
+import org.usfirst.frc.team294.robot.RobotMap;
+
 import edu.wpi.first.wpilibj.command.CommandGroup;
 
 /**
- *
+ * Autonomous code for going fast over low barriers (moat, rough terrain, rock wall, and ramparts).
  */
-public class ShootBall extends CommandGroup {
+public class AutoFastBarrier extends CommandGroup {
     
-    public  ShootBall() {		
-        // Add Commands here:
+    public  AutoFastBarrier() {
+    	addSequential(new ShooterArmMoveToSetLocation(90));
+    	addSequential(new WaitSeconds(0.25));
+    	addSequential(new ShiftDown());
+    	addSequential(new IntakeLowerIfRaised());
+    	addSequential(new ShooterArmMoveToSetLocation(RobotMap.shooterArmBallCruiseAngle));
+    	addSequential(new DriveStraightDistance(1.0, 15.0*12.0, DriveStraightDistance.Units.inches));    	// "Fast" speed, 15 feet
+    	addSequential(new DriveAngle(0.55, 0, false));				// Recover original orientation
+    	
+    	// Add Commands here:
         // e.g. addSequential(new Command1());
         //      addSequential(new Command2());
         // these will run in order.
@@ -24,13 +34,5 @@ public class ShootBall extends CommandGroup {
         // e.g. if Command1 requires chassis, and Command2 requires arm,
         // a CommandGroup containing them would require both the chassis and the
         // arm.
-
-    	addSequential(new IntakeSetToSpeedIfArmIsLow(-1.0));  // Turn on intake if we are shooting low
-    	addSequential(new FlyWheelSetToSpeed(4500)); //Starts the fly wheels, and runs them at full speed
-    	addSequential(new ShooterPistonOut(true)); //When wheels are full speed, use piston to push the ball into fly wheels
-    	addSequential(new WaitSeconds(1.0));
-    	addSequential(new ShooterPistonOut(false));
-    	addSequential(new FlyWheelStop()); //Stops the fly wheels from spinning
-    	addSequential(new IntakeSetToSpeed(0));  // Turn off intake motors
     }
 }

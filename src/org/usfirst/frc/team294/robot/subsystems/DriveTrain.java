@@ -1,6 +1,7 @@
 package org.usfirst.frc.team294.robot.subsystems;
 
 
+import org.usfirst.frc.team294.robot.Robot;
 import org.usfirst.frc.team294.robot.RobotMap;
 import org.usfirst.frc.team294.robot.commands.*;
 import org.usfirst.frc.team294.robot.utilities.ToleranceChecker;
@@ -204,8 +205,12 @@ public class DriveTrain extends Subsystem implements PIDOutput {
 	 * Returns the current angle of the gyro.
 	 */
 	public double getDegrees() {
-		SmartDashboard.putNumber("navX angle", ahrs.getAngle());
-		return ahrs.getAngle();
+		double angle;
+		
+		angle = ahrs.getAngle(); 
+		
+		SmartDashboard.putNumber("navX angle", angle);
+		return angle;
 	}
 	
 	/**
@@ -263,19 +268,19 @@ public class DriveTrain extends Subsystem implements PIDOutput {
 	public boolean turnDegreesPIDIsFinished() {
 		double err;
 		
-		SmartDashboard.putNumber("PID error", turnController.getError());
-		SmartDashboard.putNumber("PID avg error", turnController.getAvgError());
-		SmartDashboard.putNumber("PID setpoint", turnController.getSetpoint());
-		SmartDashboard.putNumber("PID power", turnController.get());
-//		SmartDashboard.putBoolean("PID on target", turnController.onTarget());
-		SmartDashboard.putNumber("navX angle", ahrs.getAngle());
-	
 		err = Math.abs(turnController.getSetpoint() - ahrs.getAngle());
 		if (err > 180) { 
 			err = Math.abs(360-err); 
 		}
 		
-		//		SmartDashboard.putNumber("PID my error", err);
+		if (Robot.smartDashboardDebug) {
+			SmartDashboard.putNumber("Turn PID error", turnController.getError());
+			SmartDashboard.putNumber("Turn PID avg error", turnController.getAvgError());
+			SmartDashboard.putNumber("Turn PID setpoint", turnController.getSetpoint());
+			SmartDashboard.putNumber("Turn PID power", turnController.get());
+//			SmartDashboard.putBoolean("Turn PID on target", turnController.onTarget());
+			SmartDashboard.putNumber("Turn PID my error", err);
+		}		
 		
 		if ( rotateTol.success(err) ) {
 			turnController.reset();
@@ -358,16 +363,18 @@ public class DriveTrain extends Subsystem implements PIDOutput {
 	 * Get left encoder position.  4000 ticks = 1 revolution.
 	 */
 	public double getLeftEncoder() {
-		SmartDashboard.putNumber("Left Setpoint", leftMotor2.getSetpoint());
-		SmartDashboard.putNumber("Left Position", leftMotor2.getPosition());
-		SmartDashboard.putNumber("Left Encoder Position", leftMotor2.getEncPosition());
-		SmartDashboard.putNumber("Left Get", leftMotor2.get());
-		SmartDashboard.putNumber("Left Error", leftMotor2.getError());
-		SmartDashboard.putNumber("Left Output Voltage", leftMotor2.getOutputVoltage());
-		SmartDashboard.putNumber("Left Speed", leftMotor2.getSpeed());
+		if (Robot.smartDashboardDebug) {
+//			SmartDashboard.putNumber("Left Setpoint", leftMotor2.getSetpoint());
+//			SmartDashboard.putNumber("Left Position", leftMotor2.getPosition());
+			SmartDashboard.putNumber("Left Encoder Position", leftMotor2.getEncPosition());
+			SmartDashboard.putNumber("Left Get", leftMotor2.get());
+//			SmartDashboard.putNumber("Left Error", leftMotor2.getError());
+			SmartDashboard.putNumber("Left Output Voltage", leftMotor2.getOutputVoltage());
+			SmartDashboard.putNumber("Left Speed", leftMotor2.getSpeed());
+			
+			SmartDashboard.putBoolean("Left Mode Position", TalonControlMode.Position == leftMotor2.getControlMode());
+		}
 		
-		SmartDashboard.putBoolean("Left Mode Position", TalonControlMode.Position == leftMotor2.getControlMode());
-
 		return leftMotor2.getPosition();
 	}
 	
@@ -375,16 +382,18 @@ public class DriveTrain extends Subsystem implements PIDOutput {
 	 * Get right encoder position.  4000 ticks = 1 revolution.
 	 */
 	public double getRightEncoder() {
-		SmartDashboard.putNumber("Right Setpoint", rightMotor2.getSetpoint());
-		SmartDashboard.putNumber("Right Position", rightMotor2.getPosition());
-		SmartDashboard.putNumber("Right Encoder Position", rightMotor2.getEncPosition());
-		SmartDashboard.putNumber("Right Get", rightMotor2.get());
-		SmartDashboard.putNumber("Right Error", rightMotor2.getError());
-		SmartDashboard.putNumber("Right Output Voltage", rightMotor2.getOutputVoltage());
-		SmartDashboard.putNumber("Right Speed", rightMotor2.getSpeed());
-
-		SmartDashboard.putBoolean("Right Mode Position", TalonControlMode.Position == rightMotor2.getControlMode());
-
+		if (Robot.smartDashboardDebug) {
+//			SmartDashboard.putNumber("Right Setpoint", rightMotor2.getSetpoint());
+//			SmartDashboard.putNumber("Right Position", rightMotor2.getPosition());
+			SmartDashboard.putNumber("Right Encoder Position", rightMotor2.getEncPosition());
+			SmartDashboard.putNumber("Right Get", rightMotor2.get());
+//			SmartDashboard.putNumber("Right Error", rightMotor2.getError());
+			SmartDashboard.putNumber("Right Output Voltage", rightMotor2.getOutputVoltage());
+			SmartDashboard.putNumber("Right Speed", rightMotor2.getSpeed());
+	
+			SmartDashboard.putBoolean("Right Mode Position", TalonControlMode.Position == rightMotor2.getControlMode());
+		}
+		
 		return rightMotor2.getPosition();
 	}
 

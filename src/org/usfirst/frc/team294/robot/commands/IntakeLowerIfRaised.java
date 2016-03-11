@@ -27,7 +27,7 @@ public class IntakeLowerIfRaised extends Command {
 
 	// Called just before this Command runs the first time
 	protected void initialize() {
-		if(!Robot.intake.shooterArmConflicts() && Robot.intake.intakeIsUp()){
+		if(!Robot.intake.shooterArmConflicts() && (Robot.intake.intakeIsUp() || Robot.intake.intakeSolenoidIsOff() ) ){
 			Robot.intake.lowerIntake();
 			intakeExecuted=true;
 		} else{

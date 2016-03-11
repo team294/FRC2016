@@ -78,24 +78,33 @@ public class Intake extends Subsystem {
      * Returns current solenoid setting for the intake arm.  <p>
      * <b>NOTE</b>: The intake could currently be <i>moving</i> to this position
      * and has not reached this position yet.
-     * @return true = intake is up, false = intake is down
+     * <b>NOTE</b>: The intake solenoid in the OFF state returns FALSE.
+     * @return true = intake is up, false = intake is down or solenoid is off 
      */
     public boolean intakeIsUp() {
     	switch (intakeSolenoid.get()) {
     	case kForward:
-    		SmartDashboard.putString("Intake position", "Forward");
+    		SmartDashboard.putString("Intake position", "Down");
     		break;
     	case kReverse:
-    		SmartDashboard.putString("Intake position", "Reverse");
+    		SmartDashboard.putString("Intake position", "Up");
     		break;
     	case kOff:
     		SmartDashboard.putString("Intake position", "Off");
     		break;
     	}
-    	SmartDashboard.putBoolean("IntakeIsUp", intakeSolenoid.get()==DoubleSolenoid.Value.kReverse);
+//    	SmartDashboard.putBoolean("IntakeIsUp", intakeSolenoid.get()==DoubleSolenoid.Value.kReverse);
     	return intakeSolenoid.get()==DoubleSolenoid.Value.kReverse;
     }
     
+    /**
+     * Returns current solenoid setting for the intake arm.
+     * @return true = intake solenoid is off (position is unknown), false = intake is down or up 
+     */
+    public boolean intakeSolenoidIsOff() {
+    	return intakeSolenoid.get()==DoubleSolenoid.Value.kOff;
+    }
+
     /**
      * Checks to make sure that the shooter arm is not going to crash into the intake when raising the intake
      * @return true when the shooter conflicts with the intake
@@ -122,7 +131,7 @@ public class Intake extends Subsystem {
 	 */
     public void updateSmartDashboard() {
  		SmartDashboard.putNumber("Intake motor setpoint", -intakeMotor.get());
- 		SmartDashboard.putString("Intake position", intakeIsUp() ? "Up" : "Down");
+// 		SmartDashboard.putString("Intake position", intakeIsUp() ? "Up" : "Down");
     }
     
     public void initDefaultCommand() {

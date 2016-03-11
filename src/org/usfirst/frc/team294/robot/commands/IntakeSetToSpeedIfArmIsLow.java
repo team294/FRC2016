@@ -5,16 +5,23 @@ import org.usfirst.frc.team294.robot.Robot;
 import edu.wpi.first.wpilibj.command.Command;
 
 /**
- *
+ * Set intake to given speed, but only if arm is below 20 degrees.
+ * This is intended for a "smart shooting sequence" that can shoot
+ * high or low.  Waits 0.2 sec to wait for initial current spike,
+ * so that we don't start the shooter motors simultaneously. 
  */
-public class IntakeSetToSpeed extends Command {
+public class IntakeSetToSpeedIfArmIsLow extends Command {
 	double speedToSet; 
-
+	boolean speedWasSet;
+	
 	/**
-	 * Turns on intake motor
+	 * Set intake to given speed, but only if arm is below 20 degrees.
+	 * This is intended for a "smart shooting sequence" that can shoot
+	 * high or low.  Waits 0.2 sec to wait for initial current spike,
+	 * so that we don't start the shooter motors simultaneously. 
 	 * @param speed +1 = full in, -1 = full out, 0 = off
 	 */
-	public IntakeSetToSpeed(double speed) {
+	public IntakeSetToSpeedIfArmIsLow(double speed) {
 		// Use requires() here to declare subsystem dependencies
 		// eg. requires(chassis);
 		requires(Robot.intake);
@@ -23,7 +30,9 @@ public class IntakeSetToSpeed extends Command {
 
 	// Called just before this Command runs the first time
 	protected void initialize() {
-		if(speedToSet<=1&&speedToSet>=-1) {
+		speedWasSet = (speedToSet<=1 && speedToSet>=-1 && Robot.shooterArm.getAngle() <= 20); 
+		
+		if (speedWasSet) {
 			Robot.intake.setSpeed(speedToSet);
 		}		
 	}
@@ -34,7 +43,11 @@ public class IntakeSetToSpeed extends Command {
 
 	// Make this return true when this Command no longer needs to run execute()
 	protected boolean isFinished() {
-		return true;
+		if (speedWasSet) {
+			return (timeSinceInitialized() >= 0.2);
+		} else {
+			return true;
+		}
 	}
 
 	// Called once after isFinished returns true

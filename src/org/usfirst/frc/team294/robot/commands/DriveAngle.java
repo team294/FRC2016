@@ -55,7 +55,10 @@ public class DriveAngle extends Command {
     	angleErr = (angleErr>180) ? angleErr-360 : angleErr;
     	angleErr = (angleErr<-180) ? angleErr+360 : angleErr;
     	
-    	SmartDashboard.putNumber("Drive Angle Error", angleErr);
+        if (Robot.smartDashboardDebug) {
+        	SmartDashboard.putNumber("Drive Angle Error", angleErr);
+        }
+        
     	angleTol.check(Math.abs(angleErr));
     	
     	if (!angleTol.success()) {

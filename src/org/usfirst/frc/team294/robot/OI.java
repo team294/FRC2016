@@ -81,8 +81,8 @@ public class OI {
 	public Joystick leftJoystick = new Joystick(0);
 	public Joystick rightJoystick = new Joystick(1);
 	public Joystick coPanel = new Joystick(2);
-	public Joystick coJoystick = new Joystick(3);
-	public Joystick xboxController = new Joystick(4);
+	public Joystick xboxController = new Joystick(3);
+	public Joystick coJoystick = new Joystick(4);
 
 	
 	public OI() {

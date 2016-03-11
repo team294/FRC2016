@@ -1,5 +1,7 @@
 package org.usfirst.frc.team294.robot.utilities;
 
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+
 /**
  * Class used to check if a measured value is within a given
  * tolerance for a given number of measurements.
@@ -40,6 +42,8 @@ public class ToleranceChecker {
     	} else {
     		nInToleranceSamples = 0;
     	}
+//    	SmartDashboard.putNumber("TolCheckCount", nInToleranceSamples);
+//    	SmartDashboard.putString("Tol Check", tolerance + "  " + requiredInToleranceSamples);
     }
     
     /**

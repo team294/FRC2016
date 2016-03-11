@@ -4,6 +4,7 @@ import org.usfirst.frc.team294.robot.Robot;
 import org.usfirst.frc.team294.robot.utilities.ToleranceChecker;
 
 import edu.wpi.first.wpilibj.command.Command;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**
  * Turn shooter flywheels on or off.
@@ -11,7 +12,7 @@ import edu.wpi.first.wpilibj.command.Command;
 public class FlyWheelSetToSpeed extends Command {
 	
 	int topSpeed, bottomSpeed;
-	ToleranceChecker sTol = new ToleranceChecker(150, 5);
+	ToleranceChecker sTol = new ToleranceChecker(150, 10);
 
 	/**
 	 * Set target speed for shooter flywheels.  Command finishes when flywheel is at speed.
@@ -52,6 +53,7 @@ public class FlyWheelSetToSpeed extends Command {
     	double err;
 
     	err = Math.abs(topSpeed - Robot.shooter.getTopFlyWheelSpeed()) + Math.abs(bottomSpeed - Robot.shooter.getBottomFlyWheelSpeed()) ; 
+//    	SmartDashboard.putNumber("Flywheel total error", err);
     	return sTol.success(err);
     }
 

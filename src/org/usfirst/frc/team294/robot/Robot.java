@@ -136,7 +136,10 @@ public class Robot extends IterativeRobot {
 		if (autonomousCommand != null)
 			autonomousCommand.cancel();
 		
-		raiseArm90.start();
+//		if ((intake up || intake indeterminate) && arm > 45) {
+		if ((intake.intakeIsUp() || intake.intakeSolenoidIsOff()) && shooterArm.getAngle() > 45) {
+			raiseArm90.start();			
+		}
 	}
 
 	/**

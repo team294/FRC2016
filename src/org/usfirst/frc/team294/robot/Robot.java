@@ -26,7 +26,8 @@ public class Robot extends IterativeRobot {
 	Command autonomousCommand;
 	Command shootBall;
 	Command setFlyWheels;
-
+	Command raiseArm90;
+	
 	public static OI oi;
 
 	// Creates the SubSystem onjects
@@ -84,6 +85,7 @@ public class Robot extends IterativeRobot {
 
 		// instantiate the command used for the autonomous period
 		//autonomousCommand = new AutonomousCommandGroup();
+		raiseArm90 = new ShooterArmMoveToSetLocation(90);
 		
 		// instantiate commands for xbox triggers
 		shootBall = new ShootBall();
@@ -133,6 +135,8 @@ public class Robot extends IterativeRobot {
 		// this line or comment it out.
 		if (autonomousCommand != null)
 			autonomousCommand.cancel();
+		
+		raiseArm90.start();
 	}
 
 	/**

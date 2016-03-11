@@ -8,6 +8,8 @@ import edu.wpi.first.wpilibj.command.CommandGroup;
 public class AutoLowBar extends CommandGroup {
     
     public  AutoLowBar() {
+    	addSequential(new ShooterArmMoveToSetLocation(90));
+    	addSequential(new WaitSeconds(0.25));
     	addSequential(new ShiftDown());
     	addSequential(new IntakeLowerIfRaised());
     	addSequential(new ShooterArmMoveToSetLocation(0));

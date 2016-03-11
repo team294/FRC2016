@@ -100,7 +100,8 @@ public class ShooterArm extends Subsystem {
 		
 		
 		// Don't move if the shooter arm is disabled.
-		if (!Robot.shooterArmEnabled || Robot.intake.intakeSolenoidIsOff()) {
+		if (!Robot.shooterArmEnabled || 
+				(Robot.intake.intakeSolenoidIsOff() && (angle<getAngle() || getAngle()<45) ) ) {
 			SmartDashboard.putNumber("Arm set angle", -9999);			
 			return;
 		}

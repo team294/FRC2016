@@ -138,6 +138,7 @@ public class OI {
         SmartDashboard.putData("ShiftUp", new ShiftUp());
         SmartDashboard.putData("ShiftDown", new ShiftDown());
         
+        SmartDashboard.putData("Load Ball", new LoadBallSequence());
         SmartDashboard.putData("Shoot ball", new ShootBall());
         SmartDashboard.putData("Shooter Arm Joystick Relative", new ShooterArmMoveRelativeJoystick());
 
@@ -153,7 +154,7 @@ public class OI {
         SmartDashboard.putData("Intake Rollers Out", new IntakeSetToSpeed(-1));        
         SmartDashboard.putData("Intake Motor Stop", new IntakeMotorStop());
 
-        SmartDashboard.putData("Shooter Arm Shooting Angle", new ShooterArmMoveToSetLocation(RobotMap.shooterArmBallLoadAngle));
+        SmartDashboard.putData("Shooter Arm Shooting Angle", new ShooterArmMoveToSetLocation(RobotMap.shootingAngle));
         SmartDashboard.putData("Shooter Arm 0", new ShooterArmMoveToSetLocation(0));
         SmartDashboard.putData("Shooter Arm 15", new ShooterArmMoveToSetLocation(15));
         SmartDashboard.putData("Shooter Arm Joystick Relative", new ShooterArmMoveRelativeJoystick());
@@ -208,7 +209,7 @@ public class OI {
 		double knobReading;
 		int i=0;
 		
-		knobReading = coPanel.getRawAxis(4);
+		knobReading = coPanel.getRawAxis(3);
 		int len=knobThreshold.length;
 		for(i=0;i<len; i++) {
 			if (knobReading<knobThreshold[i]) break;
@@ -243,6 +244,9 @@ public class OI {
     	// Show sub-system data
 		Robot.shooter.setupSmartDashboard(false);
 		Robot.shooterArm.setupSmartDashboard(false);
+		
+		SmartDashboard.putData("AutoLowBar",new AutoLowBar());
+		SmartDashboard.putData("AutoFastBarrier",new AutoFastBarrier());		
 
 		// SmartDashboard Buttons
 //		SmartDashboard.putData("Drive fwd 0.5 speed", new DriveCurve(0.5, 0));

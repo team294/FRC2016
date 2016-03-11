@@ -169,6 +169,7 @@ public class Shooter extends Subsystem {
     public void setShooterPistonIn() {
 //    	ballPiston.set(DoubleSolenoid.Value.kReverse);  // Old code for double solenoid from prototype bot
     	ballPiston.set(false);
+    	recordBallState(false);  // Record that we shot the ball
     }
 
     /**

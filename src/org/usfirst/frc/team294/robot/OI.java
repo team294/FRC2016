@@ -65,16 +65,16 @@ public class OI {
 	};
 	Command[] BottomKnobCommands = new Command[] {	
 		null, 		//Portcullis 
-		null, 		//ChevalDeFrise 
+		new AutoCruiseConfig(), 		//ChevalDeFrise 
 		new AutoFastBarrier(), 		//Ramparts
 		new AutoFastBarrier(), 		//Moat
-		null, 		//DrawBridge 
-		null, 		//SallyPort
+		new AutoCruiseConfig(), 		//DrawBridge 
+		new AutoCruiseConfig(), 		//SallyPort
 		new AutoFastBarrier(), 		//RockWall 
 		new AutoFastBarrier(), 		//RoughTerrain 
 		new AutoLowBar(), 		//LowBar
-		null, 		//noChange 
-		null 		//noChange
+		new AutoCruiseConfig(), 		//noChange 
+		new AutoCruiseConfig() 		//noChange
 	};
 
 	// Joystick controls

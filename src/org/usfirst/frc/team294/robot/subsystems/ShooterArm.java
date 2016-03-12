@@ -186,7 +186,6 @@ public class ShooterArm extends Subsystem {
 			setBrakeOn();
 //			shooterArmMotor.set(convertAngleToPos(getAngle()));
 //			shooterArmMotor.set(shooterArmMotor.get());
-			shooterArmMotor.clearIAccum();
 			return true;
 		}
 		return false;

@@ -176,8 +176,8 @@ public class Robot extends IterativeRobot {
 //	        shooterArm.setPIDFromSmartDashboard();
 
 			// Uncomment the following 2 lines to see drive train data
-//	    	driveTrain.getLeftEncoder();
-//	    	driveTrain.getRightEncoder();
+	    	driveTrain.getLeftEncoder();
+	    	driveTrain.getRightEncoder();
 			
 			intake.updateSmartDashboard();
 

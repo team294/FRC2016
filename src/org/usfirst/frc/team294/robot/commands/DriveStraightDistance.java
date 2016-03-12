@@ -71,12 +71,16 @@ public class DriveStraightDistance extends Command {
     	// Find angle to drive
     	angleErr = Robot.driveTrain.getDegrees();
     	angleErr = (angleErr>180) ? angleErr-360 : angleErr;
+    	angleErr = (Math.abs(angleErr) <= 10.0) ? angleErr : 0.0;		// Assume if we are more than 10 deg off then we have a NavX failure
+    	
     	curve = sign*angleErr*kPangle;
-    	curve = (curve>1) ? 1 : curve;
-    	curve = (curve<-1) ? -1 : curve;
+    	curve = (curve>0.5) ? 0.5 : curve;
+    	curve = (curve<-0.5) ? -0.5 : curve;
     	
     	// Find speed to drive
-    	distErr = ( (distance - Robot.driveTrain.getLeftEncoder()) + (distance - Robot.driveTrain.getRightEncoder())) / 2;
+    	//distErr = ( (distance - Robot.driveTrain.getLeftEncoder()) + (distance - Robot.driveTrain.getRightEncoder())) / 2;  // average
+    	// Min err is safer than average error, in case one encoder fails
+    	distErr = Math.min( distance - Robot.driveTrain.getLeftEncoder(), distance - Robot.driveTrain.getRightEncoder() );
     	
         if (Robot.smartDashboardDebug) {
         	SmartDashboard.putNumber("Drive Straight Error", distErr);

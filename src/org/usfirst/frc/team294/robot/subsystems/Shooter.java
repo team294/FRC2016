@@ -127,6 +127,8 @@ public class Shooter extends Subsystem {
      * @return Speed in RPM
      */
     public double getTopFlyWheelSpeed(){
+//    	SmartDashboard.putNumber("ShootTop SpeedTest", motorTop.getSpeed());
+
     	return motorTop.getSpeed();
     }
     
@@ -135,7 +137,9 @@ public class Shooter extends Subsystem {
      * @return Speed in RPM
      */
    public double getBottomFlyWheelSpeed(){
-    	return motorBottom.getSpeed();
+//		SmartDashboard.putNumber("ShootBot SpeedTest", motorBottom.getSpeed());
+
+		return motorBottom.getSpeed();
     }
     
    /** 
@@ -169,6 +173,7 @@ public class Shooter extends Subsystem {
     public void setShooterPistonIn() {
 //    	ballPiston.set(DoubleSolenoid.Value.kReverse);  // Old code for double solenoid from prototype bot
     	ballPiston.set(false);
+    	recordBallState(false);  // Record that we shot the ball
     }
 
     /**

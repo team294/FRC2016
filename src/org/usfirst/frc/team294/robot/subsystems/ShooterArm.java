@@ -9,6 +9,7 @@ import edu.wpi.first.wpilibj.AnalogInput;
 import edu.wpi.first.wpilibj.CANTalon;
 import edu.wpi.first.wpilibj.PIDController;
 import edu.wpi.first.wpilibj.PIDOutput;
+import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.CANTalon.FeedbackDevice;
 import edu.wpi.first.wpilibj.CANTalon.TalonControlMode;
 import edu.wpi.first.wpilibj.Joystick;
@@ -21,6 +22,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
  */
 public class ShooterArm extends Subsystem {
 	private final CANTalon shooterArmMotor= new CANTalon(RobotMap.shooterArmMotor);
+    private final Solenoid brakeSolenoid = new Solenoid(RobotMap.shooterArmBrakeSolenoid);
 
 	private double minPosition=Robot.armCalMinPosition;		// We will need to calibrate this number occasionally
 	private double deg90Position=Robot.armCal90DegPosition;
@@ -55,13 +57,40 @@ public class ShooterArm extends Subsystem {
 		shooterArmMotor.enableForwardSoftLimit(true);
 		//shooterArmMotor.disableControl();
 		
+		setBrakeOff();
+		
     	// Add the subsystem to the LiveWindow
         LiveWindow.addActuator("ShooterArm", "shooterArmMotor", shooterArmMotor);
+        LiveWindow.addActuator("ShooterArm", "shooterArmBrake",	brakeSolenoid);
 	}
 
 	// Put methods for controlling this subsystem
 	// here. Call these from Commands.
 
+    /**
+     * Activate arm brake
+     */
+    public void setBrakeOn() {
+    	SmartDashboard.putBoolean("Arm brake", true);
+    	brakeSolenoid.set(true); 
+    }
+
+    /**
+     * Deactivate arm brake
+     */
+    public void setBrakeOff() {
+    	SmartDashboard.putBoolean("Arm brake", false);
+    	brakeSolenoid.set(false);
+    }
+
+    /**
+     * Reads the arm brake state
+     * @return true = brake is on, false = brake is off
+     */
+    public boolean isBrakeOn() {
+    	return brakeSolenoid.get();
+    }
+    
 	/**
 	 * Disable PID control of shooter arm
 	 */
@@ -106,6 +135,9 @@ public class ShooterArm extends Subsystem {
 			return;
 		}
 		
+		// Turn off brake before moving arm
+		setBrakeOff();
+		
 		SmartDashboard.putNumber("Arm set angle", angle);
         if (Robot.smartDashboardDebug) {
         	SmartDashboard.putNumber("Arm set position", convertAngleToPos(angle));
@@ -119,7 +151,7 @@ public class ShooterArm extends Subsystem {
 			}
 		}
 
-		//TODO: Uncomment for safety
+		//Commenting this out will defeat the min/max arm safety
 		if(angle>RobotMap.shooterArmMaxAngle){
 			angle=RobotMap.shooterArmMaxAngle;
 		}
@@ -149,7 +181,14 @@ public class ShooterArm extends Subsystem {
 	 * @return true = arm is at the setpoint
 	 */
 	public boolean moveToAngleIsFinished() {
-		return armTol.success( getAngle() - convertPosToAngle(shooterArmMotor.getSetpoint()) );  
+//		return armTol.success( getAngle() - convertPosToAngle(shooterArmMotor.getSetpoint()) );  
+		if (armTol.success( getAngle() - convertPosToAngle(shooterArmMotor.getSetpoint()) ) ) {
+			setBrakeOn();
+//			shooterArmMotor.set(convertAngleToPos(getAngle()));
+//			shooterArmMotor.set(shooterArmMotor.get());
+			return true;
+		}
+		return false;
 	}
 	
 	/**

@@ -32,6 +32,7 @@ public class RobotMap {
     public static int intakeSolenoidFwd = 2;
     public static int intakeSolenoidRev = 3;
     public static int shooterPiston = 4;
+    public static int shooterArmBrakeSolenoid = 5;
     
     // Range of motion for shooter arm
     public static double shooterArmMinAngle=0;

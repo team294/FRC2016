@@ -65,24 +65,24 @@ public class OI {
 	};
 	Command[] BottomKnobCommands = new Command[] {	
 		null, 		//Portcullis 
-		null, 		//ChevalDeFrise 
+		new AutoCruiseConfig(), 		//ChevalDeFrise 
 		new AutoFastBarrier(), 		//Ramparts
 		new AutoFastBarrier(), 		//Moat
-		null, 		//DrawBridge 
-		null, 		//SallyPort
+		new AutoCruiseConfig(), 		//DrawBridge 
+		new AutoCruiseConfig(), 		//SallyPort
 		new AutoFastBarrier(), 		//RockWall 
 		new AutoFastBarrier(), 		//RoughTerrain 
 		new AutoLowBar(), 		//LowBar
-		null, 		//noChange 
-		null 		//noChange
+		new AutoCruiseConfig(), 		//noChange 
+		new AutoCruiseConfig() 		//noChange
 	};
 
 	// Joystick controls
 	public Joystick leftJoystick = new Joystick(0);
 	public Joystick rightJoystick = new Joystick(1);
 	public Joystick coPanel = new Joystick(2);
-	public Joystick coJoystick = new Joystick(3);
-	public Joystick xboxController = new Joystick(4);
+	public Joystick xboxController = new Joystick(3);
+	public Joystick coJoystick = new Joystick(4);
 
 	
 	public OI() {

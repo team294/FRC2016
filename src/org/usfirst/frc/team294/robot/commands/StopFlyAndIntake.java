@@ -24,7 +24,7 @@ public class StopFlyAndIntake extends CommandGroup {
         // e.g. if Command1 requires chassis, and Command2 requires arm,
         // a CommandGroup containing them would require both the chassis and the
         // arm.
-    	addSequential(new FlyWheelSetToSpeed(0));
+    	addSequential(new FlyWheelStop());
     	addSequential(new IntakeMotorStop());
     }
 }

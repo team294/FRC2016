@@ -65,7 +65,7 @@ public class OI {
 	};
 	Command[] BottomKnobCommands = new Command[] {	
 		null, 		//Portcullis 
-		new AutoCruiseConfig(), 		//ChevalDeFrise 
+		new AutoCheval(), 		//ChevalDeFrise 
 		new AutoFastBarrier(), 		//Ramparts
 		new AutoFastBarrier(), 		//Moat
 		new AutoCruiseConfig(), 		//DrawBridge 

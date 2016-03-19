@@ -26,6 +26,7 @@ public class ShootBall extends CommandGroup {
         // arm.
 
     	addSequential(new IntakeSetToSpeedIfArmIsLow(-1.0));  // Turn on intake if we are shooting low
+    	//addSequential(new FlyWheelSetToSpeed(2000, 3500)); //Starts the fly wheels, and runs them at full speed
     	addSequential(new FlyWheelSetToSpeed(4500)); //Starts the fly wheels, and runs them at full speed
     	addSequential(new ShooterPistonOut(true)); //When wheels are full speed, use piston to push the ball into fly wheels
     	addSequential(new WaitSeconds(1.0));

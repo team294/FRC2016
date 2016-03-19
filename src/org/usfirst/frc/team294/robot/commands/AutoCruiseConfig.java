@@ -11,7 +11,8 @@ public class AutoCruiseConfig extends CommandGroup {
     
     public  AutoCruiseConfig() {
     	addSequential(new ShooterArmMoveToSetLocation(90));
-    	addSequential(new WaitSeconds(0.25));
+//    	addSequential(new WaitSeconds(0.25));
+    	addSequential(new WaitSeconds(0.1));
     	addSequential(new ShiftDown());
     	addSequential(new IntakeLowerIfRaised());
     	addSequential(new ShooterArmMoveToSetLocation(RobotMap.shooterArmBallCruiseAngle));

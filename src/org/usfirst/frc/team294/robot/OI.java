@@ -133,7 +133,6 @@ public class OI {
 		coJ[1].whileHeld(new ShooterArmMoveRelativeJoystick());
 
 		// SmartDashboard Buttons
-		SmartDashboard.putData("Autonomous Command", new AutonomousCommandGroup());
 		SmartDashboard.putData("Debug dashboard", new SmartDashboardDebug());
 
 		SmartDashboard.putData("DriveWithJoysticks", new DriveWithJoysticks());

@@ -25,7 +25,7 @@ public class DriveStraightDistance extends Command {
     private double minSpeed = 0.1;
     
     // Steering settings
-    private double angleErr, curve, sign;
+    private double angleErr, curve;
     private double kPangle = 0.018;    //0.018
     
     // Check if target has been reached
@@ -46,11 +46,6 @@ public class DriveStraightDistance extends Command {
         } else {
             this.distance = distance / inchesPerRevolution;
         }
-        if (distance>=0) {
-        	sign = -1.0;
-        } else {
-        	sign = 1.0;
-        }
         
         requires(Robot.driveTrain);
     }
@@ -68,16 +63,7 @@ public class DriveStraightDistance extends Command {
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
-    	// Find angle to drive
-    	angleErr = Robot.driveTrain.getDegrees();
-    	angleErr = (angleErr>180) ? angleErr-360 : angleErr;
-    	angleErr = (Math.abs(angleErr) <= 10.0) ? angleErr : 0.0;		// Assume if we are more than 10 deg off then we have a NavX failure
-    	
-    	curve = sign*angleErr*kPangle;
-    	curve = (curve>0.5) ? 0.5 : curve;
-    	curve = (curve<-0.5) ? -0.5 : curve;
-    	
-    	// Find speed to drive
+    	// Find distance remaining to go
     	//distErr = ( (distance - Robot.driveTrain.getLeftEncoder()) + (distance - Robot.driveTrain.getRightEncoder())) / 2;  // average
     	// Min err is safer than average error, in case one encoder fails
     	distErr = Math.min( distance - Robot.driveTrain.getLeftEncoder(), distance - Robot.driveTrain.getRightEncoder() );
@@ -89,16 +75,28 @@ public class DriveStraightDistance extends Command {
     	driveTol.check(Math.abs(distErr));
     	
     	if (!driveTol.success()) {
+        	// Find speed to drive
         	distSpeedControl = distErr*kPdist;
         	distSpeedControl = (distSpeedControl>1) ? 1 : distSpeedControl;
         	distSpeedControl = (distSpeedControl<-1) ? -1 : distSpeedControl;
         	distSpeedControl *= commandSpeed;
         	
+        	// Use minSpeed to stay out of dead band
         	if (distSpeedControl>0) {
         		distSpeedControl = (distSpeedControl<minSpeed) ? minSpeed : distSpeedControl;
         	} else {
         		distSpeedControl = (distSpeedControl>-minSpeed) ? -minSpeed : distSpeedControl;
         	}
+        	
+        	// Find angle to drive
+        	angleErr = Robot.driveTrain.getDegrees();
+        	angleErr = (angleErr>180) ? angleErr-360 : angleErr;
+        	angleErr = (Math.abs(angleErr) <= 10.0) ? angleErr : 0.0;		// Assume if we are more than 10 deg off then we have a NavX failure
+        	
+            curve = angleErr*kPangle;
+        	curve = (curve>0.5) ? 0.5 : curve;
+        	curve = (curve<-0.5) ? -0.5 : curve;
+        	curve = (distErr>=0) ? -curve : curve; // Flip sign if we are going forwards
         	
         	Robot.driveTrain.driveCurve(distSpeedControl, curve);
 //        	System.out.print(commandSpeed + "  "+ distSpeedControl+"  "+curve);    		

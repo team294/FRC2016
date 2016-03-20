@@ -96,7 +96,7 @@ public class DriveStraightDistance extends Command {
             curve = angleErr*kPangle;
         	curve = (curve>0.5) ? 0.5 : curve;
         	curve = (curve<-0.5) ? -0.5 : curve;
-        	curve = (distErr>=0) ? curve : -curve; // Flip sign if we are going backwards
+        	curve = (distErr>=0) ? -curve : curve; // Flip sign if we are going forwards
         	
         	Robot.driveTrain.driveCurve(distSpeedControl, curve);
 //        	System.out.print(commandSpeed + "  "+ distSpeedControl+"  "+curve);    		

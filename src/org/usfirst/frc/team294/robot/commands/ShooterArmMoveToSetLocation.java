@@ -17,7 +17,7 @@ public class ShooterArmMoveToSetLocation extends Command {
     	
     	angleRequested = angle; 
     	requires(Robot.shooterArm); 
-    	requires(Robot.intake);
+//    	requires(Robot.intake);
     }
 
     // Called just before this Command runs the first time
@@ -66,7 +66,7 @@ public class ShooterArmMoveToSetLocation extends Command {
     		}
     	}
     	
-    	Robot.intake.setSpeed(0);
+//    	Robot.intake.setSpeed(0);
     	Robot.shooterArm.moveToAngle(angleToMove);
     }
 

@@ -14,10 +14,10 @@ public class LoadBallSequence extends CommandGroup {
     	addSequential(new ShooterArmMoveAwayFromIntake(ShooterArmMoveAwayFromIntake.condition.ifIntakeNotInWayAndIntakeIsUp));  // Also waits for move to finish
     	addParallel(new ShooterPistonOut(false));	// Bring piston in, just in case it is out.  Also resets ball sensor = "no ball loaded"
     	addSequential(new IntakeLowerIfRaised());  // Also waits for move to finish
-    	addSequential(new ShooterArmMoveToSetLocation(RobotMap.shooterArmBallLoadAngle), 0.75);
+    	//addSequential(new ShooterArmMoveToSetLocation(RobotMap.shooterArmBallLoadAngle), 0.75);
     	
     	addParallel(new IntakeSetToSpeed(1));
-    	addParallel(new FlyWheelSetToSpeed(-1500));
+    	addParallel(new FlyWheelSetToSpeed(-3000));
     	addSequential(new WaitForBallLoaded());
     	
     	addSequential(new WaitSeconds(.5));

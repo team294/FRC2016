@@ -33,7 +33,7 @@ public class AutoCheval extends CommandGroup {
 //    	addSequential(new WaitSeconds(0.25));
     	addSequential(new WaitSeconds(0.1));
     	addSequential(new ShiftDown());
-    	addSequential(new DriveStraightDistance(.6, 50, DriveStraightDistance.Units.inches));    	// "Slow" speed, 45 inches
+    	addSequential(new DriveStraightDistance(.6, 42, DriveStraightDistance.Units.inches));    	// "Slow" speed, 45 inches
     	addSequential(new IntakeLowerIfRaised());
     	addSequential(new WaitSeconds(0.1));
     	addSequential(new ShooterArmMoveToSetLocation(RobotMap.shooterArmBallCruiseAngle));

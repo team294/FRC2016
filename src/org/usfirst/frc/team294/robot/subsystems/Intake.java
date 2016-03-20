@@ -53,6 +53,7 @@ public class Intake extends Subsystem {
      * the way, then this is ignored.
      */
     public void raiseIntake() {
+//    	if (!shooterArmConflicts() || Robot.overrideIntake) {
     	if (!shooterArmConflicts()) {
     		intakeSolenoid.set(DoubleSolenoid.Value.kReverse);
     	}
@@ -62,6 +63,7 @@ public class Intake extends Subsystem {
      * Lower intake arm
      */
     public void lowerIntake() {
+//    	if (!shooterArmConflicts() || Robot.overrideIntake) {
     	if (!shooterArmConflicts()) {
         	intakeSolenoid.set(DoubleSolenoid.Value.kForward);    		
     	}

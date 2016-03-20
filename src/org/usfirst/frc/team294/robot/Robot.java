@@ -43,6 +43,8 @@ public class Robot extends IterativeRobot {
 	// Turn on/off SmartDashboard debugging
 	public static boolean smartDashboardDebug = true;		// true to print lots of stuff on the SmartDashboard
 	
+	public static boolean overrideIntake;
+	
 	//for preferences armMin position, arm 90 degree position
 	Preferences prefs;
 	public static double armCalMinPosition;
@@ -89,7 +91,7 @@ public class Robot extends IterativeRobot {
 		
 		// instantiate commands for xbox triggers
 		shootBall = new ShootBall();
-		setFlyWheels = new FlyWheelSetToSpeed(4500);
+		setFlyWheels = new FlyWheelSetToSpeed(2100, 2520);
 
 		// Display active commands and subsystem status on SmartDashboard
 		SmartDashboard.putData(Scheduler.getInstance());

@@ -120,8 +120,8 @@ public class OI {
         coP[2].whenPressed(new ShooterPistonOverride());
         coP[3].whenPressed(new ShooterArmMoveToSetLocation(RobotMap.shooterArmBallLoadAngle));
         coP[4].whenPressed(new FlyWheelSetToSpeed(2100, 2520));
-        coP[5].whileHeld(new IntakeOverride(true));
-        coP[5].whenReleased(new IntakeOverride(false));
+//        coP[5].whileHeld(new IntakeOverride(true));
+//        coP[5].whenReleased(new IntakeOverride(false));
         coP[6].whenPressed(new ShooterArmMoveToSetLocation(RobotMap.shootingAngle));
         coP[7].whenPressed(new ShooterArmMoveToSetLocation(RobotMap.shooterArmBallCruiseAngle));
         coP[11].whenPressed(new LoadBallSequence());

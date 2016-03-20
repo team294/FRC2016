@@ -29,7 +29,6 @@ public class ShootBall extends CommandGroup {
     	
 //    	addSequential(new FlyWheelSetToSpeed(4500)); //Starts the fly wheels, and runs them at full speed
     	addSequential(new FlyWheelSetToSpeed(2100, 2520)); //This is the speed for the poop shot
-    	//addSequential(new FlyWheelSetToSpeed(4500)); //Starts the fly wheels, and runs them at full speed
     	
     	addSequential(new ShooterPistonOut(true)); //When wheels are full speed, use piston to push the ball into fly wheels
     	addSequential(new WaitSeconds(.5));

@@ -44,7 +44,7 @@ public class RobotMap {
     public static double shooterArmBallCruiseAngle = 10.0;  // Reduced from 15 to 10 degrees due to larger flywheels and arm stops.
     
     // Shooter arm range to avoid when raising or lowering intake
-    public static double lowerBoundAngleToAvoid = 8;
+    public static double lowerBoundAngleToAvoid = 6;
     public static double upperBoundAngleToAvoid = 83;
     
     

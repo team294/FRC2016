@@ -128,9 +128,12 @@ public class ShooterArm extends Subsystem {
 //    	}
 		
 		
-		// Don't move if the shooter arm is disabled.
-		if (!Robot.shooterArmEnabled || 
-				(Robot.intake.intakeSolenoidIsOff() && (angle<getAngle() || getAngle()<45) ) ) {
+		// Don't move if the shooter arm is disabled or if arm could crash into intake
+//		if (!Robot.shooterArmEnabled || 
+//				(Robot.intake.intakeSolenoidIsOff() && getAngle()>=45 && angle<getAngle() )  ||
+//				(Robot.intake.intakeSolenoidIsOff() && getAngle()<45 && angle>getAngle() )
+//			) {
+		if (!Robot.shooterArmEnabled) {
 			SmartDashboard.putNumber("Arm set angle", -9999);			
 			return;
 		}
@@ -138,15 +141,16 @@ public class ShooterArm extends Subsystem {
 		// Turn off brake before moving arm
 		setBrakeOff();
 		
-		SmartDashboard.putNumber("Arm set angle", angle);
-        if (Robot.smartDashboardDebug) {
-        	SmartDashboard.putNumber("Arm set position", convertAngleToPos(angle));
-        }
-        
-		if(Robot.intake.intakeIsUp()){
-			if(Robot.shooterArm.getAngle()>=RobotMap.upperBoundAngleToAvoid&&angle<=RobotMap.upperBoundAngleToAvoid){
+		// If arm is in keepout zone and intake is up (or in unknown state), then move arm away from the intake out of the keepout zone.
+		if(Robot.intake.intakeIsUp() || Robot.intake.intakeSolenoidIsOff()){
+//			if(getAngle()>=RobotMap.upperBoundAngleToAvoid && angle<=RobotMap.upperBoundAngleToAvoid){
+//				angle=(RobotMap.upperBoundAngleToAvoid+3);
+//			}else if(getAngle()<=RobotMap.lowerBoundAngleToAvoid && angle>=RobotMap.lowerBoundAngleToAvoid){
+//				angle=(RobotMap.lowerBoundAngleToAvoid-3);
+//			}
+			if(getAngle()>=45 && angle<=RobotMap.upperBoundAngleToAvoid){
 				angle=(RobotMap.upperBoundAngleToAvoid+3);
-			}else if(Robot.shooterArm.getAngle()<=RobotMap.lowerBoundAngleToAvoid&&angle>=RobotMap.lowerBoundAngleToAvoid){
+			}else if(getAngle()<45 && angle>=RobotMap.lowerBoundAngleToAvoid){
 				angle=(RobotMap.lowerBoundAngleToAvoid-3);
 			}
 		}
@@ -159,6 +163,11 @@ public class ShooterArm extends Subsystem {
 			angle=RobotMap.shooterArmMinAngle;
 		}
 		
+		SmartDashboard.putNumber("Arm set angle", angle);
+        if (Robot.smartDashboardDebug) {
+        	SmartDashboard.putNumber("Arm set position", convertAngleToPos(angle));
+        }
+        
 		shooterArmMotor.clearIAccum();
 		shooterArmMotor.set(convertAngleToPos(angle));
 		shooterArmMotor.enableControl();

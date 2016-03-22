@@ -146,7 +146,7 @@ public class OI {
 
         SmartDashboard.putData("Piston out", new ShooterPistonOut(true));
         SmartDashboard.putData("Piston in", new ShooterPistonOut(false));
-        SmartDashboard.putData("Start FlyWheels", new FlyWheelSetToSpeed(4500));
+        SmartDashboard.putData("Start FlyWheels", new FlyWheelSetToSpeed(4000));
         SmartDashboard.putData("Intake FlyWheels", new FlyWheelSetToSpeed(-2500));
         SmartDashboard.putData("Stop FlyWheels", new FlyWheelStop());
         
@@ -272,6 +272,7 @@ public class OI {
 //        SmartDashboard.putData("Rotate +2 PID", new DriveAnglePID(2.0));
 //        SmartDashboard.putData("Rotate -2 PID", new DriveAnglePID(-2.0));
         SmartDashboard.putData("Rotate to 0", new DriveAngle(0.55, 0, false));
+        SmartDashboard.putData("Rotate to goal", new DriveTurnToGoal());
 //        SmartDashboard.putData("Rotate to 10", new DriveAngle(0.55, 10, false));
 //        SmartDashboard.putData("Rotate to 90", new DriveAngle(0.55, 90, false));
         SmartDashboard.putData("Rotate +90", new DriveAngle(0.55, 90, true));

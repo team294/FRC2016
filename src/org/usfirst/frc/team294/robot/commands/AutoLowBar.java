@@ -10,15 +10,21 @@ public class AutoLowBar extends CommandGroup {
     public  AutoLowBar() {
     	addSequential(new ShooterArmMoveToSetLocation(90));
     	//addSequential(new WaitSeconds(0.25));
-    	addSequential(new WaitSeconds(0.1));
-    	addSequential(new ShiftDown());
+    	addParallel(new ShiftDown());
     	addSequential(new IntakeLowerIfRaised());
     	addSequential(new ShooterArmMoveToSetLocation(0));
-    	addSequential(new DriveStraightDistance(0.6, 15.0*12.0, DriveStraightDistance.Units.inches));    	// "Slow" speed, 15 feet
+    	addSequential(new DriveStraightDistance(0.65, 19.0*12.0, DriveStraightDistance.Units.inches));    	// "Slow" speed, 19 feet
+    	addParallel(new ShooterArmMoveToSetLocation(56));			// Start moving arm to correct target angle
     	addSequential(new DriveAngle(0.55, 45, false));				// 45 degrees from original orientation
-    	addSequential(new DriveStraightDistance(0.6, 2.0*12.0, DriveStraightDistance.Units.inches));    	// "Slow" speed, 2 feet
-    	addSequential(new DriveAngle(0.55, 0, false));				// Straighten up    	
     	
+//    	addSequential(new DriveStraightDistance(0.6, 2.0*12.0, DriveStraightDistance.Units.inches));    	// "Slow" speed, 2 feet
+//    	addSequential(new DriveAngle(0.55, 0, false));				// Straighten up    	
+    	addSequential(new DriveTurnToGoal(2.0));
+    	addSequential(new DriveTurnToGoal(1.0));
+    	addSequential(new DriveTurnToGoal(1.0));
+    	addSequential(new ShooterArmMoveToSetLocation(56));			// Ensure arm is at target
+    	addSequential(new ShootBall());
+    	    	
     	// Add Commands here:
         // e.g. addSequential(new Command1());
         //      addSequential(new Command2());

@@ -12,6 +12,9 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 public class DriveTurnToGoal extends Command {
 
 	// Initial settings when command was invoked
+	private double maxTol;
+	
+	// Other initialization variables
     private double commandSpeed;
     private double targetAngle;
     
@@ -21,20 +24,28 @@ public class DriveTurnToGoal extends Command {
     private double kPangle = 0.03; 
     
     // Check if target has been reached
-    ToleranceChecker angleTol = new ToleranceChecker(1.5, 5);
+    ToleranceChecker angleTol = new ToleranceChecker(1.5, 5);		// Default tolerance of 1.5 will be overwritten in initialize()
     
-    public DriveTurnToGoal() {
+    /** 
+     * Turns robot to face largest goal found, to within tolerance
+     * @param angleTolerance = accuracy of robot turning, in degrees
+     */
+    public DriveTurnToGoal(double angleTolerance) {
         // Use requires() here to declare subsystem dependencies
         // eg. requires(chassis);        
         requires(Robot.driveTrain);
+        
+        maxTol = angleTolerance;
     }
 
     // Called just before this Command runs the first time
     protected void initialize() {
     	angleTol.reset();
+    	angleTol.setTolerance(maxTol);
        	Robot.driveTrain.resetDegrees();    		
 
         commandSpeed = 0.55;
+        Robot.vision.findGoal();
         targetAngle = Robot.vision.getGoalXAngleError();
         targetAngle = (targetAngle < 0) ? targetAngle+360.0 : targetAngle;
     }

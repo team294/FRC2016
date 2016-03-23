@@ -11,6 +11,10 @@ import edu.wpi.first.wpilibj.command.Command;
 public class ShooterArmMoveToSetLocation extends Command {
 	double angleRequested, angleToMove;
 	
+	/**
+	 * Moves arm to set angle and holds there with PID/potentiometer.
+	 * @param angle, in degrees
+	 */
     public ShooterArmMoveToSetLocation(double angle) {
         // Use requires() here to declare subsystem dependencies
         // eg. requires(chassis);

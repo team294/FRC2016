@@ -13,6 +13,12 @@ public class Vision extends Subsystem {
     // Local data
 	boolean bGoalFound;				// Are the goal coords in xsGoal, ysGoal valid?
 	double xsGoal, ysGoal;  		// Screen coords of center of largest goal
+	double dGoal;					// Distance to goal, in inches
+	double xsGoalTarget;			// Ideal screen location of goal center (in pixels), based on distance to goal
+	double xAngleErr;				// Angle to turn robot, in degrees, to point at goal
+	double ysGoalTarget;			// Ideal screen location of goal center (in pixels), based on distance to goal
+	double goalArmAngle;			// Angle to set arm (in arm degrees) to point to goal
+
 	
 	// GRIP data
 	NetworkTable table;
@@ -31,6 +37,7 @@ public class Vision extends Subsystem {
 	final double cameraYRatio = cameraXRatio*480.0/640.0;  	// SY/Sz
 	final double cameraXHalfRes = 640/2;		// Resolution
 	final double cameraYHalfRes = 480/2;		// Resolution
+	final double xsBallScreen = 150;				// Ignore anything to the left of this (ball and elastic band)
 	
 	public Vision(){
 		table = NetworkTable.getTable("GRIP/myContoursReport");
@@ -45,9 +52,14 @@ public class Vision extends Subsystem {
 	 * @return True if a goal was found.
 	 */
 	public boolean findGoal() {
+		// For finding the goal with the correct width
 		int i, goal;
 		double maxWidth;
 		
+		// For distance calcs
+		double angleGoalOnScreen, angleArm;
+		
+		// Get GRIP data
 		width = table.getNumberArray("width", networkTableDefault );
 		centerX = table.getNumberArray("centerX", networkTableDefault );
 		centerY = table.getNumberArray("centerY", networkTableDefault );
@@ -55,21 +67,60 @@ public class Vision extends Subsystem {
 		// Are any contours found?
 		if (width.length>0) {
 			bGoalFound = (width[0]>=0);
-		} else bGoalFound = false;
+		} else {
+			bGoalFound = false;
+			SmartDashboard.putNumber("Cam goal distance",-1);
+			return bGoalFound;
+		}
 
-		// Find goal with largest width
-		if (bGoalFound) {
-			maxWidth = 0;
-			goal = 0;
-			for (i=0; i<width.length; i++) {
-				if (width[i]>maxWidth) {
-					maxWidth = width[i];
-					goal = i;
-				}
+		// Find goal with largest width.  Filter out ball and elastic band (X <= xsBallSceen)
+		maxWidth = 0;
+		goal = -1;
+		for (i=0; i<width.length; i++) {
+			if (width[i]>maxWidth && centerX[i]>xsBallScreen) {
+				maxWidth = width[i];
+				goal = i;
 			}
-			
-			xsGoal = centerX[goal];
-			ysGoal = centerY[goal];
+		}
+		
+		if (goal==-1) {
+			bGoalFound = false;
+			SmartDashboard.putNumber("Cam goal distance",-2);
+			return bGoalFound;			
+		}
+		
+		bGoalFound = true;
+		xsGoal = centerX[goal];
+		ysGoal = centerY[goal];
+		
+		// Calculate horizontal distance to goal, in inches
+		angleGoalOnScreen = Math.atan( (cameraYHalfRes - ysGoal)/cameraYHalfRes * cameraYRatio)*180.0/Math.PI;
+		angleArm = Robot.shooterArm.getAngle()*angleArmM + angleArmB;
+		dGoal = (hGoal - hAxle - dArm*Math.sin(angleArm*Math.PI/180.0)) / Math.tan((angleArm + angleGoalOnScreen)*Math.PI/180.0);				
+		SmartDashboard.putNumber("Cam goal distance",dGoal);
+
+		// Calculate ideal screen X position of goal
+		if (dGoal<100) {
+			xsGoalTarget = -0.00469436*dGoal*dGoal + 1.170263*dGoal + 217.3622;
+		} else {
+			xsGoalTarget = 287.0;
+		}
+
+		// Calculate angle to turn robot to point at goal
+		xAngleErr = Math.atan( (xsGoal-xsGoalTarget)/cameraXHalfRes * cameraXRatio) * 180.0/Math.PI;
+
+		// Calculate ideal screen Y position of goal
+		if (dGoal<=72) {
+			ysGoalTarget = -0.638*dGoal + 350;
+		} else {
+			ysGoalTarget = 1.279*dGoal + 209;
+		}
+
+		// Calculate arm angle to target goal
+		if (dGoal<151) {
+			goalArmAngle = 0.00213*dGoal*dGoal -0.6312*dGoal + 95.7;			
+		} else {
+			goalArmAngle = 49.0;
 		}
 		
 		return bGoalFound;
@@ -80,17 +131,11 @@ public class Vision extends Subsystem {
 	 * @return distance, in inches.  -1 if no goal found.
 	 */
 	public double getGoalDistance(){
-		double angleGoalOnScreen, angleArm;
-		double dGoal;
-		
 		if (bGoalFound) {
-			angleGoalOnScreen = Math.atan( (cameraYHalfRes - ysGoal)/cameraYHalfRes * cameraYRatio)*180.0/Math.PI;
-			angleArm = Robot.shooterArm.getAngle()*angleArmM + angleArmB;
-			dGoal = (hGoal - hAxle - dArm*Math.sin(angleArm*Math.PI/180.0)) / Math.tan((angleArm + angleGoalOnScreen)*Math.PI/180.0);				
-		} else dGoal = -1;
-		
-		SmartDashboard.putNumber("Cam goal distance",dGoal);
-		return dGoal;
+			return dGoal;
+		} else {
+			return -1;
+		}
     }
 
 	/**
@@ -98,31 +143,33 @@ public class Vision extends Subsystem {
 	 * @return error, in degrees (-=left, +=right).  0 if no goal found.
 	 */
 	public double getGoalXAngleError(){
-		double dGoal, dXGoalTarget;
-		double angleErr;
 		
 		if (!bGoalFound) return 0;
 
-		dGoal = getGoalDistance();
-		
-		if (dGoal<100) {
-			dXGoalTarget = -0.00469436*dGoal*dGoal + 1.170263*dGoal + 217.3622;
-		} else {
-			dXGoalTarget = 287.0;
-		}
-		SmartDashboard.putNumber("Cam goal X pixel target", dXGoalTarget);
-//		dXGoalTarget = 287.0;		// Override distance calcs for now (need to debug)
-		SmartDashboard.putNumber("Cam goal X pixel target2", dXGoalTarget);
+		SmartDashboard.putNumber("Cam goal X pixel target", xsGoalTarget);
 		SmartDashboard.putNumber("Cam goal X center", xsGoal);
-
-		angleErr = Math.atan( (xsGoal-dXGoalTarget)/cameraXHalfRes * cameraXRatio) * 180.0/Math.PI;
-		SmartDashboard.putNumber("Cam goal X angle err", angleErr);
+		SmartDashboard.putNumber("Cam goal X angle err", xAngleErr);
 		
-		return angleErr;
+		return xAngleErr;
 	}
 	
     
-    public void initDefaultCommand() {
+	/**
+	 * Returns the ideal Arm angle to target the last goal found by findGoal()
+	 * @return arm angle, in degrees.  Current arm angle if no goal found.
+	 */
+	public double getGoalArmAngle(){
+		if (!bGoalFound) return Robot.shooterArm.getAngle();
+
+		SmartDashboard.putNumber("Cam goal Y pixel target", ysGoalTarget);
+		SmartDashboard.putNumber("Cam goal Y center", ysGoal);
+		SmartDashboard.putNumber("Cam goal Y arm angle", goalArmAngle);
+		
+		return goalArmAngle;
+	}
+
+	
+	public void initDefaultCommand() {
         // Set the default command for a subsystem here.
         //setDefaultCommand(new MySpecialCommand());
     }

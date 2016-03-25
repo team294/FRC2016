@@ -22,7 +22,7 @@ public class AutoLowBar extends CommandGroup {
     	addSequential(new DriveTurnToGoal(2.0));
     	addSequential(new DriveTurnToGoal(1.0));
     	addSequential(new DriveTurnToGoal(1.0));
-    	addSequential(new ShooterArmMoveToSetLocation(56));			// Ensure arm is at target
+    	addSequential(new ShooterArmMoveToGoal());			// Ensure arm is at target
     	addSequential(new ShootBall());
     	    	
     	// Add Commands here:

@@ -1,7 +1,5 @@
 package org.usfirst.frc.team294.robot.commands;
 
-import org.usfirst.frc.team294.robot.RobotMap;
-
 import edu.wpi.first.wpilibj.command.CommandGroup;
 
 /**
@@ -18,8 +16,9 @@ public class AutoLowBar extends CommandGroup {
     	addSequential(new DriveStraightDistance(0.65, 19.0*12.0, DriveStraightDistance.Units.inches));    	// "Slow" speed, 19 feet
     	addParallel(new ShooterArmMoveToSetLocation(56));			// Start moving arm to correct target angle
     	addSequential(new DriveAngle(0.55, 45, false));				// 45 degrees from original orientation
-    	addSequential(new DriveStraightDistance(0.6, 2.0*12.0, DriveStraightDistance.Units.inches));    	// "Slow" speed, 2 feet
-    	addSequential(new DriveAngle(0.55, 0, false));				// Straighten up    	
+    	
+//    	addSequential(new DriveStraightDistance(0.6, 2.0*12.0, DriveStraightDistance.Units.inches));    	// "Slow" speed, 2 feet
+//    	addSequential(new DriveAngle(0.55, 0, false));				// Straighten up    	
     	addSequential(new DriveTurnToGoal(2.0));
     	addSequential(new DriveTurnToGoal(1.0));
     	addSequential(new DriveTurnToGoal(1.0));

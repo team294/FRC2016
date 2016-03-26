@@ -73,7 +73,7 @@ public class Shooter extends Subsystem {
     // here. Call these from Commands.
     
 	/**
-	 * Set shooter motor speeds.  WARNING:  Keep speed <= 4500 RPM to ensure that the PIDF
+	 * Set shooter motor speeds.  WARNING:  Keep speed <= RobotMap.maxFlywheelSpeed RPM to ensure that the PIDF
 	 * controller can achieve the desired speed.  If not, then the I term of the PIDF
 	 * will prevent the controller from changing speeds properly.
      * @param speed RPM to set both top and bottom motors.  + = eject ball, - = load ball.
@@ -93,7 +93,7 @@ public class Shooter extends Subsystem {
 	}
     
 	/**
-	 * Set shooter motor speeds.  WARNING:  Keep speeds <= 4500 RPM to ensure that the PIDF
+	 * Set shooter motor speeds.  WARNING:  Keep speeds <= RobotMap.maxFlywheelSpeed RPM to ensure that the PIDF
 	 * controller can achieve the desired speed.  If not, then the I term of the PIDF
 	 * will prevent the controller from changing speeds properly.
 	 * <p> This method allows separate top/bottom speeds in order to put a spin on the ball.

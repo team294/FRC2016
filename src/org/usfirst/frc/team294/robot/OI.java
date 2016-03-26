@@ -100,8 +100,13 @@ public class OI {
 			coJ[i] = new JoystickButton(coJoystick, i);
 			xbB[i] = new JoystickButton(xboxController, i);
 			
-			left[i].whenPressed(new ShiftDown());
-			right[i].whenPressed(new ShiftUp());
+			if (i==2) {
+				left[2].whenPressed(new DriveWithJoysticks());
+				right[2].whenPressed(new AutoTargetShoot());
+			} else {
+				left[i].whenPressed(new ShiftDown());
+				right[i].whenPressed(new ShiftUp()); 
+			}
 		}
 
 		xbB[5].whenPressed(new LoadBallSequence());
@@ -112,9 +117,6 @@ public class OI {
 		xbB[1].whenPressed(new ShooterArmMoveToSetLocation(RobotMap.shooterArmBallCruiseAngle));
 		xbB[3].whenPressed(new IntakeRaiseWithArmMoveIfNeeded());
 		xbB[2].whenPressed(new IntakeLowerIfRaised());
-
-		left[1].whenPressed(new ShiftDown());
-		right[1].whenPressed(new ShiftUp());
 
         coP[1].whenPressed(new ShootBall());
         coP[2].whenPressed(new ShooterPistonOverride());
@@ -144,11 +146,12 @@ public class OI {
         
         SmartDashboard.putData("Load Ball", new LoadBallSequence());
         SmartDashboard.putData("Shoot ball", new ShootBall());
+        SmartDashboard.putData("Shoot ball auto target", new AutoTargetShoot());
         SmartDashboard.putData("Shooter Arm Joystick Relative", new ShooterArmMoveRelativeJoystick());
 
         SmartDashboard.putData("Piston out", new ShooterPistonOut(true));
         SmartDashboard.putData("Piston in", new ShooterPistonOut(false));
-        SmartDashboard.putData("Start FlyWheels", new FlyWheelSetToSpeed(4200));
+        SmartDashboard.putData("Start FlyWheels", new FlyWheelSetToSpeed(RobotMap.maxFlywheelSpeed));
         SmartDashboard.putData("Intake FlyWheels", new FlyWheelSetToSpeed(-2500));
         SmartDashboard.putData("Stop FlyWheels", new FlyWheelStop());
         
@@ -285,8 +288,8 @@ public class OI {
         SmartDashboard.putData("Rotate +5", new DriveAngle(0.55, +5, true));
         SmartDashboard.putData("Rotate -5", new DriveAngle(0.55, -5, true));
 
-        SmartDashboard.putData("Start Top FlyWheel only", new FlyWheelSetToSpeed(4500, 0));
-        SmartDashboard.putData("Start Bottom FlyWheel only", new FlyWheelSetToSpeed(0, 4500));
+        SmartDashboard.putData("Start Top FlyWheel only", new FlyWheelSetToSpeed(RobotMap.maxFlywheelSpeed, 0));
+        SmartDashboard.putData("Start Bottom FlyWheel only", new FlyWheelSetToSpeed(0, RobotMap.maxFlywheelSpeed));
 
         SmartDashboard.putData("Intake RaiseX", new IntakeRaise());
         SmartDashboard.putData("Intake LowerX", new IntakeLower());

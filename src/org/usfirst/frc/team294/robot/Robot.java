@@ -150,7 +150,7 @@ public class Robot extends IterativeRobot {
 
         //Here is where the triggers are processed, so when they are over a certain threshold, it will run a command.
 		if(oi.xboxController.getRawAxis(2) > .90){
-			setFlyWheels.start();		//This one will rev the fly wheels up to 4500 RPM
+			setFlyWheels.start();		//This one will rev the fly wheels up to poop shot speed
 		}
 		if(oi.xboxController.getRawAxis(3) > .90){
 			shootBall.start();			//This will do the shooting sequence

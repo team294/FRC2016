@@ -3,6 +3,7 @@ package org.usfirst.frc.team294.robot.subsystems;
 import org.usfirst.frc.team294.robot.Robot;
 import org.usfirst.frc.team294.robot.RobotMap;
 import edu.wpi.first.wpilibj.CANTalon;
+import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
@@ -14,7 +15,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 public class Intake extends Subsystem {
     private final CANTalon intakeMotor = new CANTalon(RobotMap.intakeMotor);
     private final DoubleSolenoid intakeSolenoid = new DoubleSolenoid(RobotMap.intakeSolenoidFwd, RobotMap.intakeSolenoidRev);
-   
+    private final DigitalInput intakeDownSensor = new DigitalInput(RobotMap.intakeDownSensor);
         
     public Intake() {
     	// Call the Subsystem constructor
@@ -95,6 +96,7 @@ public class Intake extends Subsystem {
     		SmartDashboard.putString("Intake position", "Off");
     		break;
     	}
+    	SmartDashboard.putBoolean("Intake down sensor", intakeDownSensor.get());
 //    	SmartDashboard.putBoolean("IntakeIsUp", intakeSolenoid.get()==DoubleSolenoid.Value.kReverse);
     	return intakeSolenoid.get()==DoubleSolenoid.Value.kReverse;
     }
@@ -107,6 +109,14 @@ public class Intake extends Subsystem {
     	return intakeSolenoid.get()==DoubleSolenoid.Value.kOff;
     }
 
+    /**
+     * Checks the intake down push sensor
+     * @return true = intake is in down position
+     */
+    public boolean intakeSensorDown() {
+    	return intakeDownSensor.get();
+    }
+    
     /**
      * Checks to make sure that the shooter arm is not going to crash into the intake when raising the intake
      * @return true when the shooter conflicts with the intake

@@ -26,6 +26,14 @@ public class ToleranceChecker {
     }
     
     /**
+     * Reset the absolute error tolerance to be "good"
+     * @param tolerance
+     */
+    public void setTolerance(double tolerance) {
+    	this.tolerance = tolerance;
+    }
+    
+    /**
      * Reset tolerance checker to "out of tolerance"
      */
     public void reset() {

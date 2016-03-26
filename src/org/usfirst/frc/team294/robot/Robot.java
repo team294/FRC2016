@@ -164,6 +164,10 @@ public class Robot extends IterativeRobot {
 		intake.intakeIsUp();
 		driveTrain.getDegrees();
 		
+		vision.findGoal();
+		vision.getGoalXAngleError();
+		vision.getGoalArmAngle();
+		
 		if (smartDashboardDebug) {
 			// Uncomment the following line to read coPanel knobs.
 //			oi.updateSmartDashboard();

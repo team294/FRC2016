@@ -25,6 +25,7 @@ public class RobotMap {
 
 	// RoboRIO digital I/O addresses
 	public static int ballSensor = 0;
+	public static int intakeDownSensor = 1;
 
    // Pneumatic controller PCM IDs
     public static int shifterSolenoidFwd = 0;
@@ -47,6 +48,9 @@ public class RobotMap {
     public static double lowerBoundAngleToAvoid = 6;
     public static double upperBoundAngleToAvoid = 83;
     
+    // Shooter flywheel max speed
+	//TODO:  Change to 4500 for competition robot;
+    public static double maxFlywheelSpeed = 4200;
     
     public static void init() {
         // Instantiates all objects

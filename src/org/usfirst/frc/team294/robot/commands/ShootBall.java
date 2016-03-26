@@ -1,5 +1,7 @@
 package org.usfirst.frc.team294.robot.commands;
 
+import org.usfirst.frc.team294.robot.RobotMap;
+
 import edu.wpi.first.wpilibj.command.CommandGroup;
 
 /**
@@ -27,9 +29,8 @@ public class ShootBall extends CommandGroup {
 
     	addSequential(new IntakeSetToSpeedIfArmIsLow(-1.0));  // Turn on intake if we are shooting low
     	
-    	addSequential(new FlyWheelSetToSpeed(4200)); //Starts the fly wheels, and runs them at full speed
-//    	addSequential(new FlyWheelSetToSpeed(4500)); //Starts the fly wheels, and runs them at full speed
-//    	addSequential(new FlyWheelSetToSpeed(2100, 2520)); //This is the speed for the poop shot
+//    	addSequential(new FlyWheelSetToSpeed(RobotMap.maxFlywheelSpeed)); //Starts the fly wheels, and runs them at full speed
+    	addSequential(new FlyWheelSetToSpeed(2100, 2520)); //This is the speed for the poop shot
     	
     	addSequential(new ShooterPistonOut(true)); //When wheels are full speed, use piston to push the ball into fly wheels
     	addSequential(new WaitSeconds(.5));

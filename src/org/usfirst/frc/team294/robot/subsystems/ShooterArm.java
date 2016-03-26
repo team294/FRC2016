@@ -46,14 +46,14 @@ public class ShooterArm extends Subsystem {
 		
 		shooterArmMotor.setFeedbackDevice(CANTalon.FeedbackDevice.AnalogPot);
 		//shooterArmMotor.reverseSensor(true); 
-		//shooterArmMotor.setPID(12, 0.005, 0, 0, 20, 10000, 0);  // Good values without elastic
-		shooterArmMotor.setPID(43, 0.1, 0, 0, 20, 50, 0);  // Good values with elastic bands
+		//shooterArmMotor.setPID(12, 0.005, 0, 0, 20, 10000, 0);  // Good values without elastic retention bands, gears, 3-turn pot
+		shooterArmMotor.setPID(43, 0.1, 0, 0, 20, 50, 0);  // Good values with elastic retention bands, gears, 3-turn pot (competition robot)
 		shooterArmMotor.configPeakOutputVoltage(+8.0f, -10.0f);
 		shooterArmMotor.changeControlMode(TalonControlMode.Position);
-		shooterArmMotor.configPotentiometerTurns(3);
-		shooterArmMotor.setReverseSoftLimit(deg90Position-0.06);		// Limit in high position (slightly more than 90 deg, 0.06 rotations)
+		shooterArmMotor.configPotentiometerTurns(3);		// 3-turn pot.  Also use this for 1-turn pot, since all cals are for this.
+		shooterArmMotor.setReverseSoftLimit(deg90Position-0.06);		// Limit in high position (slightly more than 90 deg, 3-turn pot)
 		shooterArmMotor.enableReverseSoftLimit(true);
-		shooterArmMotor.setForwardSoftLimit(minPosition-0.02);		// Limit in low position (slightly above 0 deg, and let gravity pull the arm down)
+		shooterArmMotor.setForwardSoftLimit(minPosition-0.02);		// Limit in low position (3-turn pot, slightly above 0 deg, and let gravity pull the arm down)
 		shooterArmMotor.enableForwardSoftLimit(true);
 		//shooterArmMotor.disableControl();
 		

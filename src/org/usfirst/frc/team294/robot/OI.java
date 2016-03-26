@@ -137,6 +137,8 @@ public class OI {
 
 		SmartDashboard.putData("DriveWithJoysticks", new DriveWithJoysticks());
         SmartDashboard.putData("Drive: All Stop", new DriveStop());
+        SmartDashboard.putData("Rotate to goal", new DriveTurnToGoal(1.0));
+
         SmartDashboard.putData("ShiftUp", new ShiftUp());
         SmartDashboard.putData("ShiftDown", new ShiftDown());
         
@@ -146,7 +148,7 @@ public class OI {
 
         SmartDashboard.putData("Piston out", new ShooterPistonOut(true));
         SmartDashboard.putData("Piston in", new ShooterPistonOut(false));
-        SmartDashboard.putData("Start FlyWheels", new FlyWheelSetToSpeed(4500));
+        SmartDashboard.putData("Start FlyWheels", new FlyWheelSetToSpeed(4200));
         SmartDashboard.putData("Intake FlyWheels", new FlyWheelSetToSpeed(-2500));
         SmartDashboard.putData("Stop FlyWheels", new FlyWheelStop());
         
@@ -160,6 +162,8 @@ public class OI {
         SmartDashboard.putData("Shooter Arm 0", new ShooterArmMoveToSetLocation(0));
         SmartDashboard.putData("Shooter Arm 15", new ShooterArmMoveToSetLocation(15));
         SmartDashboard.putData("Shooter Arm Joystick Relative", new ShooterArmMoveRelativeJoystick());
+        SmartDashboard.putData("Shooter Arm to goal", new ShooterArmMoveToGoal());
+
 
         if (Robot.smartDashboardDebug) {
         	setupSmartDashboard();

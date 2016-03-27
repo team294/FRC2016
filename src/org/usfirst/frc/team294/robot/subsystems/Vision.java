@@ -65,10 +65,12 @@ public class Vision extends Subsystem {
 		double angleGoalOnScreen, angleArm;
 		
 		// Get GRIP data
-		width = table.getNumberArray("width", networkTableDefault );
-		centerX = table.getNumberArray("centerX", networkTableDefault );
-		centerY = table.getNumberArray("centerY", networkTableDefault );
-
+		do {
+			width = table.getNumberArray("width", networkTableDefault );
+			centerX = table.getNumberArray("centerX", networkTableDefault );
+			centerY = table.getNumberArray("centerY", networkTableDefault );
+		} while (width.length!=centerX.length || width.length!=centerY.length);
+			
 		// Are any contours found?
 		if (width.length>0) {
 			bGoalFound = (width[0]>=0);

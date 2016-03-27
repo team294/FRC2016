@@ -103,6 +103,9 @@ public class OI {
 			if (i==2) {
 				left[2].whenPressed(new DriveWithJoysticks());
 				right[2].whenPressed(new AutoTargetShoot());
+			} else if(i==3) {
+				left[i].whenPressed(new DriveStraightWithJoysticks(Robot.oi.leftJoystick));
+				right[i].whenPressed(new DriveStraightWithJoysticks(Robot.oi.rightJoystick));
 			} else {
 				left[i].whenPressed(new ShiftDown());
 				right[i].whenPressed(new ShiftUp()); 

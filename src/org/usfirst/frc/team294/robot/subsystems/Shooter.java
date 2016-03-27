@@ -45,8 +45,9 @@ public class Shooter extends Subsystem {
         motorTop.reverseSensor(true);
         motorTop.configNominalOutputVoltage(+0.0f, -0.0f);
         motorTop.configPeakOutputVoltage(+12.0f, -12.0f);
-//        motorTop.setPID(0.010, 0.00005, 0); motorTop.setF(0.020); // Better
-        motorTop.setPID(0.010, 0.00015, 0, 0.020, 10000, 50, 0); // Limit windup -- best
+//        motorTop.setPID(0.010, 0.00005, 0); motorTop.setF(0.020); // Better (3" wheels)
+//        motorTop.setPID(0.010, 0.00015, 0, 0.020, 10000, 50, 0); // Limit windup -- best (3" wheels)
+        motorTop.setPID(0.020, 0.00015, 0, 0.025, 1500, 50, 0); // best (4" wheels)
         motorTop.changeControlMode(TalonControlMode.Speed);
 
         motorBottom.setFeedbackDevice(FeedbackDevice.CtreMagEncoder_Relative);
@@ -54,7 +55,7 @@ public class Shooter extends Subsystem {
         motorBottom.reverseSensor(true);
         motorBottom.configNominalOutputVoltage(+0.0f, -0.0f);
         motorBottom.configPeakOutputVoltage(+12.0f, -12.0f);
-        motorBottom.setPID(0.010, 0.00015, 0, 0.020, 10000, 50, 0); // Limit windup -- best
+        motorBottom.setPID(0.020, 0.00015, 0, 0.030, 1500, 50, 0); // best (4" wheels)
         motorBottom.changeControlMode(TalonControlMode.Speed);
                 
 //        ballPiston.set(DoubleSolenoid.Value.kReverse);
@@ -81,10 +82,13 @@ public class Shooter extends Subsystem {
     public void setSpeed(double speed) {
     	motorTop.enableControl();
     	motorBottom.enableControl();
+    	if (Math.abs(motorTop.getSetpoint()-speed)>0.1*speed ||
+    			Math.abs(motorBottom.getSetpoint()-speed)>0.1*speed) {
+        	motorTop.clearIAccum();    		
+        	motorBottom.clearIAccum();
+    	}
     	motorTop.set(speed);
     	motorBottom.set(speed);
-    	motorTop.clearIAccum();
-    	motorBottom.clearIAccum();
 
 		if (Robot.smartDashboardDebug) {
 	    	SmartDashboard.putNumber("ShootTop Setpoint", motorTop.getSetpoint());
@@ -103,10 +107,14 @@ public class Shooter extends Subsystem {
     public void setSpeed(double topSpeed, double bottomSpeed) {
     	motorTop.enableControl();
     	motorBottom.enableControl();
+    	if (Math.abs(motorTop.getSetpoint()-topSpeed)>0.1*topSpeed) {
+        	motorTop.clearIAccum();    		
+    	}
+    	if (Math.abs(motorBottom.getSetpoint()-bottomSpeed)>0.1*bottomSpeed) {
+        	motorBottom.clearIAccum();    		
+    	}
     	motorTop.set(topSpeed);
     	motorBottom.set(bottomSpeed);
-    	motorTop.clearIAccum();
-    	motorBottom.clearIAccum();
 
 		if (Robot.smartDashboardDebug) {
 	    	SmartDashboard.putNumber("ShootTop Setpoint", motorTop.getSetpoint());

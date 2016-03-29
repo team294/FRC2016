@@ -109,14 +109,18 @@ public class OI {
 			}
 		}
 
-		xbB[5].whenPressed(new LoadBallSequence());
-		xbB[6].whenPressed(new IntakeSetToSpeed(-1));
+		xbB[1].whenPressed(new IntakeLowerIfRaised());		
+		xbB[2].whenPressed(new IntakeSetToSpeed(-1));
+		xbB[3].whenPressed(new LoadBallSequence());
+		xbB[4].whenPressed(new IntakeRaiseWithArmMoveIfNeeded());
+		xbB[5].whenPressed(new ShooterArmMoveToSetLocation(RobotMap.shooterArmBallCruiseAngle));
+		xbB[6].whenPressed(new ShooterArmMoveToSetLocation(RobotMap.shootingAngle));
+		//xbB[8].whileHeld(new IntakeOverride(true));
+		//xbB[8].whenReleased(new IntakeOverride(false));
 		xbB[9].whenPressed(new StopFlyAndIntake());
 		xbB[10].whenPressed(new ShooterPistonOverride());
-		xbB[4].whenPressed(new ShooterArmMoveToSetLocation(RobotMap.shootingAngle));
-		xbB[1].whenPressed(new ShooterArmMoveToSetLocation(RobotMap.shooterArmBallCruiseAngle));
-		xbB[3].whenPressed(new IntakeRaiseWithArmMoveIfNeeded());
-		xbB[2].whenPressed(new IntakeLowerIfRaised());
+		//need to add D-pad assignment for up to set to RobotMap.shootingAngleFromOuterworks
+		//need to add D-pad assignment for down to set to RobotMap.shooterArmBallLoadAngle
 
         coP[1].whenPressed(new ShootBall());
         coP[2].whenPressed(new ShooterPistonOverride());
@@ -126,8 +130,10 @@ public class OI {
 //        coP[5].whenReleased(new IntakeOverride(false));
         coP[6].whenPressed(new ShooterArmMoveToSetLocation(RobotMap.shootingAngle));
         coP[7].whenPressed(new ShooterArmMoveToSetLocation(RobotMap.shooterArmBallCruiseAngle));
-        coP[11].whenPressed(new LoadBallSequence());
+        coP[8].whenPressed(new ShooterArmMoveToSetLocation(RobotMap.shootingAngleFromOuterworks));
         coP[9].whenPressed(new IntakeSetToSpeed(-1));
+        coP[10].whenPressed(new ShooterArmMoveToSetLocation(RobotMap.shootingAngleFromOuterworks));
+        coP[11].whenPressed(new LoadBallSequence());
         coP[12].whenPressed(new StopFlyAndIntake());
         coP[14].whenPressed(new IntakeRaiseWithArmMoveIfNeeded());
         coP[13].whenPressed(new IntakeLowerIfRaised());

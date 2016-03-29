@@ -3,6 +3,7 @@ package org.usfirst.frc.team294.robot.subsystems;
 import org.usfirst.frc.team294.robot.OI;
 import org.usfirst.frc.team294.robot.Robot;
 import org.usfirst.frc.team294.robot.RobotMap;
+import org.usfirst.frc.team294.robot.utilities.RCSwitch;
 import org.usfirst.frc.team294.robot.utilities.ToleranceChecker;
 
 import edu.wpi.first.wpilibj.AnalogInput;
@@ -24,6 +25,8 @@ public class ShooterArm extends Subsystem {
 	private final CANTalon shooterArmMotor= new CANTalon(RobotMap.shooterArmMotor);
     private final Solenoid brakeSolenoid = new Solenoid(RobotMap.shooterArmBrakeSolenoid);
 
+    private RCSwitch flashlight = new RCSwitch(RobotMap.flashlight);
+    
 	private double minPosition=Robot.armCalMinPosition;		// We will need to calibrate this number occasionally
 	private double deg90Position=Robot.armCal90DegPosition;
 //	private double minPosition=2.52;		// We will need to calibrate this number occasionally
@@ -254,7 +257,7 @@ public class ShooterArm extends Subsystem {
      * @param turnOn
      */
 	public void setFlashlight(boolean turnOn) {
-    	//TODO:  Implement method		
+    	flashlight.set(turnOn);
 	}
 	
 	/**

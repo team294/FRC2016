@@ -7,6 +7,7 @@ import edu.wpi.first.wpilibj.command.Command;
 
 import org.usfirst.frc.team294.robot.commands.*;
 import org.usfirst.frc.team294.robot.triggers.AxisTrigger;
+import org.usfirst.frc.team294.robot.triggers.POVTrigger;
 
 
 /**
@@ -93,6 +94,10 @@ public class OI {
 	    Button[] xbB = new Button[15];
 	    Trigger xbLT = new AxisTrigger(xboxController, 2, 0.9);
         Trigger xbRT = new AxisTrigger(xboxController, 3, 0.9);
+        Trigger xbPovUp = new POVTrigger(xboxController, 0);
+        //Trigger xbPovRight = new POVTrigger(xboxController, 90);
+        Trigger xbPovDown = new POVTrigger(xboxController, 180);
+        //Trigger xbPovLeft = new POVTrigger(xboxController, 270);
 		
 		// Create buttons
 		for (int i=1; i<15; i++) {
@@ -121,8 +126,9 @@ public class OI {
 		//xbB[8].whenReleased(new IntakeOverride(false));
 		xbB[9].whenPressed(new StopFlyAndIntake());
 		xbB[10].whenPressed(new ShooterPistonOverride());
-		//need to add D-pad assignment for up to set to RobotMap.shootingAngleFromOuterworks
-		//need to add D-pad assignment for down to set to RobotMap.shooterArmBallLoadAngle
+
+        xbPovUp.whenActive(new ShooterArmMoveToSetLocation(RobotMap.shootingAngleFromOuterworks));
+        xbPovDown.whenActive(new ShooterArmMoveToSetLocation(RobotMap.shooterArmBallLoadAngle));
 
         coP[1].whenPressed(new ShootBall());
         coP[2].whenPressed(new ShooterPistonOverride());

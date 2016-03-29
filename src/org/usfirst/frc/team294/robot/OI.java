@@ -6,6 +6,7 @@ import edu.wpi.first.wpilibj.buttons.*;
 import edu.wpi.first.wpilibj.command.Command;
 
 import org.usfirst.frc.team294.robot.commands.*;
+import org.usfirst.frc.team294.robot.triggers.AxisTrigger;
 
 
 /**
@@ -83,7 +84,6 @@ public class OI {
 	public Joystick coPanel = new Joystick(2);
 	public Joystick xboxController = new Joystick(3);
 	public Joystick coJoystick = new Joystick(4);
-
 	
 	public OI() {
 		Button[] left = new Button[15];
@@ -91,6 +91,8 @@ public class OI {
 	    Button[] coP = new Button[15];
 	    Button[] coJ = new Button[15];
 	    Button[] xbB = new Button[15];
+	    Trigger xbLT = new AxisTrigger(xboxController, 2, 0.9);
+        Trigger xbRT = new AxisTrigger(xboxController, 3, 0.9);
 		
 		// Create buttons
 		for (int i=1; i<15; i++) {
@@ -139,6 +141,11 @@ public class OI {
         coP[13].whenPressed(new IntakeLowerIfRaised());
 
 		coJ[1].whileHeld(new ShooterArmMoveRelativeJoystick());
+
+		//This one will rev the fly wheels up to poop shot speed
+		xbLT.whenActive(new FlyWheelSetToSpeed(2100, 2520));
+		//This will do the shooting sequence
+	    xbRT.whenActive(new ShootBall());
 
 		// SmartDashboard Buttons
 		SmartDashboard.putData("Debug dashboard", new SmartDashboardDebug());

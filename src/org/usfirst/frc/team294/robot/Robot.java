@@ -88,7 +88,7 @@ public class Robot extends IterativeRobot {
 		raiseArm90 = new ShooterArmMoveToSetLocation(90);
 		
 		// instantiate commands for xbox triggers
-		shootBall = new ShootBall();
+		shootBall = new ShootBallSetFlywheels();
 		setFlyWheels = new FlyWheelSetToSpeed(2100, 2520);
 
 		// Display active commands and subsystem status on SmartDashboard

@@ -30,6 +30,8 @@ public class FlyWheelSetToSpeedForGoal extends Command {
     	bottomSpeed = Robot.vision.getBottomFlywheelSpeed();
     	Robot.shooter.setSpeed(topSpeed, bottomSpeed);
     	sTol.reset();
+    	
+    	Robot.shooter.setFlywheelSpeedLight(false);
     }
 
     // Called repeatedly when this Command is scheduled to run
@@ -48,6 +50,7 @@ public class FlyWheelSetToSpeedForGoal extends Command {
     // Called once after isFinished returns true
     protected void end() {
 //    	System.out.println("FlyWheeSetToSpeed end");
+    	Robot.shooter.setFlywheelSpeedLight(true);
     }
 
     // Called when another command which requires one or more of the same

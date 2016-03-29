@@ -59,6 +59,8 @@ public class ShooterArm extends Subsystem {
 		
 		setBrakeOff();
 		
+		setFlashlight(false);
+		
     	// Add the subsystem to the LiveWindow
         LiveWindow.addActuator("ShooterArm", "shooterArmMotor", shooterArmMotor);
         LiveWindow.addActuator("ShooterArm", "shooterArmBrake",	brakeSolenoid);
@@ -118,6 +120,7 @@ public class ShooterArm extends Subsystem {
 	 * Tell PID controller to move arm to a specific absolute angle.  Arm will move
 	 * as much as it can within its movement limits and without interfering
 	 * with the intake (if the intake is raised).
+	 * Automatically turns flashlight on if angle >= 30 degrees, off if < 30 degrees.
 	 * @param angle Desired target angle, in degrees.  0 = horizontal, + = up, - = down
 	 */
 	public void moveToAngle(double angle) {
@@ -172,6 +175,8 @@ public class ShooterArm extends Subsystem {
 		shooterArmMotor.set(convertAngleToPos(angle));
 		shooterArmMotor.enableControl();
 		armTol.reset();
+		
+		setFlashlight(angle>=30);
 	}
 
 	/**
@@ -242,6 +247,14 @@ public class ShooterArm extends Subsystem {
 //		SmartDashboard.putNumber("Arm Joystick Y", coJoystick.getY());
 		
 		moveAngleRelative(-coJoystick.getY()*joyRelativeRate);
+	}
+	
+    /**
+     * Turns on/off the targeting flashlight.
+     * @param turnOn
+     */
+	public void setFlashlight(boolean turnOn) {
+    	//TODO:  Implement method		
 	}
 	
 	/**

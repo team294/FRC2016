@@ -61,6 +61,8 @@ public class Shooter extends Subsystem {
 //        ballPiston.set(DoubleSolenoid.Value.kReverse);
         ballPiston.set(false);
         
+        setFlywheelSpeedLight(false);
+        
         ballLoadedTrigger.whenActive(new RecordBallState(true));
   
     	// Add the subsystem to the LiveWindow
@@ -80,21 +82,8 @@ public class Shooter extends Subsystem {
      * @param speed RPM to set both top and bottom motors.  + = eject ball, - = load ball.
 	 */
     public void setSpeed(double speed) {
-    	motorTop.enableControl();
-    	motorBottom.enableControl();
-    	if (Math.abs(motorTop.getSetpoint()-speed)>0.1*speed ||
-    			Math.abs(motorBottom.getSetpoint()-speed)>0.1*speed) {
-        	motorTop.clearIAccum();    		
-        	motorBottom.clearIAccum();
-    	}
-    	motorTop.set(speed);
-    	motorBottom.set(speed);
-
-		if (Robot.smartDashboardDebug) {
-	    	SmartDashboard.putNumber("ShootTop Setpoint", motorTop.getSetpoint());
-			SmartDashboard.putNumber("ShootBot Setpoint", motorBottom.getSetpoint());   	
-		}
-	}
+    	setSpeed(speed, speed);
+    }
     
 	/**
 	 * Set shooter motor speeds.  WARNING:  Keep speeds <= RobotMap.maxFlywheelSpeed RPM to ensure that the PIDF
@@ -123,11 +112,14 @@ public class Shooter extends Subsystem {
     }
     
     /**
-     * Stops the flywheels using break mode of the talon.
+     * Stops the flywheels using break mode of the talon.  Turns off the
+     * flywheel speed light.
      */
     public void stopFlyWheels() {
     	motorTop.disableControl();
     	motorBottom.disableControl();
+    	
+    	setFlywheelSpeedLight(false);
     }
     
     /** 
@@ -211,6 +203,14 @@ public class Shooter extends Subsystem {
     	return ballIsLoaded;
     }
 
+    /**
+     * Turns on/off the light to show that the flywheels are spun up to speed.
+     * @param turnOn
+     */
+    public void setFlywheelSpeedLight(boolean turnOn) {
+    	//TODO:  Implement method
+    }
+    
 	/**
 	 * Send shooter motor setpoint, speed, and error to SmartDashboard
 	 */

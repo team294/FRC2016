@@ -121,7 +121,7 @@ public class OI {
 		xbB[3].whenPressed(new IntakeRaiseWithArmMoveIfNeeded());
 		xbB[2].whenPressed(new IntakeLowerIfRaised());
 
-        coP[1].whenPressed(new ShootBall());
+        coP[1].whenPressed(new ShootBallSetFlywheels());
         coP[2].whenPressed(new ShooterPistonOverride());
         coP[3].whenPressed(new ShooterArmMoveToSetLocation(RobotMap.shooterArmBallLoadAngle));
         coP[4].whenPressed(new FlyWheelSetToSpeed(2100, 2520));
@@ -148,7 +148,7 @@ public class OI {
         SmartDashboard.putData("ShiftDown", new ShiftDown());
         
         SmartDashboard.putData("Load Ball", new LoadBallSequence());
-        SmartDashboard.putData("Shoot ball", new ShootBall());
+        SmartDashboard.putData("Shoot ball", new ShootBallSetFlywheels());
         SmartDashboard.putData("Shoot ball auto target", new AutoTargetShoot());
         SmartDashboard.putData("Shooter Arm Joystick Relative", new ShooterArmMoveRelativeJoystick());
 

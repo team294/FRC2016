@@ -1,6 +1,7 @@
 package org.usfirst.frc.team294.robot.subsystems;
 
 import org.usfirst.frc.team294.robot.Robot;
+import org.usfirst.frc.team294.robot.RobotMap;
 
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.networktables.NetworkTable;
@@ -18,12 +19,16 @@ public class Vision extends Subsystem {
 	double xAngleErr;				// Angle to turn robot, in degrees, to point at goal
 	double ysGoalTarget;			// Ideal screen location of goal center (in pixels), based on distance to goal
 	double goalArmAngle;			// Angle to set arm (in arm degrees) to point to goal
-
+	double speedTopFlywheel;		// Top flywheel speed
+	double speedBottomFlywheel;		// Bottom flywheel speed
 	
 	// GRIP data
 	NetworkTable table;
 	double[] centerX, centerY, width;
 	double[] networkTableDefault = new double[] { -1.0 };
+
+	// Maximum flywheel speed
+	final double maxFlywheelSpeed = RobotMap.maxFlywheelSpeed;	
 	
 	// Calculations
 	final double hGoal = 85.0 - 2.0 + 12.25/2;	// Height of middle of goal
@@ -37,7 +42,7 @@ public class Vision extends Subsystem {
 	final double cameraYRatio = cameraXRatio*480.0/640.0;  	// SY/Sz
 	final double cameraXHalfRes = 640/2;		// Resolution
 	final double cameraYHalfRes = 480/2;		// Resolution
-	final double xsBallScreen = 150;				// Ignore anything to the left of this (ball and elastic band)
+	final double xsBallScreen = 175;				// Ignore anything to the left of this (ball and elastic band)
 	
 	public Vision(){
 		table = NetworkTable.getTable("GRIP/myContoursReport");
@@ -60,19 +65,23 @@ public class Vision extends Subsystem {
 		double angleGoalOnScreen, angleArm;
 		
 		// Get GRIP data
-		width = table.getNumberArray("width", networkTableDefault );
-		centerX = table.getNumberArray("centerX", networkTableDefault );
-		centerY = table.getNumberArray("centerY", networkTableDefault );
-
+		do {
+			width = table.getNumberArray("width", networkTableDefault );
+			centerX = table.getNumberArray("centerX", networkTableDefault );
+			centerY = table.getNumberArray("centerY", networkTableDefault );
+		} while (width.length!=centerX.length || width.length!=centerY.length);
+			
 		// Are any contours found?
 		if (width.length>0) {
 			bGoalFound = (width[0]>=0);
 		} else {
 			bGoalFound = false;
+		}
+		if (!bGoalFound) {
 			SmartDashboard.putNumber("Cam goal distance",-1);
 			return bGoalFound;
 		}
-
+		
 		// Find goal with largest width.  Filter out ball and elastic band (X <= xsBallSceen)
 		maxWidth = 0;
 		goal = -1;
@@ -123,6 +132,20 @@ public class Vision extends Subsystem {
 			goalArmAngle = 49.0;
 		}
 		
+		// Calculate flywheel speeds
+		if (dGoal<=40) {
+			speedTopFlywheel = 2100.0;
+			speedBottomFlywheel = 2520.0;
+		} else if (dGoal>=72) {
+			speedTopFlywheel = maxFlywheelSpeed;
+			speedBottomFlywheel = maxFlywheelSpeed;
+		} else {
+			speedTopFlywheel = 75.0*dGoal - 900.0;
+			speedBottomFlywheel = 61.88*dGoal + 45;
+			speedTopFlywheel = (speedTopFlywheel>maxFlywheelSpeed) ? maxFlywheelSpeed : speedTopFlywheel;
+			speedBottomFlywheel = (speedBottomFlywheel>maxFlywheelSpeed) ? maxFlywheelSpeed : speedBottomFlywheel;			
+		}
+		
 		return bGoalFound;
 	}
 	
@@ -168,6 +191,33 @@ public class Vision extends Subsystem {
 		return goalArmAngle;
 	}
 
+	/**
+	 * Returns the ideal speed for the top flywheel to target the last goal found by findGoal()
+	 * @return top flywheel speed, in rpm.  MaxFlywheelSpeed if no goal found.
+	 */
+	public double getTopFlywheelSpeed() {
+		if (!bGoalFound) {
+			SmartDashboard.putNumber("Cam top flywheel", maxFlywheelSpeed);
+			return maxFlywheelSpeed;
+		}
+		
+		SmartDashboard.putNumber("Cam top flywheel", speedTopFlywheel);
+		return speedTopFlywheel;		
+	}
+	
+	/**
+	 * Returns the ideal speed for the bottom flywheel to target the last goal found by findGoal()
+	 * @return bottom flywheel speed, in rpm.  MaxFlywheelSpeed if no goal found.
+	 */
+	public double getBottomFlywheelSpeed() {
+		if (!bGoalFound) {
+			SmartDashboard.putNumber("Cam bottom flywheel", maxFlywheelSpeed);
+			return maxFlywheelSpeed;
+		}
+		
+		SmartDashboard.putNumber("Cam bottom flywheel", speedBottomFlywheel);
+		return speedBottomFlywheel;		
+	}
 	
 	public void initDefaultCommand() {
         // Set the default command for a subsystem here.

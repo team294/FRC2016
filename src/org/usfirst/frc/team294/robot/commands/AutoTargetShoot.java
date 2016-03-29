@@ -5,29 +5,17 @@ import org.usfirst.frc.team294.robot.RobotMap;
 import edu.wpi.first.wpilibj.command.CommandGroup;
 
 /**
- * Autonomous code for low bar.
+ * Automatically targets and shoots at the goal.
  */
-public class AutoLowBar extends CommandGroup {
+public class AutoTargetShoot extends CommandGroup {
     
-    public  AutoLowBar() {
-    	// Configure robot for low bar
-    	addSequential(new ShooterArmMoveToSetLocation(90));
-    	//addSequential(new WaitSeconds(0.25));
-    	addParallel(new ShiftDown());
-    	addSequential(new IntakeLowerIfRaised());
-    	addSequential(new ShooterArmMoveToSetLocation(0));
-
-    	// Drive across barrier and turn towards goal
-    	addSequential(new DriveStraightDistance(0.65, 19.0*12.0, DriveStraightDistance.Units.inches));    	// "Slow" speed, 19 feet
-    	addParallel(new ShooterArmMoveToSetLocation(56));			// Start moving arm to correct target angle
-    	addSequential(new DriveAngle(0.55, 45, false));				// 45 degrees from original orientation
-    	
+    public  AutoTargetShoot() {
     	// Target goal and pre-rev flywheels
     	addParallel(new FlyWheelSetToSpeedForGoal());		// Rev flywheels
     	addParallel(new ShooterArmMoveToGoal());			// Start moving arm
-    	addSequential(new DriveTurnToGoal(2.0));
-    	addSequential(new DriveTurnToGoal(1.0));
-    	addSequential(new DriveTurnToGoal(1.0));
+    	addSequential(new DriveTurnToGoal(2.0),2);
+    	addSequential(new DriveTurnToGoal(1.5),2);
+    	addSequential(new DriveTurnToGoal(1.5),2);
     	addSequential(new ShooterArmMoveToGoal());			// Ensure arm is at target angle
 
     	// Shoot goal

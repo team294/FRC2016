@@ -63,7 +63,9 @@ public class DriveTurnToGoal extends Command {
         
     	angleTol.check(Math.abs(angleErr));
     	
-    	if (!angleTol.success()) {
+    	if (angleTol.success()) {
+        	Robot.driveTrain.stop();
+    	} else {
         	// Find speed to drive
         	speedControl = angleErr*kPangle;
         	speedControl = (speedControl>1) ? 1 : speedControl;
@@ -77,7 +79,7 @@ public class DriveTurnToGoal extends Command {
         	}
         	
         	Robot.driveTrain.driveCurve(speedControl, 1);
-//        	System.out.print(commandSpeed + "  "+ speedControl);    		
+        	SmartDashboard.putNumber("Drive angle power", speedControl);
     	}
     }
 
@@ -88,12 +90,12 @@ public class DriveTurnToGoal extends Command {
 
     // Called once after isFinished returns true
     protected void end() {
-    	Robot.driveTrain.driveCurve(0, 0);
+    	Robot.driveTrain.stop();
     }
 
     // Called when another command which requires one or more of the same
     // subsystems is scheduled to run
     protected void interrupted() {
-    	Robot.driveTrain.driveCurve(0, 0);
+    	Robot.driveTrain.stop();
     }
 }

@@ -22,8 +22,6 @@ import org.usfirst.frc.team294.robot.subsystems.*;
 public class Robot extends IterativeRobot {
 
 	Command autonomousCommand;
-	Command shootBall;
-	Command setFlyWheels;
 	Command raiseArm90;
 	
 	public static OI oi;
@@ -87,10 +85,6 @@ public class Robot extends IterativeRobot {
 		//autonomousCommand = new AutonomousCommandGroup();
 		raiseArm90 = new ShooterArmMoveToSetLocation(90);
 		
-		// instantiate commands for xbox triggers
-		shootBall = new ShootBall();
-		setFlyWheels = new FlyWheelSetToSpeed(2100, 2520);
-
 		// Display active commands and subsystem status on SmartDashboard
 		SmartDashboard.putData(Scheduler.getInstance());
 		SmartDashboard.putData(driveTrain);
@@ -147,14 +141,6 @@ public class Robot extends IterativeRobot {
 	 */
 	public void teleopPeriodic() {
 		Scheduler.getInstance().run();
-
-        //Here is where the triggers are processed, so when they are over a certain threshold, it will run a command.
-		if(oi.xboxController.getRawAxis(2) > .90){
-			setFlyWheels.start();		//This one will rev the fly wheels up to poop shot speed
-		}
-		if(oi.xboxController.getRawAxis(3) > .90){
-			shootBall.start();			//This will do the shooting sequence
-		}
 
 		// Show arm angle
         shooterArm.updateSmartDashboard();

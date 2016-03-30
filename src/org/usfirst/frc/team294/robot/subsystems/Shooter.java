@@ -4,6 +4,7 @@ import org.usfirst.frc.team294.robot.Robot;
 import org.usfirst.frc.team294.robot.RobotMap;
 import org.usfirst.frc.team294.robot.commands.RecordBallState;
 import org.usfirst.frc.team294.robot.triggers.BallLoadedTrigger;
+import org.usfirst.frc.team294.robot.utilities.RCSwitch;
 
 import edu.wpi.first.wpilibj.CANTalon;
 import edu.wpi.first.wpilibj.DigitalInput;
@@ -27,6 +28,8 @@ public class Shooter extends Subsystem {
 //    private final DoubleSolenoid ballPiston = new DoubleSolenoid(RobotMap.shooterPistonFwd, RobotMap.shooterPistonRev);  // Old code for double solenoid from prototype bot
     private final Solenoid ballPiston = new Solenoid(RobotMap.shooterPiston);
     private final DigitalInput ballSensor = new DigitalInput(RobotMap.ballSensor);
+
+    private RCSwitch speedlight = new RCSwitch(RobotMap.speedlight);
     
     private final BallLoadedTrigger ballLoadedTrigger = new BallLoadedTrigger(ballSensor);
     
@@ -47,7 +50,7 @@ public class Shooter extends Subsystem {
         motorTop.configPeakOutputVoltage(+12.0f, -12.0f);
 //        motorTop.setPID(0.010, 0.00005, 0); motorTop.setF(0.020); // Better (3" wheels)
 //        motorTop.setPID(0.010, 0.00015, 0, 0.020, 10000, 50, 0); // Limit windup -- best (3" wheels)
-        motorTop.setPID(0.020, 0.00015, 0, 0.025, 1500, 50, 0); // best (4" wheels)
+        motorTop.setPID(0.060, 0.00015, 0, 0.025, 6000, 50, 0); // best (4" wheels)
         motorTop.changeControlMode(TalonControlMode.Speed);
 
         motorBottom.setFeedbackDevice(FeedbackDevice.CtreMagEncoder_Relative);
@@ -55,11 +58,13 @@ public class Shooter extends Subsystem {
         motorBottom.reverseSensor(true);
         motorBottom.configNominalOutputVoltage(+0.0f, -0.0f);
         motorBottom.configPeakOutputVoltage(+12.0f, -12.0f);
-        motorBottom.setPID(0.020, 0.00015, 0, 0.030, 1500, 50, 0); // best (4" wheels)
+        motorBottom.setPID(0.060, 0.00015, 0, 0.030, 6000, 50, 0); // best (4" wheels)
         motorBottom.changeControlMode(TalonControlMode.Speed);
                 
 //        ballPiston.set(DoubleSolenoid.Value.kReverse);
         ballPiston.set(false);
+        
+        setFlywheelSpeedLight(false);
         
         ballLoadedTrigger.whenActive(new RecordBallState(true));
   
@@ -80,21 +85,8 @@ public class Shooter extends Subsystem {
      * @param speed RPM to set both top and bottom motors.  + = eject ball, - = load ball.
 	 */
     public void setSpeed(double speed) {
-    	motorTop.enableControl();
-    	motorBottom.enableControl();
-    	if (Math.abs(motorTop.getSetpoint()-speed)>0.1*speed ||
-    			Math.abs(motorBottom.getSetpoint()-speed)>0.1*speed) {
-        	motorTop.clearIAccum();    		
-        	motorBottom.clearIAccum();
-    	}
-    	motorTop.set(speed);
-    	motorBottom.set(speed);
-
-		if (Robot.smartDashboardDebug) {
-	    	SmartDashboard.putNumber("ShootTop Setpoint", motorTop.getSetpoint());
-			SmartDashboard.putNumber("ShootBot Setpoint", motorBottom.getSetpoint());   	
-		}
-	}
+    	setSpeed(speed, speed);
+    }
     
 	/**
 	 * Set shooter motor speeds.  WARNING:  Keep speeds <= RobotMap.maxFlywheelSpeed RPM to ensure that the PIDF
@@ -123,11 +115,14 @@ public class Shooter extends Subsystem {
     }
     
     /**
-     * Stops the flywheels using break mode of the talon.
+     * Stops the flywheels using break mode of the talon.  Turns off the
+     * flywheel speed light.
      */
     public void stopFlyWheels() {
     	motorTop.disableControl();
     	motorBottom.disableControl();
+    	
+    	setFlywheelSpeedLight(false);
     }
     
     /** 
@@ -211,6 +206,14 @@ public class Shooter extends Subsystem {
     	return ballIsLoaded;
     }
 
+    /**
+     * Turns on/off the light to show that the flywheels are spun up to speed.
+     * @param turnOn
+     */
+    public void setFlywheelSpeedLight(boolean turnOn) {
+    	speedlight.set(turnOn);
+    }
+    
 	/**
 	 * Send shooter motor setpoint, speed, and error to SmartDashboard
 	 */

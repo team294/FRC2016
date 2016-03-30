@@ -1,41 +1,57 @@
 package org.usfirst.frc.team294.robot.commands;
 
+import org.usfirst.frc.team294.robot.Robot;
 import org.usfirst.frc.team294.robot.RobotMap;
 
-import edu.wpi.first.wpilibj.command.CommandGroup;
+import edu.wpi.first.wpilibj.command.Command;
 
 /**
  *
  */
-public class ShootBall extends CommandGroup {
-    
-    public  ShootBall() {		
-        // Add Commands here:
-        // e.g. addSequential(new Command1());
-        //      addSequential(new Command2());
-        // these will run in order.
-
-        // To run multiple commands at the same time,
-        // use addParallel()
-        // e.g. addParallel(new Command1());
-        //      addSequential(new Command2());
-        // Command1 and Command2 will run in parallel.
-
-        // A command group will require all of the subsystems that each member
-        // would require.
-        // e.g. if Command1 requires chassis, and Command2 requires arm,
-        // a CommandGroup containing them would require both the chassis and the
-        // arm.
-
-    	addSequential(new IntakeSetToSpeedIfArmIsLow(-1.0));  // Turn on intake if we are shooting low
+public class ShootBall extends Command {
+	Command shootOnly, shootCruise, shootLow;
+	
+	/**
+	 * "Smart" shoot ball, depending on arm angle
+	 */
+    public ShootBall() {
+        // Use requires() here to declare subsystem dependencies
+        // eg. requires(chassis);
+    	requires(Robot.shooter);
+    	requires(Robot.shooterArm);
+    	requires(Robot.intake);
     	
-//    	addSequential(new FlyWheelSetToSpeed(RobotMap.maxFlywheelSpeed)); //Starts the fly wheels, and runs them at full speed
-    	addSequential(new FlyWheelSetToSpeed(2100, 2520)); //This is the speed for the poop shot
-    	
-    	addSequential(new ShooterPistonOut(true)); //When wheels are full speed, use piston to push the ball into fly wheels
-    	addSequential(new WaitSeconds(.5));
-    	addSequential(new ShooterPistonOut(false));
-    	addSequential(new FlyWheelStop()); //Stops the fly wheels from spinning
-    	addSequential(new IntakeSetToSpeed(0));  // Turn off intake motors
+    	shootOnly = new ShootBallOnly();
+    	shootCruise = new ShootBallMoveArmLow();
+    	shootLow = new ShootBallLow();
+    }
+
+    // Called just before this Command runs the first time
+    protected void initialize() {
+    	if (Robot.shooterArm.getAngle()< (RobotMap.shooterArmBallCruiseAngle-3)) {
+    		shootLow.start();
+    	} else if (Robot.shooterArm.getAngle()< (RobotMap.shooterArmBallCruiseAngle+5)) {
+    		shootCruise.start();
+    	} else {
+    		shootOnly.start();
+    	}
+    }
+
+    // Called repeatedly when this Command is scheduled to run
+    protected void execute() {
+    }
+
+    // Make this return true when this Command no longer needs to run execute()
+    protected boolean isFinished() {
+        return true;
+    }
+
+    // Called once after isFinished returns true
+    protected void end() {
+    }
+
+    // Called when another command which requires one or more of the same
+    // subsystems is scheduled to run
+    protected void interrupted() {
     }
 }

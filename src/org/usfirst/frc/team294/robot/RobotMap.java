@@ -27,6 +27,10 @@ public class RobotMap {
 	public static int ballSensor = 0;
 	public static int intakeDownSensor = 1;
 
+	// RoboRIO PWM I/O addresses
+	public static int flashlight = 0;
+    public static int speedlight = 1;
+
    // Pneumatic controller PCM IDs
     public static int shifterSolenoidFwd = 0;
     public static int shifterSolenoidRev = 1;

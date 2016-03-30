@@ -3,6 +3,7 @@ package org.usfirst.frc.team294.robot.subsystems;
 import org.usfirst.frc.team294.robot.OI;
 import org.usfirst.frc.team294.robot.Robot;
 import org.usfirst.frc.team294.robot.RobotMap;
+import org.usfirst.frc.team294.robot.utilities.RCSwitch;
 import org.usfirst.frc.team294.robot.utilities.ToleranceChecker;
 
 import edu.wpi.first.wpilibj.AnalogInput;
@@ -24,6 +25,8 @@ public class ShooterArm extends Subsystem {
 	private final CANTalon shooterArmMotor= new CANTalon(RobotMap.shooterArmMotor);
     private final Solenoid brakeSolenoid = new Solenoid(RobotMap.shooterArmBrakeSolenoid);
 
+    private RCSwitch flashlight = new RCSwitch(RobotMap.flashlight);
+    
 	private double minPosition=Robot.armCalMinPosition;		// We will need to calibrate this number occasionally
 	private double deg90Position=Robot.armCal90DegPosition;
 //	private double minPosition=2.52;		// We will need to calibrate this number occasionally
@@ -58,6 +61,8 @@ public class ShooterArm extends Subsystem {
 		//shooterArmMotor.disableControl();
 		
 		setBrakeOff();
+		
+		setFlashlight(false);
 		
     	// Add the subsystem to the LiveWindow
         LiveWindow.addActuator("ShooterArm", "shooterArmMotor", shooterArmMotor);
@@ -118,6 +123,7 @@ public class ShooterArm extends Subsystem {
 	 * Tell PID controller to move arm to a specific absolute angle.  Arm will move
 	 * as much as it can within its movement limits and without interfering
 	 * with the intake (if the intake is raised).
+	 * Automatically turns flashlight on if angle >= 30 degrees, off if < 30 degrees.
 	 * @param angle Desired target angle, in degrees.  0 = horizontal, + = up, - = down
 	 */
 	public void moveToAngle(double angle) {
@@ -172,6 +178,8 @@ public class ShooterArm extends Subsystem {
 		shooterArmMotor.set(convertAngleToPos(angle));
 		shooterArmMotor.enableControl();
 		armTol.reset();
+		
+		setFlashlight(angle>=30);
 	}
 
 	/**
@@ -242,6 +250,14 @@ public class ShooterArm extends Subsystem {
 //		SmartDashboard.putNumber("Arm Joystick Y", coJoystick.getY());
 		
 		moveAngleRelative(-coJoystick.getY()*joyRelativeRate);
+	}
+	
+    /**
+     * Turns on/off the targeting flashlight.
+     * @param turnOn
+     */
+	public void setFlashlight(boolean turnOn) {
+    	flashlight.set(turnOn);
 	}
 	
 	/**

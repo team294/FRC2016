@@ -111,8 +111,8 @@ public class OI {
 				left[2].whenPressed(new DriveWithJoysticks());
 				right[2].whenPressed(new AutoTargetShoot());
 			} else if(i==3) {
-				left[i].whileHeld(new DriveStraightWithJoysticks(Robot.oi.leftJoystick));
-				right[i].whileHeld(new DriveStraightWithJoysticks(Robot.oi.rightJoystick));
+				left[i].whileHeld(new DriveStraightWithJoysticks(leftJoystick));
+				right[i].whileHeld(new DriveStraightWithJoysticks(rightJoystick));
 			} else {
 				left[i].whenPressed(new ShiftDown());
 				right[i].whenPressed(new ShiftUp()); 
@@ -133,7 +133,7 @@ public class OI {
         xbPovUp.whenActive(new ShooterArmMoveToSetLocation(RobotMap.shootingAngleFromOuterworks));
         xbPovDown.whenActive(new ShooterArmMoveToSetLocation(RobotMap.shooterArmBallLoadAngle));
 
-        coP[1].whenPressed(new ShootBall());
+        coP[1].whenPressed(new ShootBallSetFlywheels());
         coP[2].whenPressed(new ShooterPistonOverride());
         coP[3].whenPressed(new ShooterArmMoveToSetLocation(RobotMap.shooterArmBallLoadAngle));
         coP[4].whenPressed(new FlyWheelSetToSpeed(2100, 2520));
@@ -167,7 +167,11 @@ public class OI {
         SmartDashboard.putData("ShiftDown", new ShiftDown());
         
         SmartDashboard.putData("Load Ball", new LoadBallSequence());
+        SmartDashboard.putData("Shoot ball (old)", new ShootBallSetFlywheels());
         SmartDashboard.putData("Shoot ball", new ShootBall());
+        SmartDashboard.putData("Shoot ball Low", new ShootBallLow());
+        SmartDashboard.putData("Shoot ball Cruise", new ShootBallMoveArmLow());
+        SmartDashboard.putData("Shoot ball only", new ShootBallOnly());
         SmartDashboard.putData("Shoot ball auto target", new AutoTargetShoot());
         SmartDashboard.putData("Shooter Arm Joystick Relative", new ShooterArmMoveRelativeJoystick());
 

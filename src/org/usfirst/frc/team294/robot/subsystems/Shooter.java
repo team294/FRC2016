@@ -4,6 +4,7 @@ import org.usfirst.frc.team294.robot.Robot;
 import org.usfirst.frc.team294.robot.RobotMap;
 import org.usfirst.frc.team294.robot.commands.RecordBallState;
 import org.usfirst.frc.team294.robot.triggers.BallLoadedTrigger;
+import org.usfirst.frc.team294.robot.utilities.RCSwitch;
 
 import edu.wpi.first.wpilibj.CANTalon;
 import edu.wpi.first.wpilibj.DigitalInput;
@@ -27,6 +28,8 @@ public class Shooter extends Subsystem {
 //    private final DoubleSolenoid ballPiston = new DoubleSolenoid(RobotMap.shooterPistonFwd, RobotMap.shooterPistonRev);  // Old code for double solenoid from prototype bot
     private final Solenoid ballPiston = new Solenoid(RobotMap.shooterPiston);
     private final DigitalInput ballSensor = new DigitalInput(RobotMap.ballSensor);
+
+    private RCSwitch speedlight = new RCSwitch(RobotMap.speedlight);
     
     private final BallLoadedTrigger ballLoadedTrigger = new BallLoadedTrigger(ballSensor);
     
@@ -208,7 +211,7 @@ public class Shooter extends Subsystem {
      * @param turnOn
      */
     public void setFlywheelSpeedLight(boolean turnOn) {
-    	//TODO:  Implement method
+    	speedlight.set(turnOn);
     }
     
 	/**

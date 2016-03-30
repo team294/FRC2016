@@ -104,12 +104,13 @@ public class OI {
 				left[2].whenPressed(new DriveWithJoysticks());
 				right[2].whenPressed(new AutoTargetShoot());
 			} else if(i==3) {
-				left[i].whileHeld(new DriveStraightWithJoysticks(Robot.oi.leftJoystick));
-				right[i].whileHeld(new DriveStraightWithJoysticks(Robot.oi.rightJoystick));
+				left[3].whileHeld(new DriveStraightWithJoysticks(leftJoystick));
+				right[3].whileHeld(new DriveStraightWithJoysticks(rightJoystick));
 			} else {
 				left[i].whenPressed(new ShiftDown());
 				right[i].whenPressed(new ShiftUp()); 
 			}
+			
 		}
 
 		xbB[5].whenPressed(new LoadBallSequence());

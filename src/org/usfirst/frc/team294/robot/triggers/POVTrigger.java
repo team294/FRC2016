@@ -14,12 +14,12 @@ public class POVTrigger extends Trigger {
     public POVTrigger(Joystick joystick, int pov, int val) {
         this.joystick = joystick;
         this.pov = pov;
-        this.pov = val;
+        this.val = val;
     }
     public POVTrigger(Joystick joystick, int val) {
         this.joystick = joystick;
         this.pov = 0;
-        this.pov = val;
+        this.val = val;
     }
     public boolean get() {
         return joystick.getPOV(pov) == val;

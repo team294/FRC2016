@@ -87,11 +87,11 @@ public class OI {
 	public Joystick coJoystick = new Joystick(4);
 	
 	public OI() {
-		Button[] left = new Button[15];
-	    Button[] right = new Button[15];
+		Button[] left = new Button[12];
+	    Button[] right = new Button[12];
 	    Button[] coP = new Button[15];
-	    Button[] coJ = new Button[15];
-	    Button[] xbB = new Button[15];
+	    Button[] coJ = new Button[12];
+	    Button[] xbB = new Button[11];
 	    Trigger xbLT = new AxisTrigger(xboxController, 2, 0.9);
         Trigger xbRT = new AxisTrigger(xboxController, 3, 0.9);
         Trigger xbPovUp = new POVTrigger(xboxController, 0);
@@ -100,13 +100,9 @@ public class OI {
         //Trigger xbPovLeft = new POVTrigger(xboxController, 270);
 		
 		// Create buttons
-		for (int i=1; i<15; i++) {
+		for (int i=1; i<left.length; i++) {
 			left[i] = new JoystickButton(leftJoystick, i);
 			right[i] = new JoystickButton(rightJoystick, i);
-			coP[i] = new JoystickButton(coPanel, i);
-			coJ[i] = new JoystickButton(coJoystick, i);
-			xbB[i] = new JoystickButton(xboxController, i);
-			
 			if (i==2) {
 				left[2].whenPressed(new DriveWithJoysticks());
 				right[2].whenPressed(new AutoTargetShoot());
@@ -117,7 +113,15 @@ public class OI {
 				left[i].whenPressed(new ShiftDown());
 				right[i].whenPressed(new ShiftUp()); 
 			}
-			
+		}
+		for (int i=1; i<coP.length; i++) {
+		    coP[i] = new JoystickButton(coPanel, i);
+		}
+		for (int i=1; i<coJ.length; i++) {
+		    coJ[i] = new JoystickButton(coJoystick, i);
+		}
+		for (int i=1; i<xbB.length; i++) {
+		    xbB[i] = new JoystickButton(xboxController, i);
 		}
 
 		xbB[1].whenPressed(new IntakeLowerIfRaised());		

@@ -66,7 +66,7 @@ public class OI {
 			BottomKnob.DrawBridge, BottomKnob.SallyPort, BottomKnob.RockWall, BottomKnob.RoughTerrain, BottomKnob.LowBar, BottomKnob.noChange, BottomKnob.noChange
 	};
 	Command[] BottomKnobCommands = new Command[] {	
-		null, 		//Portcullis 
+		new AutoPortcullis(), 		//Portcullis 
 		new AutoCheval(), 		//ChevalDeFrise 
 		new AutoFastBarrier(), 		//Ramparts
 		new AutoFastBarrier(), 		//Moat
@@ -117,6 +117,7 @@ public class OI {
 				left[i].whenPressed(new ShiftDown());
 				right[i].whenPressed(new ShiftUp()); 
 			}
+			
 		}
 
 		xbB[1].whenPressed(new IntakeLowerIfRaised());		

@@ -12,6 +12,7 @@ public class SetToStartingPosition extends CommandGroup {
 		
 		addSequential(new ShooterArmMoveToSetLocation(RobotMap.upperBoundAngleToAvoid+3));
 		addSequential(new IntakeRaiseWithArmMoveIfNeeded());
+		addSequential(new ShiftDown());
 	}
 
 }

@@ -8,8 +8,9 @@ import edu.wpi.first.wpilibj.command.CommandGroup;
 public class ShooterArmMoveAndRev extends CommandGroup {
     
     public  ShooterArmMoveAndRev(double angle, double speedTop, double speedBottom) {
-    	addSequential(new FlyWheelSetToSpeedIfArmIsLow(-500));
-    	addSequential(new ShooterArmMoveToSetLocation(angle));
+    	addParallel(new FlyWheelSetToSpeedIfArmIsLow(-500));
+    	addParallel(new ShooterArmMoveToSetLocation(angle));
+    	addSequential(new WaitSeconds(0.6));
     	addSequential(new FlyWheelSetToSpeed(speedTop, speedBottom));
     }
 }

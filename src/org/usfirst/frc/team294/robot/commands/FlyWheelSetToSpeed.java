@@ -54,7 +54,12 @@ public class FlyWheelSetToSpeed extends Command {
     	double err;
 
     	err = Math.abs(topSpeed - Robot.shooter.getTopFlyWheelSpeed()) + Math.abs(bottomSpeed - Robot.shooter.getBottomFlyWheelSpeed()) ; 
-    	return sTol.success(err);
+    	if (sTol.success(err)) {
+        	Robot.shooter.setFlywheelSpeedLight((topSpeed>0));  // Turn on light if we reached speed (outward only)
+    		return true;
+    	} else {
+    		return false;
+    	}
     }
 
     // Called once after isFinished returns true

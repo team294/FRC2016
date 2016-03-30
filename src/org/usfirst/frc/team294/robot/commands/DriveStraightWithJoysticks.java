@@ -2,35 +2,34 @@ package org.usfirst.frc.team294.robot.commands;
 
 import org.usfirst.frc.team294.robot.Robot;
 
+import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.command.Command;
 
 /**
- * Stop the flywheels using the brake on the talons.
+ *
  */
-public class FlyWheelStop extends Command {
-
-	/**
-	 * Stop the flywheels using the brake on the talons.
-	 */
-    public FlyWheelStop() {
-        // Use requires() here to declare subsystem dependencies
-        // eg. requires(chassis);
-    	requires(Robot.shooter);
+public class DriveStraightWithJoysticks extends Command {
+	
+	Joystick joystickInControl;
+	
+    public DriveStraightWithJoysticks(Joystick joystick) {
+        requires(Robot.driveTrain);
+        joystickInControl = joystick;
     }
 
     // Called just before this Command runs the first time
     protected void initialize() {
-    	Robot.shooter.stopFlyWheels();
-    	Robot.shooter.setFlywheelSpeedLight(false);
+    	Robot.driveTrain.setDriveControlByPower();
     }
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
+    	Robot.driveTrain.driveWithJoystick(joystickInControl, joystickInControl);
     }
 
     // Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished() {
-        return true;
+        return false;
     }
 
     // Called once after isFinished returns true
@@ -40,5 +39,6 @@ public class FlyWheelStop extends Command {
     // Called when another command which requires one or more of the same
     // subsystems is scheduled to run
     protected void interrupted() {
+    	Robot.driveTrain.stop();
     }
 }

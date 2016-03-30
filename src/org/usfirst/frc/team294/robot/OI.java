@@ -124,15 +124,15 @@ public class OI {
 		xbB[2].whenPressed(new IntakeSetToSpeed(-1));
 		xbB[3].whenPressed(new LoadBallSequence());
 		xbB[4].whenPressed(new IntakeRaiseWithArmMoveIfNeeded());
-		xbB[5].whenPressed(new ShooterArmMoveToSetLocation(RobotMap.shooterArmBallCruiseAngle));
-		xbB[6].whenPressed(new ShooterArmMoveToSetLocation(RobotMap.shootingAngle));
+		xbB[5].whenPressed(new ShooterArmMoveAndStopFlywheels(RobotMap.shooterArmBallCruiseAngle));
+		xbB[6].whenPressed(new ShooterArmMoveAndRev(RobotMap.shootingAngle,2100, 2520));
 		//xbB[8].whileHeld(new IntakeOverride(true));
 		//xbB[8].whenReleased(new IntakeOverride(false));
 		xbB[9].whenPressed(new StopFlyAndIntake());
 		xbB[10].whenPressed(new ShooterPistonOverride());
 
-        xbPovUp.whenActive(new ShooterArmMoveToSetLocation(RobotMap.shootingAngleFromOuterworks));
-        xbPovDown.whenActive(new ShooterArmMoveToSetLocation(RobotMap.shooterArmBallLoadAngle));
+        xbPovUp.whenActive(new ShooterArmMoveAndRev(RobotMap.shootingAngleFromOuterworks, RobotMap.maxFlywheelSpeed, RobotMap.maxFlywheelSpeed));
+        xbPovDown.whenActive(new ShooterArmMoveAndStopFlywheels(RobotMap.shooterArmBallLoadAngle));
 
         coP[1].whenPressed(new ShootBallSetFlywheels());
         coP[2].whenPressed(new ShooterPistonOverride());
@@ -153,7 +153,7 @@ public class OI {
 		coJ[1].whileHeld(new ShooterArmMoveRelativeJoystick());
 
 		//This one will rev the fly wheels up to poop shot speed
-		xbLT.whenActive(new FlyWheelSetToSpeed(2100, 2520));
+		xbLT.whenActive(new ShooterArmMoveAndRev(RobotMap.shootingAngleFromEndOfBatter, RobotMap.maxFlywheelSpeed, RobotMap.maxFlywheelSpeed));
 		//This will do the shooting sequence
 	    xbRT.whenActive(new ShootBall());
 

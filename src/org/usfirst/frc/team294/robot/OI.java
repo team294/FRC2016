@@ -6,6 +6,8 @@ import edu.wpi.first.wpilibj.buttons.*;
 import edu.wpi.first.wpilibj.command.Command;
 
 import org.usfirst.frc.team294.robot.commands.*;
+import org.usfirst.frc.team294.robot.triggers.AxisTrigger;
+import org.usfirst.frc.team294.robot.triggers.POVTrigger;
 
 
 /**
@@ -83,7 +85,6 @@ public class OI {
 	public Joystick coPanel = new Joystick(2);
 	public Joystick xboxController = new Joystick(3);
 	public Joystick coJoystick = new Joystick(4);
-
 	
 	public OI() {
 		Button[] left = new Button[15];
@@ -91,6 +92,12 @@ public class OI {
 	    Button[] coP = new Button[15];
 	    Button[] coJ = new Button[15];
 	    Button[] xbB = new Button[15];
+	    Trigger xbLT = new AxisTrigger(xboxController, 2, 0.9);
+        Trigger xbRT = new AxisTrigger(xboxController, 3, 0.9);
+        Trigger xbPovUp = new POVTrigger(xboxController, 0);
+        //Trigger xbPovRight = new POVTrigger(xboxController, 90);
+        Trigger xbPovDown = new POVTrigger(xboxController, 180);
+        //Trigger xbPovLeft = new POVTrigger(xboxController, 270);
 		
 		// Create buttons
 		for (int i=1; i<15; i++) {
@@ -104,8 +111,8 @@ public class OI {
 				left[2].whenPressed(new DriveWithJoysticks());
 				right[2].whenPressed(new AutoTargetShoot());
 			} else if(i==3) {
-				left[3].whileHeld(new DriveStraightWithJoysticks(leftJoystick));
-				right[3].whileHeld(new DriveStraightWithJoysticks(rightJoystick));
+				left[i].whileHeld(new DriveStraightWithJoysticks(leftJoystick));
+				right[i].whileHeld(new DriveStraightWithJoysticks(rightJoystick));
 			} else {
 				left[i].whenPressed(new ShiftDown());
 				right[i].whenPressed(new ShiftUp()); 
@@ -113,30 +120,42 @@ public class OI {
 			
 		}
 
-		xbB[5].whenPressed(new LoadBallSequence());
-		xbB[6].whenPressed(new IntakeSetToSpeed(-1));
+		xbB[1].whenPressed(new IntakeLowerIfRaised());		
+		xbB[2].whenPressed(new IntakeSetToSpeed(-1));
+		xbB[3].whenPressed(new LoadBallSequence());
+		xbB[4].whenPressed(new IntakeRaiseWithArmMoveIfNeeded());
+		xbB[5].whenPressed(new ShooterArmMoveToSetLocation(RobotMap.shooterArmBallCruiseAngle));
+		xbB[6].whenPressed(new ShooterArmMoveToSetLocation(RobotMap.shootingAngle));
+		//xbB[8].whileHeld(new IntakeOverride(true));
+		//xbB[8].whenReleased(new IntakeOverride(false));
 		xbB[9].whenPressed(new StopFlyAndIntake());
 		xbB[10].whenPressed(new ShooterPistonOverride());
-		xbB[4].whenPressed(new ShooterArmMoveToSetLocation(RobotMap.shootingAngle));
-		xbB[1].whenPressed(new ShooterArmMoveToSetLocation(RobotMap.shooterArmBallCruiseAngle));
-		xbB[3].whenPressed(new IntakeRaiseWithArmMoveIfNeeded());
-		xbB[2].whenPressed(new IntakeLowerIfRaised());
 
-        coP[1].whenPressed(new ShootBall());
+        xbPovUp.whenActive(new ShooterArmMoveToSetLocation(RobotMap.shootingAngleFromOuterworks));
+        xbPovDown.whenActive(new ShooterArmMoveToSetLocation(RobotMap.shooterArmBallLoadAngle));
+
+        coP[1].whenPressed(new ShootBallSetFlywheels());
         coP[2].whenPressed(new ShooterPistonOverride());
         coP[3].whenPressed(new ShooterArmMoveToSetLocation(RobotMap.shooterArmBallLoadAngle));
-        coP[4].whenPressed(new FlyWheelSetToSpeed(2100, 2520));
-//        coP[5].whileHeld(new IntakeOverride(true));
-//        coP[5].whenReleased(new IntakeOverride(false));
+        coP[4].whenPressed(new SetToStartingPosition());
+        //coP[5].whileHeld(new IntakeOverride(true));
+        //coP[5].whenReleased(new IntakeOverride(false));
         coP[6].whenPressed(new ShooterArmMoveToSetLocation(RobotMap.shootingAngle));
         coP[7].whenPressed(new ShooterArmMoveToSetLocation(RobotMap.shooterArmBallCruiseAngle));
-        coP[11].whenPressed(new LoadBallSequence());
+        coP[8].whenPressed(new ShooterArmMoveToSetLocation(RobotMap.shootingAngleFromOuterworks));
         coP[9].whenPressed(new IntakeSetToSpeed(-1));
+        coP[10].whenPressed(new ShooterArmMoveToSetLocation(RobotMap.shootingAngleFromOuterworks));
+        coP[11].whenPressed(new LoadBallSequence());
         coP[12].whenPressed(new StopFlyAndIntake());
         coP[14].whenPressed(new IntakeRaiseWithArmMoveIfNeeded());
         coP[13].whenPressed(new IntakeLowerIfRaised());
 
 		coJ[1].whileHeld(new ShooterArmMoveRelativeJoystick());
+
+		//This one will rev the fly wheels up to poop shot speed
+		xbLT.whenActive(new FlyWheelSetToSpeed(2100, 2520));
+		//This will do the shooting sequence
+	    xbRT.whenActive(new ShootBall());
 
 		// SmartDashboard Buttons
 		SmartDashboard.putData("Debug dashboard", new SmartDashboardDebug());
@@ -149,7 +168,11 @@ public class OI {
         SmartDashboard.putData("ShiftDown", new ShiftDown());
         
         SmartDashboard.putData("Load Ball", new LoadBallSequence());
+        SmartDashboard.putData("Shoot ball (old)", new ShootBallSetFlywheels());
         SmartDashboard.putData("Shoot ball", new ShootBall());
+        SmartDashboard.putData("Shoot ball Low", new ShootBallLow());
+        SmartDashboard.putData("Shoot ball Cruise", new ShootBallMoveArmLow());
+        SmartDashboard.putData("Shoot ball only", new ShootBallOnly());
         SmartDashboard.putData("Shoot ball auto target", new AutoTargetShoot());
         SmartDashboard.putData("Shooter Arm Joystick Relative", new ShooterArmMoveRelativeJoystick());
 

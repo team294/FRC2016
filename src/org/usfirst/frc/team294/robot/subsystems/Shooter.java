@@ -2,8 +2,10 @@ package org.usfirst.frc.team294.robot.subsystems;
 
 import org.usfirst.frc.team294.robot.Robot;
 import org.usfirst.frc.team294.robot.RobotMap;
+import org.usfirst.frc.team294.robot.commands.FlyWheelStop;
 import org.usfirst.frc.team294.robot.commands.RecordBallState;
 import org.usfirst.frc.team294.robot.triggers.BallLoadedTrigger;
+import org.usfirst.frc.team294.robot.triggers.MotorCurrentTrigger;
 import org.usfirst.frc.team294.robot.utilities.RCSwitch;
 
 import edu.wpi.first.wpilibj.CANTalon;
@@ -34,6 +36,9 @@ public class Shooter extends Subsystem {
     private final BallLoadedTrigger ballLoadedTrigger = new BallLoadedTrigger(ballSensor);
     
     boolean ballIsLoaded = false;
+
+    private final MotorCurrentTrigger motorTopCurrentTrigger = new MotorCurrentTrigger(motorTop, 30, 4);
+    private final MotorCurrentTrigger motorBottomCurrentTrigger = new MotorCurrentTrigger(motorBottom, 30, 4);
 
     /**
      * Create a shooter
@@ -67,6 +72,10 @@ public class Shooter extends Subsystem {
         setFlywheelSpeedLight(false);
         
         ballLoadedTrigger.whenActive(new RecordBallState(true));
+        
+        // motor stall protection
+        //motorTopCurrentTrigger.whenActive(new FlyWheelStop());
+        //motorBottomCurrentTrigger.whenActive(new FlyWheelStop());
   
     	// Add the subsystem to the LiveWindow
         LiveWindow.addActuator("Shooter", "shooterMotorTop", motorTop);

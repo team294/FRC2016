@@ -33,7 +33,10 @@ public class Shooter extends Subsystem {
 
     private RCSwitch speedlight = new RCSwitch(RobotMap.speedlight);
     
-    private final BallLoadedTrigger ballLoadedTrigger = new BallLoadedTrigger(ballSensor);
+	boolean bLEDsFlywheelAtSpeed = false;
+	boolean bLEDsArmAtAngle = false;
+
+	private final BallLoadedTrigger ballLoadedTrigger = new BallLoadedTrigger(ballSensor);
     
     boolean ballIsLoaded = false;
 
@@ -221,6 +224,24 @@ public class Shooter extends Subsystem {
      */
     public void setFlywheelSpeedLight(boolean turnOn) {
     	speedlight.set(turnOn);
+    }
+    
+    /**
+     * Notify LEDs if flywheels are at set speed (forward direction only) and turn LEDs on/off as appropriate
+     * @param atSpeed, true = flywheels are at speed
+     */
+    public void setLEDsFlywheelAtSpeed(boolean atSpeed) {
+    	bLEDsFlywheelAtSpeed = atSpeed;
+    	setFlywheelSpeedLight(bLEDsFlywheelAtSpeed && bLEDsArmAtAngle);
+    }
+    
+    /**
+     * Notify LEDs if arm is at set angle and turn LEDs on/off as appropriate
+     * @param atAngle, true = arm is at speed
+     */
+    public void setLEDsArmAtAngle(boolean atAngle) {
+    	bLEDsArmAtAngle = atAngle;
+    	setFlywheelSpeedLight(bLEDsFlywheelAtSpeed && bLEDsArmAtAngle);
     }
     
 	/**

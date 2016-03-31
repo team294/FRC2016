@@ -42,7 +42,7 @@ public class FlyWheelSetToSpeed extends Command {
     	Robot.shooter.setSpeed(topSpeed, bottomSpeed);
     	sTol.reset();
     	
-    	Robot.shooter.setFlywheelSpeedLight(false);
+    	Robot.shooter.setLEDsFlywheelAtSpeed(false);
     }
 
     // Called repeatedly when this Command is scheduled to run
@@ -55,7 +55,7 @@ public class FlyWheelSetToSpeed extends Command {
 
     	err = Math.abs(topSpeed - Robot.shooter.getTopFlyWheelSpeed()) + Math.abs(bottomSpeed - Robot.shooter.getBottomFlyWheelSpeed()) ; 
     	if (sTol.success(err)) {
-        	Robot.shooter.setFlywheelSpeedLight((topSpeed>0));  // Turn on light if we reached speed (outward only)
+        	Robot.shooter.setLEDsFlywheelAtSpeed((topSpeed>0));  // Turn on light if we reached speed (outward only)
     		return true;
     	} else {
     		return false;
@@ -64,7 +64,7 @@ public class FlyWheelSetToSpeed extends Command {
 
     // Called once after isFinished returns true
     protected void end() {
-    	Robot.shooter.setFlywheelSpeedLight((topSpeed>0));  // Turn on light if we reached speed (outward only)
+    	Robot.shooter.setLEDsFlywheelAtSpeed((topSpeed>0));  // Turn on light if we reached speed (outward only)
     }
 
     // Called when another command which requires one or more of the same

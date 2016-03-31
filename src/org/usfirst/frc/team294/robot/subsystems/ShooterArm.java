@@ -146,6 +146,7 @@ public class ShooterArm extends Subsystem {
 		
 		// Turn off brake before moving arm
 		setBrakeOff();
+		Robot.shooter.setLEDsArmAtAngle(false);
 		
 		// If arm is in keepout zone and intake is up (or in unknown state), then move arm away from the intake out of the keepout zone.
 		if(Robot.intake.intakeIsUp() || Robot.intake.intakeSolenoidIsOff()){
@@ -201,6 +202,7 @@ public class ShooterArm extends Subsystem {
 //		return armTol.success( getAngle() - convertPosToAngle(shooterArmMotor.getSetpoint()) );  
 		if (armTol.success( getAngle() - convertPosToAngle(shooterArmMotor.getSetpoint()) ) ) {
 			setBrakeOn();
+			Robot.shooter.setLEDsArmAtAngle(true);
 //			shooterArmMotor.set(convertAngleToPos(getAngle()));
 //			shooterArmMotor.set(shooterArmMotor.get());
 			return true;

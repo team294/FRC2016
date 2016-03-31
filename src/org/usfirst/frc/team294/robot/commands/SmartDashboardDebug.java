@@ -20,7 +20,7 @@ public class SmartDashboardDebug extends Command {
     // Called just before this Command runs the first time
     protected void initialize() {
     	Robot.smartDashboardDebug = true;
-    	Robot.oi.setupSmartDashboard();
+    	Robot.oi.setupSmartDashboardDebug();
     }
 
     // Called repeatedly when this Command is scheduled to run

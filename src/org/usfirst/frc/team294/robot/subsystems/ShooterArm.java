@@ -286,9 +286,9 @@ public class ShooterArm extends Subsystem {
     public void updateSmartDashboard() {
 
     	SmartDashboard.putNumber("Arm Angle", getAngle());
+    	SmartDashboard.putNumber("Arm Position", getPos());
 
         if (Robot.smartDashboardDebug) {
-	    	SmartDashboard.putNumber("Arm Position", getPos());
 	//        SmartDashboard.putNumber("Enc Position", getEncPos());
 	//        SmartDashboard.putNumber("Arm Angle2", getAngle());
 			SmartDashboard.putNumber("Arm Setpoint", shooterArmMotor.getSetpoint());

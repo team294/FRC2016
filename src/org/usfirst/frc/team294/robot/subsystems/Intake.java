@@ -3,6 +3,8 @@ package org.usfirst.frc.team294.robot.subsystems;
 import org.usfirst.frc.team294.robot.Robot;
 import org.usfirst.frc.team294.robot.RobotMap;
 import org.usfirst.frc.team294.robot.commands.IntakeMotorStop;
+import org.usfirst.frc.team294.robot.commands.RecordBallState;
+import org.usfirst.frc.team294.robot.triggers.BallLoadedTrigger;
 import org.usfirst.frc.team294.robot.triggers.MotorCurrentTrigger;
 
 import edu.wpi.first.wpilibj.CANTalon;

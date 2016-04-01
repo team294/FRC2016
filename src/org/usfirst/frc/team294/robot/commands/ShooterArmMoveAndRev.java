@@ -10,7 +10,8 @@ public class ShooterArmMoveAndRev extends CommandGroup {
     public  ShooterArmMoveAndRev(double angle, double speedTop, double speedBottom) {
     	addParallel(new FlyWheelSetToSpeedIfArmIsLow(-500));
     	addParallel(new ShooterArmMoveToSetLocation(angle));
-    	addSequential(new WaitSeconds(0.6));
+    	addSequential(new WaitSeconds(0.3));			// Add short delay, so arm starts moving before next wait command (otherwise, next wait may read old arm setpoint) 
+    	addSequential(new WaitForArmNearSetpoint(8.0)); // Wait for arm to get close to setpoint, so arm movement does not throw the ball into the flywheels while spinning up
     	addSequential(new FlyWheelSetToSpeed(speedTop, speedBottom));
     }
 }

@@ -120,6 +120,14 @@ public class ShooterArm extends Subsystem {
 	}
 
 	/**
+	 * Get angle arm setting (where the arm is going to)
+	 * @return angle, in degrees.  0 = horizontal, + = up, - = down
+	 */
+	public double getSetpointAngle() {
+		return convertPosToAngle(shooterArmMotor.getSetpoint());
+	}
+
+	/**
 	 * Tell PID controller to move arm to a specific absolute angle.  Arm will move
 	 * as much as it can within its movement limits and without interfering
 	 * with the intake (if the intake is raised).

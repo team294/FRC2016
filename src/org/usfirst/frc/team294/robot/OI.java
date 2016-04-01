@@ -129,7 +129,8 @@ public class OI {
 		xbB[3].whenPressed(new LoadBallSequence());
 		xbB[4].whenPressed(new IntakeRaiseWithArmMoveIfNeeded());
 		xbB[5].whenPressed(new ShooterArmMoveAndStopFlywheels(RobotMap.shooterArmBallCruiseAngle));
-		xbB[6].whenPressed(new ShooterArmMoveAndRev(RobotMap.shootingAngle,2100, 2520));
+//		xbB[6].whenPressed(new ShooterArmMoveAndRev(RobotMap.shootingAngle,2100, 2520));  // Practice bot, best shot on 
+		xbB[6].whenPressed(new ShooterArmMoveAndRev(RobotMap.shootingAngle,1900, 2300));
 		//xbB[8].whileHeld(new IntakeOverride(true));
 		//xbB[8].whenReleased(new IntakeOverride(false));
 		xbB[9].whenPressed(new StopFlyAndIntake());

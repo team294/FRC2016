@@ -65,6 +65,9 @@ public class OI {
 	BottomKnob[] BottomKnobPositions= new BottomKnob[] {BottomKnob.Portcullis, BottomKnob.ChevalDeFrise, BottomKnob.Ramparts,BottomKnob.Moat,
 			BottomKnob.DrawBridge, BottomKnob.SallyPort, BottomKnob.RockWall, BottomKnob.RoughTerrain, BottomKnob.LowBar, BottomKnob.noChange, BottomKnob.noChange
 	};
+	
+	double[] MiddleKnobTurnAngles = new double[] {45.0, 30.0, 15.0, -30.0, -45.0 };
+	
 	Command[] BottomKnobCommands = new Command[] {	
 		new AutoPortcullis(), 		//Portcullis 
 		new AutoCheval(), 		//ChevalDeFrise 
@@ -160,7 +163,7 @@ public class OI {
         coP[14].whenPressed(new IntakeRaiseWithArmMoveIfNeeded());
         coP[13].whenPressed(new IntakeLowerIfRaised());
 
-		coJ[1].whileHeld(new ShooterArmMoveRelativeJoystick());
+//		coJ[1].whileHeld(new ShooterArmMoveRelativeJoystick());
 
 		// SmartDashboard Buttons
 		SmartDashboard.putData("Debug dashboard", new SmartDashboardDebug());
@@ -226,7 +229,11 @@ public class OI {
 		return TopKnobPositions[i];
 	}
 
-	public MiddleKnob readMiddleKnob(){
+	/**
+	 * Reads the middle knob.
+	 * @return Raw position 0 (full ccw) to 4 (cw).  Positions above 4 are indeterminate due to resistors missing.
+	 */
+	public int readMiddleKnobRaw() {
 		double knobReading2;
 
 		int i=0;knobReading2 = coPanel.getRawAxis(6);
@@ -240,8 +247,21 @@ public class OI {
         	SmartDashboard.putNumber("Middle Knob Reading", knobReading2);
         }
         
-		if(i==len)return MiddleKnobPositions[len-1];
-		return MiddleKnobPositions[i];
+		if(i==len)return len-1;
+
+		return i;
+	}
+	
+	public MiddleKnob readMiddleKnob(){
+		return MiddleKnobPositions[readMiddleKnobRaw()];
+	}
+
+	/**
+	 * Reads the bottom knob.  Returns angle to hit target at end of auto.
+	 * @return Angle to turn
+	 */
+	public double readMiddleKnobTurnAngle(){
+		return MiddleKnobTurnAngles[readMiddleKnobRaw()];
 	}
 
 	/**

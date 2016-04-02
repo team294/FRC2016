@@ -34,8 +34,8 @@ public class Shooter extends Subsystem {
 
     private RCSwitch speedlight = new RCSwitch(RobotMap.speedlight);
     
-	boolean bLEDsFlywheelAtSpeed = false;
-	boolean bLEDsArmAtAngle = false;
+	public boolean bLEDsFlywheelAtSpeed = false;
+	public boolean bLEDsArmAtAngle = false;
 
 	private final BallLoadedTrigger ballLoadedTrigger = new BallLoadedTrigger(ballSensor);
     
@@ -233,7 +233,8 @@ public class Shooter extends Subsystem {
      */
     public void setLEDsFlywheelAtSpeed(boolean atSpeed) {
     	bLEDsFlywheelAtSpeed = atSpeed;
-    	setFlywheelSpeedLight(bLEDsFlywheelAtSpeed && bLEDsArmAtAngle);
+//    	setFlywheelSpeedLight(bLEDsFlywheelAtSpeed && bLEDsArmAtAngle);
+    	// Code to turn LEDs on/off and flash are now in Robot.teleopPeriodic()
     }
     
     /**
@@ -242,7 +243,8 @@ public class Shooter extends Subsystem {
      */
     public void setLEDsArmAtAngle(boolean atAngle) {
     	bLEDsArmAtAngle = atAngle;
-    	setFlywheelSpeedLight(bLEDsFlywheelAtSpeed && bLEDsArmAtAngle);
+//    	setFlywheelSpeedLight(bLEDsFlywheelAtSpeed && bLEDsArmAtAngle);
+    	// Code to turn LEDs on/off and flash are now in Robot.teleopPeriodic()
     }
     
 	/**

@@ -214,7 +214,9 @@ public class ShooterArm extends Subsystem {
 //		return armTol.success( getAngle() - convertPosToAngle(shooterArmMotor.getSetpoint()) );  
 		if (armTol.success( getAngle() - convertPosToAngle(shooterArmMotor.getSetpoint()) ) ) {
 			setBrakeOn();
-			Robot.shooter.setLEDsArmAtAngle(true);
+			if (getAngle()>=20) {
+				Robot.shooter.setLEDsArmAtAngle(true);				
+			}
 //			shooterArmMotor.set(convertAngleToPos(getAngle()));
 //			shooterArmMotor.set(shooterArmMotor.get());
 			return true;

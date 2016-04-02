@@ -4,6 +4,7 @@ import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.PowerDistributionPanel;
 import edu.wpi.first.wpilibj.Preferences;
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
@@ -46,7 +47,14 @@ public class Robot extends IterativeRobot {
 	public static double armCalMinPosition;
 	public static double armCal90DegPosition;
 	public static boolean shooterArmEnabled;		// Safety disable arm if parameters are missing
-
+	
+	// Timer for auto mode safety code for tilting robot
+	public static Timer timerTilt = new Timer();
+	
+	// Timer for flashing/solid LEDs
+	public static Timer timerLEDs = new Timer();
+	public static boolean timerLEDsCycleHigh = false;   // True in high half of LED interval
+	public static double timerLEDsHalfPeriod = 0.05;  // Half-period of timer, in seconds
 
 	/**
 	 * This function is run when the robot is first started up and should be
@@ -81,7 +89,10 @@ public class Robot extends IterativeRobot {
 
         intake.motorCurrentTrigger.whenActive(new IntakeMotorStop());
 
-		// instantiate the command used for the autonomous period
+        timerLEDs.start();
+        timerTilt.start();
+        
+        // instantiate the command used for the autonomous period
 		//autonomousCommand = new AutonomousCommandGroup();
 		raiseArm90 = new ShooterArmMoveToSetLocation(90);
 		
@@ -113,6 +124,8 @@ public class Robot extends IterativeRobot {
 		
 		if (autonomousCommand != null)
 			autonomousCommand.start();
+
+		timerTilt.reset();
 	}
 
 	/**
@@ -120,6 +133,14 @@ public class Robot extends IterativeRobot {
 	 */
 	public void autonomousPeriodic() {
 		Scheduler.getInstance().run();
+		
+		// Stop auto mode if the robot is tilted too much
+		if (Math.abs(driveTrain.getRobotPitch())<=60 && Math.abs(driveTrain.getRobotRoll())<=60)
+			timerTilt.reset();
+		
+		if ( autonomousCommand != null &&  timerTilt.get()>0.5)
+			autonomousCommand.cancel();
+
 	}
 
 	public void teleopInit() {
@@ -141,6 +162,18 @@ public class Robot extends IterativeRobot {
 	 */
 	public void teleopPeriodic() {
 		Scheduler.getInstance().run();
+		
+		// Light/flash LEDs as needed
+		if (timerLEDs.get() >= timerLEDsHalfPeriod) {
+	        timerLEDs.reset();
+	        timerLEDsCycleHigh = !timerLEDsCycleHigh;
+	        if (timerLEDsCycleHigh) {
+	        	shooter.setFlywheelSpeedLight(shooter.bLEDsArmAtAngle);
+	        } else {
+	        	shooter.setFlywheelSpeedLight(shooter.bLEDsArmAtAngle && !shooter.bLEDsFlywheelAtSpeed);	        	
+	        }
+		}
+		
 
 		// Show arm angle
         shooterArm.updateSmartDashboard();
@@ -166,9 +199,10 @@ public class Robot extends IterativeRobot {
 			// Uncomment the following line for debugging the arm motor PID.
 //	        shooterArm.setPIDFromSmartDashboard();
 			
-			// Uncomment the following line to see drive train data
+			// Uncomment the following lines to see drive train data
 	    	driveTrain.getLeftEncoder();
 	    	driveTrain.getRightEncoder();
+			driveTrain.smartDashboardNavXAngles();
 			
 			//		SmartDashboard.putNumber("Panel voltage", panel.getVoltage());
 			//		SmartDashboard.putNumber("Panel arm current", panel.getCurrent(0));

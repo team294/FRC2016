@@ -181,6 +181,28 @@ public class DriveTrain extends Subsystem {
 		return angle;
 	}
 	
+	public void smartDashboardNavXAngles() {
+		SmartDashboard.putNumber(   "IMU_Yaw",              ahrs.getYaw());
+		SmartDashboard.putNumber(   "IMU_Pitch",            ahrs.getPitch());
+		SmartDashboard.putNumber(   "IMU_Roll",             ahrs.getRoll());
+	}
+	
+	/**
+	 * Gets tilting forward/back angle (pitch)
+	 * @return angle in degrees, 0 = vertical, + = nose down, - = nose up
+	 */
+	public double getRobotPitch() {
+		return ahrs.getRoll();		// Note that NavX orientation is 90 degrees, so swap pitch/roll
+	}
+	
+	/**
+	 * Gets tilting left/right angle (roll)
+	 * @return angle in degrees, 0 = vertical, + = tilted (left?), - = tilted (right?) -- need to check
+	 */
+	public double getRobotRoll() {
+		return ahrs.getYaw();		// Note that NavX orientation is 90 degrees, so swap pitch/roll
+	}
+	
 	/**
 	 * Resets the angle of the NavX gyro.
 	 */

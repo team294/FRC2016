@@ -3,6 +3,7 @@ package org.usfirst.frc.team294.robot.subsystems;
 import org.usfirst.frc.team294.robot.OI;
 import org.usfirst.frc.team294.robot.Robot;
 import org.usfirst.frc.team294.robot.RobotMap;
+import org.usfirst.frc.team294.robot.RobotMap.ShootFromLocation;
 import org.usfirst.frc.team294.robot.utilities.RCSwitch;
 import org.usfirst.frc.team294.robot.utilities.ToleranceChecker;
 
@@ -43,6 +44,8 @@ public class ShooterArm extends Subsystem {
 	private double joyRelativeRate = 8;
 	
 	private ToleranceChecker armTol = new ToleranceChecker(1.5, 5);
+	
+	private ShootFromLocation shootFromLocation = ShootFromLocation.None;
 
 	public ShooterArm(){
 		super(); 
@@ -326,6 +329,14 @@ public class ShooterArm extends Subsystem {
 	public void initDefaultCommand() {
 		// Set the default command for a subsystem here.
 		//setDefaultCommand(new MySpecialCommand());
+	}
+
+	public void setShootFromLocation(ShootFromLocation fromLocation) {
+		shootFromLocation = fromLocation;
+	}
+
+	public ShootFromLocation getShootFromLocation() {
+		return shootFromLocation;
 	}
 }
 

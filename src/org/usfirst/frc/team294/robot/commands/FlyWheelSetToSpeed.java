@@ -1,6 +1,8 @@
 package org.usfirst.frc.team294.robot.commands;
 
 import org.usfirst.frc.team294.robot.Robot;
+import org.usfirst.frc.team294.robot.RobotMap;
+import org.usfirst.frc.team294.robot.RobotMap.ShootFromLocation;
 import org.usfirst.frc.team294.robot.utilities.ToleranceChecker;
 
 import edu.wpi.first.wpilibj.command.Command;
@@ -11,7 +13,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
  */
 public class FlyWheelSetToSpeed extends Command {
 	
-	double topSpeed, bottomSpeed;
+	protected double topSpeed, bottomSpeed;
 	ToleranceChecker sTol = new ToleranceChecker(150, 10);
 
 	/**
@@ -37,7 +39,13 @@ public class FlyWheelSetToSpeed extends Command {
 		this.bottomSpeed = bottomSpeed;
     }
 
-    // Called just before this Command runs the first time
+    public FlyWheelSetToSpeed(ShootFromLocation location) {
+        requires(Robot.shooter);
+        topSpeed = RobotMap.getTopSpeed(location);
+        bottomSpeed = RobotMap.getBottomSpeed(location);
+	}
+    
+	// Called just before this Command runs the first time
     protected void initialize() {
     	Robot.shooter.setSpeed(topSpeed, bottomSpeed);
     	sTol.reset();

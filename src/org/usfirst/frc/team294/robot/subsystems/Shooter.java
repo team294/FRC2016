@@ -2,6 +2,7 @@ package org.usfirst.frc.team294.robot.subsystems;
 
 import org.usfirst.frc.team294.robot.Robot;
 import org.usfirst.frc.team294.robot.RobotMap;
+import org.usfirst.frc.team294.robot.RobotMap.ShootFromLocation;
 import org.usfirst.frc.team294.robot.commands.FlyWheelStop;
 import org.usfirst.frc.team294.robot.commands.RecordBallState;
 import org.usfirst.frc.team294.robot.triggers.BallLoadedTrigger;

@@ -10,16 +10,23 @@ import edu.wpi.first.wpilibj.command.Command;
  */
 public class ShooterArmMoveToSetLocation extends Command {
 	double angleRequested, angleToMove;
+	RobotMap.ShootFromLocation fromLocation;
 	
-	/**
+    public ShooterArmMoveToSetLocation(RobotMap.ShootFromLocation location) {
+    	fromLocation = location;
+    	angleRequested = RobotMap.getArmAngle(location);
+    	requires(Robot.shooterArm); 
+    }
+
+    /**
 	 * Moves arm to set angle and holds there with PID/potentiometer.
 	 * @param angle, in degrees
 	 */
     public ShooterArmMoveToSetLocation(double angle) {
         // Use requires() here to declare subsystem dependencies
         // eg. requires(chassis);
-    	
-    	angleRequested = angle; 
+    	fromLocation = RobotMap.ShootFromLocation.None;
+    	angleRequested = angle;
     	requires(Robot.shooterArm); 
 //    	requires(Robot.intake);
     }
@@ -72,6 +79,7 @@ public class ShooterArmMoveToSetLocation extends Command {
     	
 //    	Robot.intake.setSpeed(0);
     	Robot.shooterArm.moveToAngle(angleToMove);
+    	Robot.shooterArm.setShootFromLocation(fromLocation);
     }
 
     // Called repeatedly when this Command is scheduled to run

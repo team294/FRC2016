@@ -53,8 +53,6 @@ public class Robot extends IterativeRobot {
 	 * used for any initialization code.
 	 */
 	public void robotInit() {
-		RobotMap.init();
-
 		//Get preferences from robot flash memory
 		prefs = Preferences.getInstance();
 		armCalMinPosition = prefs.getDouble("armCalMinPosition", 0);

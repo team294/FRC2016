@@ -97,7 +97,7 @@ public class OI {
         Trigger xbPovUp = new POVTrigger(xboxController, 0);
         //Trigger xbPovRight = new POVTrigger(xboxController, 90);
         Trigger xbPovDown = new POVTrigger(xboxController, 180);
-        //Trigger xbPovLeft = new POVTrigger(xboxController, 270);
+        Trigger xbPovLeft = new POVTrigger(xboxController, 270);
 		
 		// Create buttons
 		for (int i=1; i<left.length; i++) {
@@ -129,18 +129,18 @@ public class OI {
 		xbB[3].whenPressed(new LoadBallSequence());
 		xbB[4].whenPressed(new IntakeRaiseWithArmMoveIfNeeded());
 		xbB[5].whenPressed(new ShooterArmMoveAndStopFlywheels(RobotMap.shooterArmBallCruiseAngle));
-//		xbB[6].whenPressed(new ShooterArmMoveAndRev(RobotMap.shootingAngle,2100, 2520));  // Practice bot, best shot on 
-		xbB[6].whenPressed(new ShooterArmMoveAndRev(RobotMap.shootingAngle,1900, 2300));
+		xbB[6].whenPressed(new ShooterArmMoveAndFlyIn(RobotMap.ShootFromLocation.Batter));
 		//xbB[8].whileHeld(new IntakeOverride(true));
 		//xbB[8].whenReleased(new IntakeOverride(false));
 		xbB[9].whenPressed(new StopFlyAndIntake());
 		xbB[10].whenPressed(new ShooterPistonOverride());
 
-        xbPovUp.whenActive(new ShooterArmMoveAndRev(RobotMap.shootingAngleFromOuterworks, RobotMap.maxFlywheelSpeed, RobotMap.maxFlywheelSpeed));
+        xbPovUp.whenActive(new ShooterArmMoveAndFlyIn(RobotMap.ShootFromLocation.Outerworks));
         xbPovDown.whenActive(new ShooterArmMoveAndStopFlywheels(RobotMap.shooterArmBallLoadAngle));
+		xbPovLeft.whenActive(new ShooterArmMoveAndFlyIn(RobotMap.ShootFromLocation.EndOfBatter));
 
 		//This one will rev the fly wheels up to poop shot speed
-		xbLT.whenActive(new ShooterArmMoveAndRev(RobotMap.shootingAngleFromEndOfBatter, RobotMap.maxFlywheelSpeed, RobotMap.maxFlywheelSpeed));
+		xbLT.whenActive(new FlyWheelSetToSpeedForArmLocation());
 		//This will do the shooting sequence
 	    xbRT.whenActive(new ShootBall());
 

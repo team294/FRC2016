@@ -22,7 +22,7 @@ public class Intake extends Subsystem {
     private final DoubleSolenoid intakeSolenoid = new DoubleSolenoid(RobotMap.intakeSolenoidFwd, RobotMap.intakeSolenoidRev);
     private final DigitalInput intakeDownSensor = new DigitalInput(RobotMap.intakeDownSensor);
 
-    private final MotorCurrentTrigger motorCurrentTrigger = new MotorCurrentTrigger(intakeMotor, 10, 2);
+    public final MotorCurrentTrigger motorCurrentTrigger = new MotorCurrentTrigger(intakeMotor, 35, 2);
 
     public Intake() {
     	// Call the Subsystem constructor
@@ -153,6 +153,7 @@ public class Intake extends Subsystem {
 	 */
     public void updateSmartDashboard() {
  		SmartDashboard.putNumber("Intake motor setpoint", -intakeMotor.get());
+ 		SmartDashboard.putNumber("Intake motor current", intakeMotor.getOutputCurrent());
 // 		SmartDashboard.putString("Intake position", intakeIsUp() ? "Up" : "Down");
     }
     

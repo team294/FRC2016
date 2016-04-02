@@ -15,7 +15,6 @@ public class AutoTargetShoot extends CommandGroup {
     	addParallel(new ShooterArmMoveToGoal());			// Start moving arm
     	addSequential(new DriveTurnToGoal(2.0),2);
     	addSequential(new DriveTurnToGoal(1.5),2);
-    	addSequential(new DriveTurnToGoal(1.5),2);
     	addSequential(new ShooterArmMoveToGoal());			// Ensure arm is at target angle
 
     	// Shoot goal

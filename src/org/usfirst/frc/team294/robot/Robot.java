@@ -81,6 +81,8 @@ public class Robot extends IterativeRobot {
 		// pointers. Bad news. Don't move it.
 		oi = new OI();
 
+        intake.motorCurrentTrigger.whenActive(new IntakeMotorStop());
+
 		// instantiate the command used for the autonomous period
 		//autonomousCommand = new AutonomousCommandGroup();
 		raiseArm90 = new ShooterArmMoveToSetLocation(90);
@@ -133,6 +135,7 @@ public class Robot extends IterativeRobot {
 //		if ((intake.intakeIsUp() || intake.intakeSolenoidIsOff()) && shooterArm.getAngle() > 45) {
 //			raiseArm90.start();			
 //		}
+		shooterArm.setBrakeOff();
 	}
 
 	/**

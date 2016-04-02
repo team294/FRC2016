@@ -27,23 +27,7 @@ public class AutoLowBar extends CommandGroup {
     	
     	addParallel(new ShooterArmMoveToSetLocation(56));			// Start moving arm to correct target angle
     	addSequential(new DriveAngle(0.55, 45, false));				// 45 degrees from original orientation
-    	/* don't target yet
-    	// Target goal and pre-rev flywheels
-    	addParallel(new FlyWheelSetToSpeedForGoal());		// Rev flywheels
-    	addParallel(new ShooterArmMoveToGoal());			// Start moving arm
-    	addSequential(new DriveTurnToGoal(2.0));
-    	addSequential(new DriveTurnToGoal(1.0));
-    	addSequential(new DriveTurnToGoal(1.0));
-    	addSequential(new ShooterArmMoveToGoal());			// Ensure arm is at target angle
-
-    	// Shoot goal
-    	addSequential(new FlyWheelSetToSpeedForGoal()); 	// Ensure flywheels are at speed
-    	addSequential(new ShooterPistonOut(true)); //When wheels are full speed, use piston to push the ball into fly wheels
-    	addSequential(new WaitSeconds(0.5));
-    	addSequential(new ShooterPistonOut(false));
-    	addParallel(new FlyWheelStop()); //Stops the fly wheels from spinning
-    	addSequential(new ShooterArmMoveToSetLocation(RobotMap.shooterArmBallCruiseAngle));
-    	    	*/
+    	addSequential(new AutoTargetShoot());
     	// Add Commands here:
         // e.g. addSequential(new Command1());
         //      addSequential(new Command2());

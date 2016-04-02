@@ -11,7 +11,7 @@ public class AutoLowBar extends CommandGroup {
     
     public  AutoLowBar() {
     	// Configure robot for low bar
-    	addSequential(new ShooterArmMoveToSetLocation(90));
+    	addSequential(new ShooterArmMoveToSetLocation(RobotMap.upperBoundAngleToAvoid+3));
     	//addSequential(new WaitSeconds(0.25));
     	addParallel(new ShiftDown());
     	addSequential(new IntakeLowerIfRaised());

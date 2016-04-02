@@ -44,6 +44,7 @@ public class ShooterArm extends Subsystem {
 	private double joyRelativeRate = 8;
 	
 	private ToleranceChecker armTol = new ToleranceChecker(1.5, 5);
+	private double angleTolForLEDs = 8;				// Turn LEDs on when arm is within 8 degress of target angle
 	
 	private ShootFromLocation shootFromLocation = ShootFromLocation.None;
 
@@ -211,14 +212,16 @@ public class ShooterArm extends Subsystem {
 	 * @return true = arm is at the setpoint
 	 */
 	public boolean moveToAngleIsFinished() {
-//		return armTol.success( getAngle() - convertPosToAngle(shooterArmMotor.getSetpoint()) );  
+
+		if ( Math.abs(getAngle() - convertPosToAngle(shooterArmMotor.getSetpoint())) <= angleTolForLEDs && getAngle()>=20) {
+			Robot.shooter.setLEDsArmAtAngle(true);				
+		}
+		
 		if (armTol.success( getAngle() - convertPosToAngle(shooterArmMotor.getSetpoint()) ) ) {
 			setBrakeOn();
-			if (getAngle()>=20) {
-				Robot.shooter.setLEDsArmAtAngle(true);				
-			}
-//			shooterArmMotor.set(convertAngleToPos(getAngle()));
-//			shooterArmMotor.set(shooterArmMotor.get());
+//			if (getAngle()>=20) {
+//				Robot.shooter.setLEDsArmAtAngle(true);				
+//			}
 			return true;
 		}
 		return false;

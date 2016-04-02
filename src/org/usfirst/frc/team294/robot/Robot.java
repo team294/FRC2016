@@ -138,8 +138,10 @@ public class Robot extends IterativeRobot {
 		if (Math.abs(driveTrain.getRobotPitch())<=60 && Math.abs(driveTrain.getRobotRoll())<=60)
 			timerTilt.reset();
 		
-		if ( autonomousCommand != null &&  timerTilt.get()>0.5)
-			autonomousCommand.cancel();
+		// For some reason, robot did not move in last match in auto, so this code is suspect
+		// Do the Pitch/Roll values need to be zeroed?
+//		if ( autonomousCommand != null &&  timerTilt.get()>0.5)
+//			autonomousCommand.cancel();
 
 	}
 

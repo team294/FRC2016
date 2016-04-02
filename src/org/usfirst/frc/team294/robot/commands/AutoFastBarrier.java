@@ -10,9 +10,8 @@ import edu.wpi.first.wpilibj.command.CommandGroup;
 public class AutoFastBarrier extends CommandGroup {
     
     public  AutoFastBarrier() {
-    	addSequential(new ShooterArmMoveToSetLocation(90));
-//    	addSequential(new WaitSeconds(0.25));
-    	addSequential(new WaitSeconds(0.1));
+    	addSequential(new ShooterArmMoveToSetLocation(RobotMap.upperBoundAngleToAvoid+3));
+    	//addSequential(new WaitSeconds(0.25));
     	addParallel(new ShiftDown());
     	addSequential(new IntakeLowerIfRaised());
     	addSequential(new ShooterArmMoveToSetLocation(RobotMap.shooterArmBallCruiseAngle));

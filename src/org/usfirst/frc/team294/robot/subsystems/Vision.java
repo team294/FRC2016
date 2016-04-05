@@ -31,7 +31,8 @@ public class Vision extends Subsystem {
 	final double maxFlywheelSpeed = RobotMap.maxFlywheelSpeed;	
 	
 	// Calculations
-	final double hGoal = 85.0 - 2.0 + 12.25/2;	// Height of middle of goal
+//	final double hGoal = 85.0 - 2.0 + 12.25/2.0;	// Height of middle of goal -- In our lab
+	final double hGoal = 85.0 - 1.5 + 12.0/2.0;	// Height of middle of goal -- Competition field
 	final double hAxle = 12.5;		// Height of arm axle
 	final double dArm = 20.0;			// Length of arm from axle to camera
 	final double angleArmHorizontal = 7.75;	// Arm angle at horizontal

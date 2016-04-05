@@ -17,12 +17,13 @@ public class AutoCheval extends CommandGroup {
 //    	addSequential(new WaitSeconds(0.25));
     	addSequential(new WaitSeconds(0.1));
     	addSequential(new ShiftDown());
-    	addSequential(new DriveStraightDistance(.6, 42, DriveStraightDistance.Units.inches));    	// "Slow" speed, 45 inches
+    	addSequential(new DriveStraightDistance(.6, 45, DriveStraightDistance.Units.inches));    	// "Slow" speed, 45 inches
     	addSequential(new IntakeLowerIfRaised());
     	addSequential(new WaitSeconds(0.1));
     	addSequential(new ShooterArmMoveToSetLocation(RobotMap.shooterArmBallCruiseAngle));
     	addSequential(new WaitSeconds(0.1));
     	addSequential(new DriveStraightDistance(.6, 10.0*12.0, DriveStraightDistance.Units.inches));    	// "Slow" speed, 6 ft
-    	addSequential(new DriveAngle(0.55, 0, false));				// Recover original orientation
+    	//addSequential(new DriveAngle(0.55, 0, false));				// Recover original orientation
+    	addSequential(new AutoTargetShoot());
     }
 }

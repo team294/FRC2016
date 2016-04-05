@@ -37,7 +37,7 @@ public class Robot extends IterativeRobot {
 	public static PowerDistributionPanel panel;
 
 	// Turn on/off SmartDashboard debugging
-	public static boolean smartDashboardDebug = true;		// true to print lots of stuff on the SmartDashboard
+	public static boolean smartDashboardDebug = false;		// true to print lots of stuff on the SmartDashboard
 	
 	public static boolean overrideIntake;
 	
@@ -53,8 +53,6 @@ public class Robot extends IterativeRobot {
 	 * used for any initialization code.
 	 */
 	public void robotInit() {
-		RobotMap.init();
-
 		//Get preferences from robot flash memory
 		prefs = Preferences.getInstance();
 		armCalMinPosition = prefs.getDouble("armCalMinPosition", 0);
@@ -80,6 +78,8 @@ public class Robot extends IterativeRobot {
 		// constructed yet. Thus, their requires() statements may grab null
 		// pointers. Bad news. Don't move it.
 		oi = new OI();
+
+        intake.motorCurrentTrigger.whenActive(new IntakeMotorStop());
 
 		// instantiate the command used for the autonomous period
 		//autonomousCommand = new AutonomousCommandGroup();
@@ -130,10 +130,10 @@ public class Robot extends IterativeRobot {
 		if (autonomousCommand != null)
 			autonomousCommand.cancel();
 		
-//		if ((intake up || intake indeterminate) && arm > 45) {
-		if ((intake.intakeIsUp() || intake.intakeSolenoidIsOff()) && shooterArm.getAngle() > 45) {
-			raiseArm90.start();			
-		}
+//		if ((intake.intakeIsUp() || intake.intakeSolenoidIsOff()) && shooterArm.getAngle() > 45) {
+//			raiseArm90.start();			
+//		}
+		shooterArm.setBrakeOff();
 	}
 
 	/**
@@ -146,7 +146,9 @@ public class Robot extends IterativeRobot {
         shooterArm.updateSmartDashboard();
         
 		// Other printouts
+		shooter.updateSmartDashboard();
 		shooter.isBallLoaded();
+		intake.updateSmartDashboard();
 		intake.intakeIsUp();
 		driveTrain.getDegrees();
 		
@@ -158,19 +160,16 @@ public class Robot extends IterativeRobot {
 			// Uncomment the following line to read coPanel knobs.
 //			oi.updateSmartDashboard();
 
-			// Uncomment the following 2 lines for debugging shooter motors PIDs.
+			// Uncomment the following line for debugging shooter motors PIDs.
 //			shooter.setPIDFromSmartDashboard();
-			shooter.updateSmartDashboard();
 			
-			// Uncomment the following 2 lines for debugging the arm motor PID.
+			// Uncomment the following line for debugging the arm motor PID.
 //	        shooterArm.setPIDFromSmartDashboard();
-
-			// Uncomment the following 2 lines to see drive train data
+			
+			// Uncomment the following line to see drive train data
 	    	driveTrain.getLeftEncoder();
 	    	driveTrain.getRightEncoder();
 			
-			intake.updateSmartDashboard();
-
 			//		SmartDashboard.putNumber("Panel voltage", panel.getVoltage());
 			//		SmartDashboard.putNumber("Panel arm current", panel.getCurrent(0));
 		}

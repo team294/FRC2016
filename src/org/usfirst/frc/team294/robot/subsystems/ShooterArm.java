@@ -3,6 +3,7 @@ package org.usfirst.frc.team294.robot.subsystems;
 import org.usfirst.frc.team294.robot.OI;
 import org.usfirst.frc.team294.robot.Robot;
 import org.usfirst.frc.team294.robot.RobotMap;
+import org.usfirst.frc.team294.robot.RobotMap.ShootFromLocation;
 import org.usfirst.frc.team294.robot.utilities.RCSwitch;
 import org.usfirst.frc.team294.robot.utilities.ToleranceChecker;
 
@@ -43,6 +44,8 @@ public class ShooterArm extends Subsystem {
 	private double joyRelativeRate = 8;
 	
 	private ToleranceChecker armTol = new ToleranceChecker(1.5, 5);
+	
+	private ShootFromLocation shootFromLocation = ShootFromLocation.None;
 
 	public ShooterArm(){
 		super(); 
@@ -50,7 +53,8 @@ public class ShooterArm extends Subsystem {
 		shooterArmMotor.setFeedbackDevice(CANTalon.FeedbackDevice.AnalogPot);
 		//shooterArmMotor.reverseSensor(true); 
 		//shooterArmMotor.setPID(12, 0.005, 0, 0, 20, 10000, 0);  // Good values without elastic retention bands, gears, 3-turn pot
-		shooterArmMotor.setPID(43, 0.1, 0, 0, 20, 50, 0);  // Good values with elastic retention bands, gears, 3-turn pot (competition robot)
+		//shooterArmMotor.setPID(43, 0.1, 0, 0, 20, 50, 0);  // Good values with elastic retention bands, gears, 3-turn pot (competition robot)
+		shooterArmMotor.setPID(30, 0.1, 15, 0, 20, 50, 0);  // Good values with elastic retention bands, gears, 3-turn pot (competition robot)
 		shooterArmMotor.configPeakOutputVoltage(+8.0f, -10.0f);
 		shooterArmMotor.changeControlMode(TalonControlMode.Position);
 		shooterArmMotor.configPotentiometerTurns(3);		// 3-turn pot.  Also use this for 1-turn pot, since all cals are for this.
@@ -120,6 +124,14 @@ public class ShooterArm extends Subsystem {
 	}
 
 	/**
+	 * Get angle arm setting (where the arm is going to)
+	 * @return angle, in degrees.  0 = horizontal, + = up, - = down
+	 */
+	public double getSetpointAngle() {
+		return convertPosToAngle(shooterArmMotor.getSetpoint());
+	}
+
+	/**
 	 * Tell PID controller to move arm to a specific absolute angle.  Arm will move
 	 * as much as it can within its movement limits and without interfering
 	 * with the intake (if the intake is raised).
@@ -146,6 +158,7 @@ public class ShooterArm extends Subsystem {
 		
 		// Turn off brake before moving arm
 		setBrakeOff();
+		Robot.shooter.setLEDsArmAtAngle(false);
 		
 		// If arm is in keepout zone and intake is up (or in unknown state), then move arm away from the intake out of the keepout zone.
 		if(Robot.intake.intakeIsUp() || Robot.intake.intakeSolenoidIsOff()){
@@ -201,6 +214,7 @@ public class ShooterArm extends Subsystem {
 //		return armTol.success( getAngle() - convertPosToAngle(shooterArmMotor.getSetpoint()) );  
 		if (armTol.success( getAngle() - convertPosToAngle(shooterArmMotor.getSetpoint()) ) ) {
 			setBrakeOn();
+			Robot.shooter.setLEDsArmAtAngle(true);
 //			shooterArmMotor.set(convertAngleToPos(getAngle()));
 //			shooterArmMotor.set(shooterArmMotor.get());
 			return true;
@@ -284,9 +298,9 @@ public class ShooterArm extends Subsystem {
     public void updateSmartDashboard() {
 
     	SmartDashboard.putNumber("Arm Angle", getAngle());
+    	SmartDashboard.putNumber("Arm Position", getPos());
 
         if (Robot.smartDashboardDebug) {
-	    	SmartDashboard.putNumber("Arm Position", getPos());
 	//        SmartDashboard.putNumber("Enc Position", getEncPos());
 	//        SmartDashboard.putNumber("Arm Angle2", getAngle());
 			SmartDashboard.putNumber("Arm Setpoint", shooterArmMotor.getSetpoint());
@@ -315,6 +329,14 @@ public class ShooterArm extends Subsystem {
 	public void initDefaultCommand() {
 		// Set the default command for a subsystem here.
 		//setDefaultCommand(new MySpecialCommand());
+	}
+
+	public void setShootFromLocation(ShootFromLocation fromLocation) {
+		shootFromLocation = fromLocation;
+	}
+
+	public ShootFromLocation getShootFromLocation() {
+		return shootFromLocation;
 	}
 }
 

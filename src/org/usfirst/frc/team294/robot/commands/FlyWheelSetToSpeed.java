@@ -1,6 +1,8 @@
 package org.usfirst.frc.team294.robot.commands;
 
 import org.usfirst.frc.team294.robot.Robot;
+import org.usfirst.frc.team294.robot.RobotMap;
+import org.usfirst.frc.team294.robot.RobotMap.ShootFromLocation;
 import org.usfirst.frc.team294.robot.utilities.ToleranceChecker;
 
 import edu.wpi.first.wpilibj.command.Command;
@@ -11,7 +13,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
  */
 public class FlyWheelSetToSpeed extends Command {
 	
-	double topSpeed, bottomSpeed;
+	protected double topSpeed, bottomSpeed;
 	ToleranceChecker sTol = new ToleranceChecker(150, 10);
 
 	/**
@@ -37,12 +39,18 @@ public class FlyWheelSetToSpeed extends Command {
 		this.bottomSpeed = bottomSpeed;
     }
 
-    // Called just before this Command runs the first time
+    public FlyWheelSetToSpeed(ShootFromLocation location) {
+        requires(Robot.shooter);
+        topSpeed = RobotMap.getTopSpeed(location);
+        bottomSpeed = RobotMap.getBottomSpeed(location);
+	}
+    
+	// Called just before this Command runs the first time
     protected void initialize() {
     	Robot.shooter.setSpeed(topSpeed, bottomSpeed);
     	sTol.reset();
     	
-    	Robot.shooter.setFlywheelSpeedLight(false);
+    	Robot.shooter.setLEDsFlywheelAtSpeed(false);
     }
 
     // Called repeatedly when this Command is scheduled to run
@@ -54,12 +62,17 @@ public class FlyWheelSetToSpeed extends Command {
     	double err;
 
     	err = Math.abs(topSpeed - Robot.shooter.getTopFlyWheelSpeed()) + Math.abs(bottomSpeed - Robot.shooter.getBottomFlyWheelSpeed()) ; 
-    	return sTol.success(err);
+    	if (sTol.success(err)) {
+        	Robot.shooter.setLEDsFlywheelAtSpeed((topSpeed>0));  // Turn on light if we reached speed (outward only)
+    		return true;
+    	} else {
+    		return false;
+    	}
     }
 
     // Called once after isFinished returns true
     protected void end() {
-    	Robot.shooter.setFlywheelSpeedLight((topSpeed>0));  // Turn on light if we reached speed (outward only)
+    	Robot.shooter.setLEDsFlywheelAtSpeed((topSpeed>0));  // Turn on light if we reached speed (outward only)
     }
 
     // Called when another command which requires one or more of the same

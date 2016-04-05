@@ -2,6 +2,11 @@ package org.usfirst.frc.team294.robot.subsystems;
 
 import org.usfirst.frc.team294.robot.Robot;
 import org.usfirst.frc.team294.robot.RobotMap;
+import org.usfirst.frc.team294.robot.commands.IntakeMotorStop;
+import org.usfirst.frc.team294.robot.commands.RecordBallState;
+import org.usfirst.frc.team294.robot.triggers.BallLoadedTrigger;
+import org.usfirst.frc.team294.robot.triggers.MotorCurrentTrigger;
+
 import edu.wpi.first.wpilibj.CANTalon;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
@@ -16,14 +21,19 @@ public class Intake extends Subsystem {
     private final CANTalon intakeMotor = new CANTalon(RobotMap.intakeMotor);
     private final DoubleSolenoid intakeSolenoid = new DoubleSolenoid(RobotMap.intakeSolenoidFwd, RobotMap.intakeSolenoidRev);
     private final DigitalInput intakeDownSensor = new DigitalInput(RobotMap.intakeDownSensor);
-        
+
+    public final MotorCurrentTrigger motorCurrentTrigger = new MotorCurrentTrigger(intakeMotor, 35, 2);
+
     public Intake() {
     	// Call the Subsystem constructor
     	super();
     	
     	// Set up subsystem components
     	intakeMotor.setVoltageRampRate(50);
-    	
+
+    	// Stall protection
+        //motorCurrentTrigger.whenActive(new IntakeMotorStop());
+
     	// Add the subsystem to the LiveWindow
         LiveWindow.addActuator("Intake", "Intake Motor", intakeMotor);
         LiveWindow.addActuator("Intake", "Intake Solenoid", intakeSolenoid);
@@ -143,6 +153,7 @@ public class Intake extends Subsystem {
 	 */
     public void updateSmartDashboard() {
  		SmartDashboard.putNumber("Intake motor setpoint", -intakeMotor.get());
+ 		SmartDashboard.putNumber("Intake motor current", intakeMotor.getOutputCurrent());
 // 		SmartDashboard.putString("Intake position", intakeIsUp() ? "Up" : "Down");
     }
     

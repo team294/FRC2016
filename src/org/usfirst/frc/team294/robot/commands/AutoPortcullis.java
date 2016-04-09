@@ -16,10 +16,10 @@ public class AutoPortcullis extends CommandGroup {
     	addSequential(new ShiftDown());
     	addSequential(new IntakeLowerIfRaised());
     	addSequential(new ShooterArmMoveToSetLocation(RobotMap.shooterArmBallLoadAngle));
-    	addSequential(new DriveStraightDistance(.5, 42, DriveStraightDistance.Units.inches));    	// "Slow" speed, 42 inches.  This should get to the base of the defense
+    	addSequential(new DriveStraightDistance(.5, 42, DriveStraightDistance.Units.inches, 0.02));    	// "Slow" speed, 42 inches.  This should get to the base of the defense
     	addSequential(new IntakeSetToSpeed(-1));
-    	addSequential(new DriveStraightDistance(.5, 24, DriveStraightDistance.Units.inches));    	// "Slow" speed, this will push up against the port
-    	addSequential(new DriveStraightDistance(1.0, 6.0*12.0, DriveStraightDistance.Units.inches));    	// "Quickly blasts through port"
+    	addSequential(new DriveStraightDistance(.5, 24, DriveStraightDistance.Units.inches, 0.02));    	// "Slow" speed, this will push up against the port
+    	addSequential(new DriveStraightDistance(1.0, 6.0*12.0, DriveStraightDistance.Units.inches, 0.02));    	// "Quickly blasts through port"
     	addSequential(new DriveAngle(0.55, 0, false));				// Recover original orientation
     }
 }

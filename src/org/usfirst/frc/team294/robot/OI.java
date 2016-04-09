@@ -65,6 +65,9 @@ public class OI {
 	BottomKnob[] BottomKnobPositions= new BottomKnob[] {BottomKnob.Portcullis, BottomKnob.ChevalDeFrise, BottomKnob.Ramparts,BottomKnob.Moat,
 			BottomKnob.DrawBridge, BottomKnob.SallyPort, BottomKnob.RockWall, BottomKnob.RoughTerrain, BottomKnob.LowBar, BottomKnob.noChange, BottomKnob.noChange
 	};
+	
+	double[] MiddleKnobTurnAngles = new double[] {45.0, 30.0, 15.0, -30.0, -45.0 };
+	
 	Command[] BottomKnobCommands = new Command[] {	
 		new AutoPortcullis(), 		//Portcullis 
 		new AutoCheval(), 		//ChevalDeFrise 
@@ -130,37 +133,37 @@ public class OI {
 		xbB[4].whenPressed(new IntakeRaiseWithArmMoveIfNeeded());
 		xbB[5].whenPressed(new ShooterArmMoveAndStopFlywheels(RobotMap.shooterArmBallCruiseAngle));
 		xbB[6].whenPressed(new ShooterArmMoveAndFlyIn(RobotMap.ShootFromLocation.Batter));
-		//xbB[8].whileHeld(new IntakeOverride(true));
-		//xbB[8].whenReleased(new IntakeOverride(false));
-		xbB[9].whenPressed(new StopFlyAndIntake());
+		xbB[8].whileHeld(new IntakeOverride(true));
+		xbB[8].whenReleased(new IntakeOverride(false));
+	    xbB[9].whenPressed(new StopFlyAndIntake());
 		xbB[10].whenPressed(new ShooterPistonOverride());
 
         xbPovUp.whenActive(new ShooterArmMoveAndFlyIn(RobotMap.ShootFromLocation.Outerworks));
         xbPovDown.whenActive(new ShooterArmMoveAndStopFlywheels(RobotMap.shooterArmBallLoadAngle));
 		xbPovLeft.whenActive(new ShooterArmMoveAndFlyIn(RobotMap.ShootFromLocation.EndOfBatter));
 
-		//This one will rev the fly wheels up to poop shot speed
+		//Rev the flywheels to the correct speed
 		xbLT.whenActive(new FlyWheelSetToSpeedForArmLocation());
 		//This will do the shooting sequence
 	    xbRT.whenActive(new ShootBall());
 
-        coP[1].whenPressed(new ShootBallSetFlywheels());
-        coP[2].whenPressed(new ShooterPistonOverride());
-        coP[3].whenPressed(new ShooterArmMoveToSetLocation(RobotMap.shooterArmBallLoadAngle));
+        coP[1].whenPressed(new ShootBall());
+        coP[2].whenPressed(new ShooterArmMoveAndFlyIn(RobotMap.ShootFromLocation.Outerworks));
+        coP[3].whenPressed(new ShooterArmMoveAndStopFlywheels(RobotMap.shooterArmBallLoadAngle));
         coP[4].whenPressed(new SetToStartingPosition());
-        //coP[5].whileHeld(new IntakeOverride(true));
-        //coP[5].whenReleased(new IntakeOverride(false));
-        coP[6].whenPressed(new ShooterArmMoveToSetLocation(RobotMap.shootingAngle));
-        coP[7].whenPressed(new ShooterArmMoveToSetLocation(RobotMap.shooterArmBallCruiseAngle));
-        coP[8].whenPressed(new ShooterArmMoveToSetLocation(RobotMap.shootingAngleFromOuterworks));
+        coP[5].whileHeld(new IntakeOverride(true));
+        coP[5].whenReleased(new IntakeOverride(false));
+        coP[6].whenPressed(new ShooterArmMoveAndFlyIn(RobotMap.ShootFromLocation.Batter));
+        coP[7].whenPressed(new ShooterArmMoveAndStopFlywheels(RobotMap.shooterArmBallCruiseAngle));
+        //coP[8].whenPressed(new ShooterArmMoveAndFlyIn(RobotMap.ShootFromLocation.Outerworks));
         coP[9].whenPressed(new IntakeSetToSpeed(-1));
-        coP[10].whenPressed(new ShooterArmMoveToSetLocation(RobotMap.shootingAngleFromOuterworks));
+        //coP[10].whenPressed(new ShooterArmMoveAndFlyIn(RobotMap.ShootFromLocation.Outerworks));
         coP[11].whenPressed(new LoadBallSequence());
         coP[12].whenPressed(new StopFlyAndIntake());
-        coP[14].whenPressed(new IntakeRaiseWithArmMoveIfNeeded());
         coP[13].whenPressed(new IntakeLowerIfRaised());
+        coP[14].whenPressed(new IntakeRaiseWithArmMoveIfNeeded());
 
-		coJ[1].whileHeld(new ShooterArmMoveRelativeJoystick());
+        //coJ[1].whileHeld(new ShooterArmMoveRelativeJoystick());
 
 		// SmartDashboard Buttons
 		SmartDashboard.putData("Debug dashboard", new SmartDashboardDebug());
@@ -226,7 +229,11 @@ public class OI {
 		return TopKnobPositions[i];
 	}
 
-	public MiddleKnob readMiddleKnob(){
+	/**
+	 * Reads the middle knob.
+	 * @return Raw position 0 (full ccw) to 4 (cw).  Positions above 4 are indeterminate due to resistors missing.
+	 */
+	public int readMiddleKnobRaw() {
 		double knobReading2;
 
 		int i=0;knobReading2 = coPanel.getRawAxis(6);
@@ -240,8 +247,21 @@ public class OI {
         	SmartDashboard.putNumber("Middle Knob Reading", knobReading2);
         }
         
-		if(i==len)return MiddleKnobPositions[len-1];
-		return MiddleKnobPositions[i];
+		if(i==len)return len-1;
+
+		return i;
+	}
+	
+	public MiddleKnob readMiddleKnob(){
+		return MiddleKnobPositions[readMiddleKnobRaw()];
+	}
+
+	/**
+	 * Reads the bottom knob.  Returns angle to hit target at end of auto.
+	 * @return Angle to turn
+	 */
+	public double readMiddleKnobTurnAngle(){
+		return MiddleKnobTurnAngles[readMiddleKnobRaw()];
 	}
 
 	/**

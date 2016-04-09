@@ -10,13 +10,15 @@ import edu.wpi.first.wpilibj.command.CommandGroup;
 public class AutoFastBarrier extends CommandGroup {
     
     public  AutoFastBarrier() {
-    	addSequential(new ShooterArmMoveToSetLocation(90));
-    	addSequential(new WaitSeconds(0.25));
-//    	addSequential(new WaitSeconds(0.1));
-    	addSequential(new ShiftDown());
+    	addSequential(new ShooterArmMoveToSetLocation(RobotMap.upperBoundAngleToAvoid+3));
+    	//addSequential(new WaitSeconds(0.25));
+    	addParallel(new ShiftDown());
     	addSequential(new IntakeLowerIfRaised());
     	addSequential(new ShooterArmMoveToSetLocation(RobotMap.shooterArmBallCruiseAngle));
     	addSequential(new DriveStraightDistance(1.0, 15.0*12.0, DriveStraightDistance.Units.inches));    	// "Fast" speed, 15 feet
-    	addSequential(new DriveAngle(0.55, 0, false));				// Recover original orientation
+    	addParallel(new ShooterArmMoveToSetLocation(45));			// Start moving arm to correct target angle
+//    	addSequential(new WaitSeconds(0.2));
+    	addSequential(new DriveAngle(0.55, 0, false, true));				// Turn towards goal using angle based on starting position knob
+    	addSequential(new AutoTargetShoot());
     }
 }

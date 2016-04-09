@@ -15,7 +15,9 @@ public class AutoLowBar extends CommandGroup {
     	//addSequential(new WaitSeconds(0.25));
     	addParallel(new ShiftDown());
     	addSequential(new IntakeLowerIfRaised());
+    	addSequential(new WaitSeconds(0.1));
     	addSequential(new ShooterArmMoveToSetLocation(0));
+    	addSequential(new WaitSeconds(0.1));
 
     	// Drive across barrier and turn towards goal
     	addSequential(new DriveStraightDistance(0.65, 16.0*12.0, DriveStraightDistance.Units.inches));    	// "Slow" speed, 16 feet
@@ -24,8 +26,10 @@ public class AutoLowBar extends CommandGroup {
 //    	addSequential(new DriveStraightSegMid());
 //    	addSequential(new DriveStraightSegMid());
 //    	addSequential(new DriveStraightSegFinal());
-    	
+
+    	addSequential(new WaitSeconds(0.1));
     	addParallel(new ShooterArmMoveToSetLocation(56));			// Start moving arm to correct target angle
+    	addSequential(new WaitSeconds(0.1));
     	addSequential(new DriveAngle(0.55, 45, false));				// 45 degrees from original orientation
     	addSequential(new AutoTargetShoot());
     	// Add Commands here:

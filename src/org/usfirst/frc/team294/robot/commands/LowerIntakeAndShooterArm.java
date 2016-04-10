@@ -12,7 +12,7 @@ public class LowerIntakeAndShooterArm extends CommandGroup {
     public LowerIntakeAndShooterArm() {
     	addSequential(new ShooterArmMoveToSetLocation(RobotMap.upperBoundAngleToAvoid+3));
     	addSequential(new IntakeLowerIfRaised());
-//    	addSequential(new WaitSeconds(0.1));
+    	//addSequential(new WaitSeconds(0.5));
     	addSequential(new ShooterArmMoveToSetLocation(RobotMap.shooterArmBallCruiseAngle));
     }
 }

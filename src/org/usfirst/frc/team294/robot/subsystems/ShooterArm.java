@@ -43,7 +43,7 @@ public class ShooterArm extends Subsystem {
 	
 	private double joyRelativeRate = 8;
 	
-	private ToleranceChecker armTol = new ToleranceChecker(1.5, 5);
+	private ToleranceChecker armTol = new ToleranceChecker(1.5, 10);
 	private double angleTolForLEDs = 8;				// Turn LEDs on when arm is within 8 degress of target angle
 	
 	private ShootFromLocation shootFromLocation = ShootFromLocation.None;
@@ -55,7 +55,8 @@ public class ShooterArm extends Subsystem {
 		//shooterArmMotor.reverseSensor(true); 
 		//shooterArmMotor.setPID(12, 0.005, 0, 0, 20, 10000, 0);  // Good values without elastic retention bands, gears, 3-turn pot
 		//shooterArmMotor.setPID(43, 0.1, 0, 0, 20, 50, 0);  // Good values with elastic retention bands, gears, 3-turn pot (competition robot)
-		shooterArmMotor.setPID(30, 0.1, 15, 0, 20, 50, 0);  // Good values with elastic retention bands, gears, 3-turn pot (competition robot)
+		//shooterArmMotor.setPID(30, 0.1, 15, 0, 20, 50, 0);  // Good values with elastic retention bands, gears, 3-turn pot (competition robot)
+		shooterArmMotor.setPID(65, 0.1, 15, 0, 5, 50, 0);  // Best values with elastic retention bands, gears, 3-turn pot (practice robot)
 		shooterArmMotor.configPeakOutputVoltage(+8.0f, -10.0f);
 		shooterArmMotor.changeControlMode(TalonControlMode.Position);
 		shooterArmMotor.configPotentiometerTurns(3);		// 3-turn pot.  Also use this for 1-turn pot, since all cals are for this.
@@ -294,6 +295,7 @@ public class ShooterArm extends Subsystem {
 			SmartDashboard.putNumber("Shooter Arm P", shooterArmMotor.getP());
 			SmartDashboard.putNumber("Shooter Arm I", shooterArmMotor.getI());
 			SmartDashboard.putNumber("Shooter Arm D", shooterArmMotor.getD());
+			SmartDashboard.putNumber("Shooter Arm Izone", shooterArmMotor.getIZone());
 		}
     }
     
@@ -328,7 +330,7 @@ public class ShooterArm extends Subsystem {
 		shooterArmMotor.setP(SmartDashboard.getNumber("Shooter Arm P"));
 		shooterArmMotor.setI(SmartDashboard.getNumber("Shooter Arm I"));
 		shooterArmMotor.setD(SmartDashboard.getNumber("Shooter Arm D"));
-		
+		shooterArmMotor.setIZone((int)SmartDashboard.getNumber("Shooter Arm Izone"));		
     }
 
 	public void initDefaultCommand() {

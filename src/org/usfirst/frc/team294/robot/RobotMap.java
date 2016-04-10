@@ -1,5 +1,6 @@
 package org.usfirst.frc.team294.robot;
 
+import org.usfirst.frc.team294.robot.RobotMap.ShootFromLocation;
 
 /**
  * The RobotMap is a mapping from the ports sensors and actuators are wired into
@@ -47,19 +48,58 @@ public class RobotMap {
     public static double shooterArmBallLoadAngle = 0.0; 
     public static double shootingAngle = 76; 				//Up on the tower shooting angle
     public static double shooterArmBallCruiseAngle = 10.0;  // Reduced from 15 to 10 degrees due to larger flywheels and arm stops.
-    public static double shootingAngleFromOuterworks = 49.0; //Shooting angle from the outerworks according to testing (not implemented yet)
-    public static double shootingAngleFromEndOfBatter = 62.0; //Possible shooting angle from the end of the batter (not implemented yet)
+    public static double shootingAngleFromOuterworks = 52.0; //Shooting angle from the outerworks
+    public static double shootingAngleFromEndOfBatter = 62.0; //Shooting angle from the end of the batter
     
     // Shooter arm range to avoid when raising or lowering intake
     public static double lowerBoundAngleToAvoid = 6;
     public static double upperBoundAngleToAvoid = 83;
     
-    // Shooter flywheel max speed
+    // Shooter flywheel speeds
 	//TODO:  Change to 4500 for competition robot;
     public static double maxFlywheelSpeed = 4200;
-    
-    public static void init() {
-        // Instantiates all objects
-    	// Don -- I moved this code into each subsystem!      
+    public static double outerworksTopFlywheelSpeed = maxFlywheelSpeed;
+    public static double outerworksBotFlywheelSpeed = maxFlywheelSpeed;
+    public static double endOfBatterTopFlywheelSpeed = maxFlywheelSpeed;
+    public static double endOfBatterBotFlywheelSpeed = maxFlywheelSpeed;
+    public static double batterTopFlywheelSpeed = 1900;  // practice bot: 2100
+    public static double batterBotFlywheelSpeed = 2300;  // practice bot: 2520
+
+	public enum ShootFromLocation {
+		None,Batter,Outerworks,EndOfBatter
+	}
+
+    public static double getArmAngle(ShootFromLocation location) {
+    	if (location == ShootFromLocation.EndOfBatter)
+    		return shootingAngleFromEndOfBatter;
+    	else if (location == ShootFromLocation.Outerworks)
+    		return shootingAngleFromOuterworks;
+    	else
+        	return shootingAngle;
     }
+
+    public static double getTopSpeed(ShootFromLocation location) {
+        if (location == ShootFromLocation.Batter) {
+			return batterTopFlywheelSpeed;
+        } else if (location == ShootFromLocation.EndOfBatter) {
+			return endOfBatterTopFlywheelSpeed;
+        } else if (location == ShootFromLocation.Outerworks) {
+			return outerworksTopFlywheelSpeed;
+        } else {
+			return batterTopFlywheelSpeed;
+        }
+	}
+    
+    public static double getBottomSpeed(ShootFromLocation location) {
+        if (location == ShootFromLocation.Batter) {
+			return batterBotFlywheelSpeed;
+        } else if (location == ShootFromLocation.EndOfBatter) {
+			return endOfBatterBotFlywheelSpeed;
+        } else if (location == ShootFromLocation.Outerworks) {
+			return outerworksBotFlywheelSpeed;
+        } else {
+			return batterBotFlywheelSpeed;
+        }
+    }
+
 }

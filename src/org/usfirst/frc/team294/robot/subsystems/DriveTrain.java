@@ -87,11 +87,11 @@ public class DriveTrain extends Subsystem {
         LiveWindow.addSensor("DriveTrain", "navX-mxp", ahrs);
         
         /* Display 6-axis Processed Angle Data                                      */
-//        SmartDashboard.putBoolean(  "IMU_Connected",        ahrs.isConnected());
-//        SmartDashboard.putBoolean(  "IMU_IsCalibrating",    ahrs.isCalibrating());
-//        SmartDashboard.putNumber(   "IMU_Yaw",              ahrs.getYaw());
-//        SmartDashboard.putNumber(   "IMU_Pitch",            ahrs.getPitch());
-//        SmartDashboard.putNumber(   "IMU_Roll",             ahrs.getRoll());
+        SmartDashboard.putBoolean(  "IMU_Connected",        ahrs.isConnected());
+        SmartDashboard.putBoolean(  "IMU_IsCalibrating",    ahrs.isCalibrating());
+        SmartDashboard.putNumber(   "IMU_Yaw",              ahrs.getYaw());
+        SmartDashboard.putNumber(   "IMU_Pitch",            ahrs.getPitch());
+        SmartDashboard.putNumber(   "IMU_Roll",             ahrs.getRoll());
         
         /* These functions are compatible w/the WPI Gyro Class, providing a simple  */
         /* path for upgrading from the Kit-of-Parts gyro to the navx MXP            */
@@ -179,6 +179,28 @@ public class DriveTrain extends Subsystem {
 		
 		SmartDashboard.putNumber("navX angle", angle);
 		return angle;
+	}
+	
+	public void smartDashboardNavXAngles() {
+		SmartDashboard.putNumber(   "IMU_Yaw",              ahrs.getYaw());
+		SmartDashboard.putNumber(   "IMU_Pitch",            ahrs.getPitch());
+		SmartDashboard.putNumber(   "IMU_Roll",             ahrs.getRoll());
+	}
+	
+	/**
+	 * Gets tilting forward/back angle (pitch)
+	 * @return angle in degrees, 0 = vertical, + = nose down, - = nose up
+	 */
+	public double getRobotPitch() {
+		return ahrs.getRoll();		// Note that NavX orientation is 90 degrees, so swap pitch/roll
+	}
+	
+	/**
+	 * Gets tilting left/right angle (roll)
+	 * @return angle in degrees, 0 = vertical, + = tilted (left?), - = tilted (right?) -- need to check
+	 */
+	public double getRobotRoll() {
+		return ahrs.getYaw();		// Note that NavX orientation is 90 degrees, so swap pitch/roll
 	}
 	
 	/**

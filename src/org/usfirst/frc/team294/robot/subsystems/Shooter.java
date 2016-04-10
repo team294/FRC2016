@@ -2,8 +2,11 @@ package org.usfirst.frc.team294.robot.subsystems;
 
 import org.usfirst.frc.team294.robot.Robot;
 import org.usfirst.frc.team294.robot.RobotMap;
+import org.usfirst.frc.team294.robot.RobotMap.ShootFromLocation;
+import org.usfirst.frc.team294.robot.commands.FlyWheelStop;
 import org.usfirst.frc.team294.robot.commands.RecordBallState;
 import org.usfirst.frc.team294.robot.triggers.BallLoadedTrigger;
+import org.usfirst.frc.team294.robot.triggers.MotorCurrentTrigger;
 import org.usfirst.frc.team294.robot.utilities.RCSwitch;
 
 import edu.wpi.first.wpilibj.CANTalon;
@@ -31,9 +34,15 @@ public class Shooter extends Subsystem {
 
     private RCSwitch speedlight = new RCSwitch(RobotMap.speedlight);
     
-    private final BallLoadedTrigger ballLoadedTrigger = new BallLoadedTrigger(ballSensor);
+	public boolean bLEDsFlywheelAtSpeed = false;
+	public boolean bLEDsArmAtAngle = false;
+
+	private final BallLoadedTrigger ballLoadedTrigger = new BallLoadedTrigger(ballSensor);
     
     boolean ballIsLoaded = false;
+
+    private final MotorCurrentTrigger motorTopCurrentTrigger = new MotorCurrentTrigger(motorTop, 30, 4);
+    private final MotorCurrentTrigger motorBottomCurrentTrigger = new MotorCurrentTrigger(motorBottom, 30, 4);
 
     /**
      * Create a shooter
@@ -67,6 +76,10 @@ public class Shooter extends Subsystem {
         setFlywheelSpeedLight(false);
         
         ballLoadedTrigger.whenActive(new RecordBallState(true));
+        
+        // motor stall protection
+        //motorTopCurrentTrigger.whenActive(new FlyWheelStop());
+        //motorBottomCurrentTrigger.whenActive(new FlyWheelStop());
   
     	// Add the subsystem to the LiveWindow
         LiveWindow.addActuator("Shooter", "shooterMotorTop", motorTop);
@@ -212,6 +225,26 @@ public class Shooter extends Subsystem {
      */
     public void setFlywheelSpeedLight(boolean turnOn) {
     	speedlight.set(turnOn);
+    }
+    
+    /**
+     * Notify LEDs if flywheels are at set speed (forward direction only) and turn LEDs on/off as appropriate
+     * @param atSpeed, true = flywheels are at speed
+     */
+    public void setLEDsFlywheelAtSpeed(boolean atSpeed) {
+    	bLEDsFlywheelAtSpeed = atSpeed;
+//    	setFlywheelSpeedLight(bLEDsFlywheelAtSpeed && bLEDsArmAtAngle);
+    	// Code to turn LEDs on/off and flash are now in Robot.teleopPeriodic()
+    }
+    
+    /**
+     * Notify LEDs if arm is at set angle and turn LEDs on/off as appropriate
+     * @param atAngle, true = arm is at speed
+     */
+    public void setLEDsArmAtAngle(boolean atAngle) {
+    	bLEDsArmAtAngle = atAngle;
+//    	setFlywheelSpeedLight(bLEDsFlywheelAtSpeed && bLEDsArmAtAngle);
+    	// Code to turn LEDs on/off and flash are now in Robot.teleopPeriodic()
     }
     
 	/**

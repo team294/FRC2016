@@ -65,6 +65,9 @@ public class OI {
 	BottomKnob[] BottomKnobPositions= new BottomKnob[] {BottomKnob.Portcullis, BottomKnob.ChevalDeFrise, BottomKnob.Ramparts,BottomKnob.Moat,
 			BottomKnob.DrawBridge, BottomKnob.SallyPort, BottomKnob.RockWall, BottomKnob.RoughTerrain, BottomKnob.LowBar, BottomKnob.noChange, BottomKnob.noChange
 	};
+	
+	double[] MiddleKnobTurnAngles = new double[] {45.0, 30.0, 15.0, -30.0, -45.0 };
+	
 	Command[] BottomKnobCommands = new Command[] {	
 		new AutoPortcullis(), 		//Portcullis 
 		new AutoCheval(), 		//ChevalDeFrise 
@@ -87,26 +90,22 @@ public class OI {
 	public Joystick coJoystick = new Joystick(4);
 	
 	public OI() {
-		Button[] left = new Button[15];
-	    Button[] right = new Button[15];
+		Button[] left = new Button[12];
+	    Button[] right = new Button[12];
 	    Button[] coP = new Button[15];
-	    Button[] coJ = new Button[15];
-	    Button[] xbB = new Button[15];
+	    Button[] coJ = new Button[12];
+	    Button[] xbB = new Button[11];
 	    Trigger xbLT = new AxisTrigger(xboxController, 2, 0.9);
         Trigger xbRT = new AxisTrigger(xboxController, 3, 0.9);
         Trigger xbPovUp = new POVTrigger(xboxController, 0);
         //Trigger xbPovRight = new POVTrigger(xboxController, 90);
         Trigger xbPovDown = new POVTrigger(xboxController, 180);
-        //Trigger xbPovLeft = new POVTrigger(xboxController, 270);
+        Trigger xbPovLeft = new POVTrigger(xboxController, 270);
 		
 		// Create buttons
-		for (int i=1; i<15; i++) {
+		for (int i=1; i<left.length; i++) {
 			left[i] = new JoystickButton(leftJoystick, i);
 			right[i] = new JoystickButton(rightJoystick, i);
-			coP[i] = new JoystickButton(coPanel, i);
-			coJ[i] = new JoystickButton(coJoystick, i);
-			xbB[i] = new JoystickButton(xboxController, i);
-			
 			if (i==2) {
 				left[2].whenPressed(new DriveWithJoysticks());
 				right[2].whenPressed(new AutoTargetShoot());
@@ -117,7 +116,15 @@ public class OI {
 				left[i].whenPressed(new ShiftDown());
 				right[i].whenPressed(new ShiftUp()); 
 			}
-			
+		}
+		for (int i=1; i<coP.length; i++) {
+		    coP[i] = new JoystickButton(coPanel, i);
+		}
+		for (int i=1; i<coJ.length; i++) {
+		    coJ[i] = new JoystickButton(coJoystick, i);
+		}
+		for (int i=1; i<xbB.length; i++) {
+		    xbB[i] = new JoystickButton(xboxController, i);
 		}
 
 		xbB[1].whenPressed(new IntakeLowerIfRaised());		
@@ -125,37 +132,38 @@ public class OI {
 		xbB[3].whenPressed(new LoadBallSequence());
 		xbB[4].whenPressed(new IntakeRaiseWithArmMoveIfNeeded());
 		xbB[5].whenPressed(new ShooterArmMoveAndStopFlywheels(RobotMap.shooterArmBallCruiseAngle));
-		xbB[6].whenPressed(new ShooterArmMoveAndRev(RobotMap.shootingAngle,2100, 2520));
-		//xbB[8].whileHeld(new IntakeOverride(true));
-		//xbB[8].whenReleased(new IntakeOverride(false));
-		xbB[9].whenPressed(new StopFlyAndIntake());
+		xbB[6].whenPressed(new ShooterArmMoveAndFlyIn(RobotMap.ShootFromLocation.Batter));
+		xbB[8].whileHeld(new IntakeOverride(true));
+		xbB[8].whenReleased(new IntakeOverride(false));
+	    xbB[9].whenPressed(new StopFlyAndIntake());
 		xbB[10].whenPressed(new ShooterPistonOverride());
 
-        xbPovUp.whenActive(new ShooterArmMoveAndRev(RobotMap.shootingAngleFromOuterworks, RobotMap.maxFlywheelSpeed, RobotMap.maxFlywheelSpeed));
+        xbPovUp.whenActive(new ShooterArmMoveAndFlyIn(RobotMap.ShootFromLocation.Outerworks));
         xbPovDown.whenActive(new ShooterArmMoveAndStopFlywheels(RobotMap.shooterArmBallLoadAngle));
+		xbPovLeft.whenActive(new ShooterArmMoveAndFlyIn(RobotMap.ShootFromLocation.EndOfBatter));
 
-        coP[1].whenPressed(new ShootBallSetFlywheels());
-        coP[2].whenPressed(new ShooterPistonOverride());
-        coP[3].whenPressed(new ShooterArmMoveToSetLocation(RobotMap.shooterArmBallLoadAngle));
-        coP[4].whenPressed(new SetToStartingPosition());
-        //coP[5].whileHeld(new IntakeOverride(true));
-        //coP[5].whenReleased(new IntakeOverride(false));
-        coP[6].whenPressed(new ShooterArmMoveToSetLocation(RobotMap.shootingAngle));
-        coP[7].whenPressed(new ShooterArmMoveToSetLocation(RobotMap.shooterArmBallCruiseAngle));
-        coP[8].whenPressed(new ShooterArmMoveToSetLocation(RobotMap.shootingAngleFromOuterworks));
-        coP[9].whenPressed(new IntakeSetToSpeed(-1));
-        coP[10].whenPressed(new ShooterArmMoveToSetLocation(RobotMap.shootingAngleFromOuterworks));
-        coP[11].whenPressed(new LoadBallSequence());
-        coP[12].whenPressed(new StopFlyAndIntake());
-        coP[14].whenPressed(new IntakeRaiseWithArmMoveIfNeeded());
-        coP[13].whenPressed(new IntakeLowerIfRaised());
-
-		coJ[1].whileHeld(new ShooterArmMoveRelativeJoystick());
-
-		//This one will rev the fly wheels up to poop shot speed
-		xbLT.whenActive(new ShooterArmMoveAndRev(RobotMap.shootingAngleFromEndOfBatter, RobotMap.maxFlywheelSpeed, RobotMap.maxFlywheelSpeed));
+		//Rev the flywheels to the correct speed
+		xbLT.whenActive(new FlyWheelSetToSpeedForArmLocation());
 		//This will do the shooting sequence
 	    xbRT.whenActive(new ShootBall());
+
+        coP[1].whenPressed(new ShootBall());
+        coP[2].whenPressed(new ShooterArmMoveAndFlyIn(RobotMap.ShootFromLocation.Outerworks));
+        coP[3].whenPressed(new ShooterArmMoveAndStopFlywheels(RobotMap.shooterArmBallLoadAngle));
+        coP[4].whenPressed(new SetToStartingPosition());
+        coP[5].whileHeld(new IntakeOverride(true));
+        coP[5].whenReleased(new IntakeOverride(false));
+        coP[6].whenPressed(new ShooterArmMoveAndFlyIn(RobotMap.ShootFromLocation.Batter));
+        coP[7].whenPressed(new ShooterArmMoveAndStopFlywheels(RobotMap.shooterArmBallCruiseAngle));
+        //coP[8].whenPressed(new ShooterArmMoveAndFlyIn(RobotMap.ShootFromLocation.Outerworks));
+        coP[9].whenPressed(new IntakeSetToSpeed(-1));
+        //coP[10].whenPressed(new ShooterArmMoveAndFlyIn(RobotMap.ShootFromLocation.Outerworks));
+        coP[11].whenPressed(new LoadBallSequence());
+        coP[12].whenPressed(new StopFlyAndIntake());
+        coP[13].whenPressed(new IntakeLowerIfRaised());
+        coP[14].whenPressed(new IntakeRaiseWithArmMoveIfNeeded());
+
+        //coJ[1].whileHeld(new ShooterArmMoveRelativeJoystick());
 
 		// SmartDashboard Buttons
 		SmartDashboard.putData("Debug dashboard", new SmartDashboardDebug());
@@ -170,10 +178,6 @@ public class OI {
         SmartDashboard.putData("Load Ball", new LoadBallSequence());
         SmartDashboard.putData("Shoot ball (old)", new ShootBallSetFlywheels());
         SmartDashboard.putData("Shoot ball", new ShootBall());
-        SmartDashboard.putData("Shoot ball Low", new ShootBallLow());
-        SmartDashboard.putData("Shoot ball Cruise", new ShootBallMoveArmLow());
-        SmartDashboard.putData("Shoot ball only", new ShootBallOnly());
-        SmartDashboard.putData("Shoot ball auto target", new AutoTargetShoot());
         SmartDashboard.putData("Shooter Arm Joystick Relative", new ShooterArmMoveRelativeJoystick());
 
         SmartDashboard.putData("Piston out", new ShooterPistonOut(true));
@@ -190,13 +194,19 @@ public class OI {
 
         SmartDashboard.putData("Shooter Arm Shooting Angle", new ShooterArmMoveToSetLocation(RobotMap.shootingAngle));
         SmartDashboard.putData("Shooter Arm 0", new ShooterArmMoveToSetLocation(0));
-        SmartDashboard.putData("Shooter Arm 15", new ShooterArmMoveToSetLocation(15));
+        SmartDashboard.putData("Shooter Arm Load", new ShooterArmMoveAndStopFlywheels(RobotMap.shooterArmBallLoadAngle));
+        SmartDashboard.putData("Shooter Arm Cruise", new ShooterArmMoveAndStopFlywheels(RobotMap.shooterArmBallCruiseAngle));
+        SmartDashboard.putData("Shooter Arm OuterWks", new ShooterArmMoveAndRev(RobotMap.shootingAngleFromOuterworks, RobotMap.maxFlywheelSpeed, RobotMap.maxFlywheelSpeed));
+        SmartDashboard.putData("Shooter Arm Batter+1", new ShooterArmMoveAndRev(RobotMap.shootingAngleFromEndOfBatter, RobotMap.maxFlywheelSpeed, RobotMap.maxFlywheelSpeed));
+        SmartDashboard.putData("Shooter Arm Batter", new ShooterArmMoveAndRev(RobotMap.shootingAngle,2100, 2520));
+
+        
         SmartDashboard.putData("Shooter Arm Joystick Relative", new ShooterArmMoveRelativeJoystick());
-        SmartDashboard.putData("Shooter Arm to goal", new ShooterArmMoveToGoal());
+        SmartDashboard.putData("Shooter Arm cam to goal", new ShooterArmMoveToGoal());
 
 
         if (Robot.smartDashboardDebug) {
-        	setupSmartDashboard();
+        	setupSmartDashboardDebug();
         }
     }
     
@@ -219,7 +229,11 @@ public class OI {
 		return TopKnobPositions[i];
 	}
 
-	public MiddleKnob readMiddleKnob(){
+	/**
+	 * Reads the middle knob.
+	 * @return Raw position 0 (full ccw) to 4 (cw).  Positions above 4 are indeterminate due to resistors missing.
+	 */
+	public int readMiddleKnobRaw() {
 		double knobReading2;
 
 		int i=0;knobReading2 = coPanel.getRawAxis(6);
@@ -233,8 +247,21 @@ public class OI {
         	SmartDashboard.putNumber("Middle Knob Reading", knobReading2);
         }
         
-		if(i==len)return MiddleKnobPositions[len-1];
-		return MiddleKnobPositions[i];
+		if(i==len)return len-1;
+
+		return i;
+	}
+	
+	public MiddleKnob readMiddleKnob(){
+		return MiddleKnobPositions[readMiddleKnobRaw()];
+	}
+
+	/**
+	 * Reads the bottom knob.  Returns angle to hit target at end of auto.
+	 * @return Angle to turn
+	 */
+	public double readMiddleKnobTurnAngle(){
+		return MiddleKnobTurnAngles[readMiddleKnobRaw()];
 	}
 
 	/**
@@ -276,7 +303,7 @@ public class OI {
     	}    	
     }
     
-    public void setupSmartDashboard() {
+    public void setupSmartDashboardDebug() {
     	// Show sub-system data
 		Robot.shooter.setupSmartDashboard(false);
 		Robot.shooterArm.setupSmartDashboard(false);
@@ -284,7 +311,12 @@ public class OI {
 		SmartDashboard.putData("AutoLowBar",new AutoLowBar());
 		SmartDashboard.putData("AutoFastBarrier",new AutoFastBarrier());		
 
-		// SmartDashboard Buttons
+        SmartDashboard.putData("Shoot ball Low", new ShootBallLow());
+        SmartDashboard.putData("Shoot ball Cruise", new ShootBallMoveArmLow());
+        SmartDashboard.putData("Shoot ball only", new ShootBallOnly());
+        SmartDashboard.putData("Shoot ball auto target", new AutoTargetShoot());
+
+        // SmartDashboard Buttons
 //		SmartDashboard.putData("Drive fwd 0.5 speed", new DriveCurve(0.5, 0));
 //		SmartDashboard.putData("Drive left 0.5 speed", new DriveCurve(0.5, -0.5));
 //		SmartDashboard.putData("Drive right 0.5 speed", new DriveCurve(0.5, 0.5));
@@ -328,6 +360,7 @@ public class OI {
         SmartDashboard.putData("Shooter Arm 135", new ShooterArmMoveToSetLocation(135));
         SmartDashboard.putData("Shooter Arm 5", new ShooterArmMoveToSetLocation(5));
         SmartDashboard.putData("Shooter Arm 10", new ShooterArmMoveToSetLocation(10));
+        SmartDashboard.putData("Shooter Arm 15", new ShooterArmMoveToSetLocation(15));
         //REMOVE THIS BUTTON ONLY FOR TESTING.
         //SmartDashboard.putData("Shooter Arm -50", new ShooterArmMoveToSetLocation(-50));
         SmartDashboard.putData("Shooter Arm keep out!", new ShooterArmMoveAwayFromIntake(ShooterArmMoveAwayFromIntake.condition.ifIntakeNotInWay));

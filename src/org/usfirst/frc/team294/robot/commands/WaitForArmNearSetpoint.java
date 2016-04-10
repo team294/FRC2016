@@ -5,23 +5,23 @@ import org.usfirst.frc.team294.robot.Robot;
 import edu.wpi.first.wpilibj.command.Command;
 
 /**
- * Stop the flywheels using the brake on the talons.
+ *
  */
-public class FlyWheelStop extends Command {
-
+public class WaitForArmNearSetpoint extends Command {
+	double tol;
+	
 	/**
-	 * Stop the flywheels using the brake on the talons.
+	 * Waits until the arm is within a number of degrees of the setpoint
+	 * @param tolDegrees, tolerance to setpoint (+ or -), in degrees
 	 */
-    public FlyWheelStop() {
+    public WaitForArmNearSetpoint(double tolDegrees) {
         // Use requires() here to declare subsystem dependencies
         // eg. requires(chassis);
-    	requires(Robot.shooter);
+    	tol = tolDegrees;
     }
 
     // Called just before this Command runs the first time
     protected void initialize() {
-    	Robot.shooter.stopFlyWheels();
-    	Robot.shooter.setLEDsFlywheelAtSpeed(false);
     }
 
     // Called repeatedly when this Command is scheduled to run
@@ -30,7 +30,7 @@ public class FlyWheelStop extends Command {
 
     // Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished() {
-        return true;
+        return Math.abs(Robot.shooterArm.getSetpointAngle() - Robot.shooterArm.getAngle()) <= tol;
     }
 
     // Called once after isFinished returns true

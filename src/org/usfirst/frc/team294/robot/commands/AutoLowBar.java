@@ -11,33 +11,27 @@ public class AutoLowBar extends CommandGroup {
     
     public  AutoLowBar() {
     	// Configure robot for low bar
-    	addSequential(new ShooterArmMoveToSetLocation(90));
+    	addSequential(new ShooterArmMoveToSetLocation(RobotMap.upperBoundAngleToAvoid+3));
     	//addSequential(new WaitSeconds(0.25));
     	addParallel(new ShiftDown());
     	addSequential(new IntakeLowerIfRaised());
+    	addSequential(new WaitSeconds(0.1));
     	addSequential(new ShooterArmMoveToSetLocation(0));
+    	addSequential(new WaitSeconds(0.1));
 
     	// Drive across barrier and turn towards goal
-    	addSequential(new DriveStraightDistance(0.65, 19.0*12.0, DriveStraightDistance.Units.inches));    	// "Slow" speed, 19 feet
-    	addParallel(new ShooterArmMoveToSetLocation(56));			// Start moving arm to correct target angle
-    	addSequential(new DriveAngle(0.55, 45, false));				// 45 degrees from original orientation
+    	addSequential(new DriveStraightDistance(0.65, 16.0*12.0, DriveStraightDistance.Units.inches));    	// "Slow" speed, 16 feet
     	
-    	// Target goal and pre-rev flywheels
-    	addParallel(new FlyWheelSetToSpeedForGoal());		// Rev flywheels
-    	addParallel(new ShooterArmMoveToGoal());			// Start moving arm
-    	addSequential(new DriveTurnToGoal(2.0));
-    	addSequential(new DriveTurnToGoal(1.0));
-    	addSequential(new DriveTurnToGoal(1.0));
-    	addSequential(new ShooterArmMoveToGoal());			// Ensure arm is at target angle
+//    	addSequential(new DriveStraightSegInit());
+//    	addSequential(new DriveStraightSegMid());
+//    	addSequential(new DriveStraightSegMid());
+//    	addSequential(new DriveStraightSegFinal());
 
-    	// Shoot goal
-    	addSequential(new FlyWheelSetToSpeedForGoal()); 	// Ensure flywheels are at speed
-    	addSequential(new ShooterPistonOut(true)); //When wheels are full speed, use piston to push the ball into fly wheels
-    	addSequential(new WaitSeconds(0.5));
-    	addSequential(new ShooterPistonOut(false));
-    	addParallel(new FlyWheelStop()); //Stops the fly wheels from spinning
-    	addSequential(new ShooterArmMoveToSetLocation(RobotMap.shooterArmBallCruiseAngle));
-    	    	
+    	addSequential(new WaitSeconds(0.1));
+    	addParallel(new ShooterArmMoveToSetLocation(56));			// Start moving arm to correct target angle
+    	addSequential(new WaitSeconds(0.1));
+    	addSequential(new DriveAngle(0.55, 45, false));				// 45 degrees from original orientation
+    	addSequential(new AutoTargetShoot());
     	// Add Commands here:
         // e.g. addSequential(new Command1());
         //      addSequential(new Command2());

@@ -9,11 +9,10 @@ import edu.wpi.first.wpilibj.command.CommandGroup;
  */
 public class LowerIntakeAndShooterArm extends CommandGroup {
     
-    public  LowerIntakeAndShooterArm() {
+    public LowerIntakeAndShooterArm() {
     	addSequential(new ShooterArmMoveToSetLocation(RobotMap.upperBoundAngleToAvoid+3));
-    	addParallel(new ShiftDown());
     	addSequential(new IntakeLowerIfRaised());
-    	addSequential(new WaitSeconds(0.1));
+//    	addSequential(new WaitSeconds(0.1));
     	addSequential(new ShooterArmMoveToSetLocation(RobotMap.shooterArmBallCruiseAngle));
     }
 }

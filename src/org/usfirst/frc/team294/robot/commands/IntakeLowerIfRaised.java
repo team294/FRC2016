@@ -46,7 +46,7 @@ public class IntakeLowerIfRaised extends Command {
 		if(intakeExecuted==false){
 			return true;
 		}
-		if((timeSinceInitialized() >= 1.6)||Robot.intake.intakeSensorDown()){
+		if(timeSinceInitialized() >= 1.6){
 			return true;
 		}
 		return false;

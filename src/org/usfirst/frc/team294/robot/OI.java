@@ -203,8 +203,7 @@ public class OI {
         
         SmartDashboard.putData("Shooter Arm Joystick Relative", new ShooterArmMoveRelativeJoystick());
         SmartDashboard.putData("Shooter Arm cam to goal", new ShooterArmMoveToGoal());
-
-
+        
         if (Robot.smartDashboardDebug) {
         	setupSmartDashboardDebug();
         }

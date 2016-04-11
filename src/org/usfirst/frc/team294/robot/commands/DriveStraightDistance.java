@@ -38,7 +38,7 @@ public class DriveStraightDistance extends Command {
      * @param distance in "units", + = forward, - = backwards
      * @param units = DriveStraightDistance.rotations or DriveStraightDistance.units
      */
-    public DriveStraightDistance(double speed, double distance, Units units, double tollerance) {
+    public DriveStraightDistance(double speed, double distance, Units units) {
     	driveTol = new ToleranceChecker(1, 5);
     	
         commandSpeed = Math.abs(speed);

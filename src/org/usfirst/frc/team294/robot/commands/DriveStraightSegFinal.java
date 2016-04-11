@@ -61,6 +61,10 @@ public class DriveStraightSegFinal extends Command {
     	// Use distance and rotation values inherited from prior segment, so don't reset them!
 //    	Robot.driveTrain.resetDegrees();
 //    	Robot.driveTrain.resetEncoders();
+
+    	System.out.println("Final:  speed = " + commandSpeed + ", dist = " + distance);
+    	System.out.println("Final:  Left encoder = " + Robot.driveTrain.getLeftEncoder() + " right encoder = " + Robot.driveTrain.getRightEncoder());
+
     }
 
     // Called repeatedly when this Command is scheduled to run

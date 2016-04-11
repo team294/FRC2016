@@ -53,10 +53,12 @@ public class DriveStraightSegInit extends Command {
 
     // Called just before this Command runs the first time
     protected void initialize() {
-
     	// Reset distance and rotation values, since this is the first segment
     	Robot.driveTrain.resetDegrees();
     	Robot.driveTrain.resetEncoders();
+
+    	System.out.println("Init:  speed = " + commandSpeed + ", dist = " + distance);
+    	System.out.println("Init:  Left encoder = " + Robot.driveTrain.getLeftEncoder() + " right encoder = " + Robot.driveTrain.getRightEncoder());
     }
 
     // Called repeatedly when this Command is scheduled to run

@@ -26,11 +26,11 @@ public class DriveStraightDistance extends Command {
     
     // Steering settings
     private double angleErr, curve;
-    private double kPangle = 0.0;    //0.018
+    private double kPangle = 0.018;    //0.018
     
     // Check if target has been reached
 //    ToleranceChecker driveTol = new ToleranceChecker(100, 5);
-    ToleranceChecker driveTol;
+    ToleranceChecker driveTol = new ToleranceChecker(1, 5);
     
     /**
      * Drives straight a given distance using the NavX for angle correction.
@@ -39,7 +39,6 @@ public class DriveStraightDistance extends Command {
      * @param units = DriveStraightDistance.rotations or DriveStraightDistance.units
      */
     public DriveStraightDistance(double speed, double distance, Units units) {
-    	driveTol = new ToleranceChecker(1, 5);
     	
         commandSpeed = Math.abs(speed);
 //        this.distance = distance*encTickPerRev;

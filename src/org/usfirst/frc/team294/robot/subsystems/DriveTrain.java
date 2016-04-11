@@ -32,6 +32,9 @@ public class DriveTrain extends Subsystem {
     private final RobotDrive robotDrive = new RobotDrive(leftMotor2, rightMotor2);
     private AHRS ahrs;  // navX-mxp 9-axis IMU
     
+    // Track encoder resets in software, since encoder reset on CANTalon has latency to the next encoder read
+    private double leftEncoderZero = 0, rightEncoderZero = 0;
+    
     public DriveTrain() {
     	// Call the Subsystem constructor
     	super();
@@ -214,8 +217,12 @@ public class DriveTrain extends Subsystem {
 	 * Reset encoder positions to 0.
 	 */
 	public void resetEncoders() {
-        leftMotor2.setPosition(0);
-        rightMotor2.setPosition(0);
+//        leftMotor2.setPosition(0);
+//        rightMotor2.setPosition(0);
+
+        // Track encoder resets in software, since encoder reset on CANTalon has latency to the next encoder read
+        leftEncoderZero = leftMotor2.getPosition();
+        rightEncoderZero = rightMotor2.getPosition();
 	}
 	
 	/*
@@ -224,9 +231,9 @@ public class DriveTrain extends Subsystem {
 	public double getLeftEncoder() {
 		if (Robot.smartDashboardDebug) {
 //			SmartDashboard.putNumber("Left Setpoint", leftMotor2.getSetpoint());
-//			SmartDashboard.putNumber("Left Position", leftMotor2.getPosition());
-			SmartDashboard.putNumber("Left Encoder Position", leftMotor2.getEncPosition());
-			SmartDashboard.putNumber("Left Get", leftMotor2.get());
+			SmartDashboard.putNumber("Left Position", leftMotor2.getPosition() - leftEncoderZero);
+//			SmartDashboard.putNumber("Left Encoder Position", leftMotor2.getEncPosition());
+//			SmartDashboard.putNumber("Left Get", leftMotor2.get());
 //			SmartDashboard.putNumber("Left Error", leftMotor2.getError());
 			SmartDashboard.putNumber("Left Output Voltage", leftMotor2.getOutputVoltage());
 			SmartDashboard.putNumber("Left Speed", leftMotor2.getSpeed());
@@ -234,7 +241,7 @@ public class DriveTrain extends Subsystem {
 			SmartDashboard.putBoolean("Left Mode Position", TalonControlMode.Position == leftMotor2.getControlMode());
 		}
 		
-		return leftMotor2.getPosition();
+		return leftMotor2.getPosition() - leftEncoderZero;
 	}
 	
 	/*
@@ -243,9 +250,9 @@ public class DriveTrain extends Subsystem {
 	public double getRightEncoder() {
 		if (Robot.smartDashboardDebug) {
 //			SmartDashboard.putNumber("Right Setpoint", rightMotor2.getSetpoint());
-//			SmartDashboard.putNumber("Right Position", rightMotor2.getPosition());
-			SmartDashboard.putNumber("Right Encoder Position", rightMotor2.getEncPosition());
-			SmartDashboard.putNumber("Right Get", rightMotor2.get());
+			SmartDashboard.putNumber("Right Position", rightMotor2.getPosition() - rightEncoderZero);
+//			SmartDashboard.putNumber("Right Encoder Position", rightMotor2.getEncPosition());
+//			SmartDashboard.putNumber("Right Get", rightMotor2.get());
 //			SmartDashboard.putNumber("Right Error", rightMotor2.getError());
 			SmartDashboard.putNumber("Right Output Voltage", rightMotor2.getOutputVoltage());
 			SmartDashboard.putNumber("Right Speed", rightMotor2.getSpeed());
@@ -253,7 +260,7 @@ public class DriveTrain extends Subsystem {
 			SmartDashboard.putBoolean("Right Mode Position", TalonControlMode.Position == rightMotor2.getControlMode());
 		}
 		
-		return rightMotor2.getPosition();
+		return rightMotor2.getPosition() - rightEncoderZero;
 	}
 
     public void initDefaultCommand() {

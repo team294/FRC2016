@@ -68,6 +68,14 @@ public class OI {
 	
 	double[] MiddleKnobTurnAngles = new double[] {45.0, 30.0, 15.0, -15.0, -45.0 };
 	
+	Command[] MiddleKnobCommands = new Command[] {
+		null,		// Position 1
+		null,		// Position 2
+		null,		// Position 3
+		null,		// Position 4
+		null		// Position 5
+	};
+	
 	Command[] BottomKnobCommands = new Command[] {	
 		new AutoPortcullis(), 		//Portcullis 
 		new AutoCheval(), 		//ChevalDeFrise 

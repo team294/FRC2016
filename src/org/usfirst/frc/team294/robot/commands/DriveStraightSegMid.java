@@ -56,7 +56,11 @@ public class DriveStraightSegMid extends Command {
 
     	// Use distance and rotation values inherited from prior segment, so don't reset them!
 //    	Robot.driveTrain.resetDegrees();
-//    	Robot.driveTrain.resetEncoders();
+//    	Robot.driveTrain.resetEncoders();   	
+
+    	System.out.println("Mid:  speed = " + commandSpeed + ", dist = " + distance);
+    	System.out.println("Mid:  Left encoder = " + Robot.driveTrain.getLeftEncoder() + " right encoder = " + Robot.driveTrain.getRightEncoder());
+
     }
 
     // Called repeatedly when this Command is scheduled to run

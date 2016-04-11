@@ -66,7 +66,7 @@ public class OI {
 			BottomKnob.DrawBridge, BottomKnob.SallyPort, BottomKnob.RockWall, BottomKnob.RoughTerrain, BottomKnob.LowBar, BottomKnob.noChange, BottomKnob.noChange
 	};
 	
-	double[] MiddleKnobTurnAngles = new double[] {45.0, 30.0, 15.0, -30.0, -45.0 };
+	double[] MiddleKnobTurnAngles = new double[] {45.0, 30.0, 15.0, -15.0, -45.0 };
 	
 	Command[] BottomKnobCommands = new Command[] {	
 		new AutoPortcullis(), 		//Portcullis 

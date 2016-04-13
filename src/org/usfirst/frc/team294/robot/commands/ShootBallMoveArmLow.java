@@ -1,13 +1,15 @@
 package org.usfirst.frc.team294.robot.commands;
 
+import org.usfirst.frc.team294.robot.RobotMap;
+
 import edu.wpi.first.wpilibj.command.CommandGroup;
 
 /**
  *
  */
-public class AutonomousCommandGroup extends CommandGroup {
+public class ShootBallMoveArmLow extends CommandGroup {
     
-    public  AutonomousCommandGroup() {
+    public  ShootBallMoveArmLow() {		
         // Add Commands here:
         // e.g. addSequential(new Command1());
         //      addSequential(new Command2());
@@ -25,10 +27,15 @@ public class AutonomousCommandGroup extends CommandGroup {
         // a CommandGroup containing them would require both the chassis and the
         // arm.
 
-    	addSequential(new DriveDistance(0.5, 1));
-    	addSequential(new Rotate());
-    	addSequential(new DriveDistance(0.5, 1)); 
-    	addSequential(new StopDriving());
-
+    	addParallel(new IntakeSetToSpeed(-1.0));
+    	addSequential(new ShooterArmMoveToSetLocation(RobotMap.shooterArmBallLoadAngle));
+    	
+    	addSequential(new FlyWheelSetToSpeed(4000)); 
+    	
+    	addSequential(new ShooterPistonOut(true)); //When wheels are full speed, use piston to push the ball into fly wheels
+    	addSequential(new WaitSeconds(.5));
+    	addSequential(new ShooterPistonOut(false));
+    	addSequential(new FlyWheelStop()); //Stops the fly wheels from spinning
+    	addSequential(new IntakeSetToSpeed(0));  // Turn off intake motors
     }
 }

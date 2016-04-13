@@ -5,26 +5,22 @@ import org.usfirst.frc.team294.robot.Robot;
 import edu.wpi.first.wpilibj.command.Command;
 
 /**
- * Rotate robot x degrees using navX-mxp
+ *
  */
-public class RotateDegreesPID extends Command {
-	double degrees;
-	
+public class DriveStop extends Command {
+
 	/**
-	 * Rotate robot x degrees using navX-mxp
-	 * @param degrees Number of degrees to rotate (+ right, - left (I think))
+	 * Stop the drivetrain motors.
 	 */
-    public RotateDegreesPID(double degrees) {
+    public DriveStop() {
         // Use requires() here to declare subsystem dependencies
         // eg. requires(chassis);
         requires(Robot.driveTrain);
-
-        this.degrees = degrees;
     }
 
     // Called just before this Command runs the first time
     protected void initialize() {
-    	Robot.driveTrain.turnDegreesPIDStart(degrees);
+    	Robot.driveTrain.stop();
     }
 
     // Called repeatedly when this Command is scheduled to run
@@ -33,7 +29,7 @@ public class RotateDegreesPID extends Command {
 
     // Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished() {
-        return Robot.driveTrain.turnDegreesPIDIsFinished();
+        return true;
     }
 
     // Called once after isFinished returns true
@@ -43,7 +39,5 @@ public class RotateDegreesPID extends Command {
     // Called when another command which requires one or more of the same
     // subsystems is scheduled to run
     protected void interrupted() {
-    	Robot.driveTrain.turnDegreesPIDCancel();
-    	Robot.driveTrain.stop();
     }
 }

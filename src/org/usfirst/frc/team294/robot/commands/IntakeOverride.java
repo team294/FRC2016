@@ -7,23 +7,23 @@ import edu.wpi.first.wpilibj.command.Command;
 /**
  *
  */
-public class DriveWithJoysticks extends Command {
+public class IntakeOverride extends Command {
+	
+	private boolean override;
 
-	/**
-	 * Drive robot drive train using joysticks.
-	 */
-    public DriveWithJoysticks() {
-        requires(Robot.driveTrain);
+    public IntakeOverride(boolean override) {
+        // Use requires() here to declare subsystem dependencies
+        // eg. requires(chassis);
+    	this.override = override;
     }
 
     // Called just before this Command runs the first time
     protected void initialize() {
-    	Robot.driveTrain.setDriveControlByPower();
+    	Robot.overrideIntake = this.override;
     }
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
-    	Robot.driveTrain.driveWithJoystick(Robot.oi.leftJoystick, Robot.oi.rightJoystick);
     }
 
     // Make this return true when this Command no longer needs to run execute()
@@ -38,6 +38,5 @@ public class DriveWithJoysticks extends Command {
     // Called when another command which requires one or more of the same
     // subsystems is scheduled to run
     protected void interrupted() {
-    	Robot.driveTrain.stop();
     }
 }

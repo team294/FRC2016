@@ -2,18 +2,19 @@ package org.usfirst.frc.team294.robot.commands;
 
 import org.usfirst.frc.team294.robot.Robot;
 
+import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.command.Command;
 
 /**
  *
  */
-public class DriveWithJoysticks extends Command {
-
-	/**
-	 * Drive robot drive train using joysticks.
-	 */
-    public DriveWithJoysticks() {
+public class DriveStraightWithJoysticks extends Command {
+	
+	Joystick joystickInControl;
+	
+    public DriveStraightWithJoysticks(Joystick joystick) {
         requires(Robot.driveTrain);
+        joystickInControl = joystick;
     }
 
     // Called just before this Command runs the first time
@@ -23,7 +24,7 @@ public class DriveWithJoysticks extends Command {
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
-    	Robot.driveTrain.driveWithJoystick(Robot.oi.leftJoystick, Robot.oi.rightJoystick);
+    	Robot.driveTrain.driveWithJoystick(joystickInControl, joystickInControl);
     }
 
     // Make this return true when this Command no longer needs to run execute()

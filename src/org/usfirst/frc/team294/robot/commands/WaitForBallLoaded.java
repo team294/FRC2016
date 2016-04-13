@@ -7,20 +7,16 @@ import edu.wpi.first.wpilibj.command.Command;
 /**
  *
  */
-public class StopDriving extends Command {
+public class WaitForBallLoaded extends Command {
 
-	/**
-	 * Stop the drivetrain motors.
-	 */
-    public StopDriving() {
+    public WaitForBallLoaded() {
         // Use requires() here to declare subsystem dependencies
         // eg. requires(chassis);
-        requires(Robot.driveTrain);
     }
 
     // Called just before this Command runs the first time
     protected void initialize() {
-    	Robot.driveTrain.stop();
+    	
     }
 
     // Called repeatedly when this Command is scheduled to run
@@ -29,7 +25,7 @@ public class StopDriving extends Command {
 
     // Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished() {
-        return true;
+        return Robot.shooter.isBallLoaded();
     }
 
     // Called once after isFinished returns true

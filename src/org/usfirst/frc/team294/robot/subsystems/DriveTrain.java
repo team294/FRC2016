@@ -1,20 +1,19 @@
 package org.usfirst.frc.team294.robot.subsystems;
 
 
+import org.usfirst.frc.team294.robot.Robot;
 import org.usfirst.frc.team294.robot.RobotMap;
 import org.usfirst.frc.team294.robot.commands.*;
 
 import com.kauailabs.navx.frc.AHRS;
 
-import edu.wpi.first.wpilibj.AnalogGyro;
 import edu.wpi.first.wpilibj.CANTalon;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.RobotDrive;
 import edu.wpi.first.wpilibj.SPI;
+import edu.wpi.first.wpilibj.CANTalon.FeedbackDevice;
 import edu.wpi.first.wpilibj.CANTalon.TalonControlMode;
 import edu.wpi.first.wpilibj.Joystick;
-import edu.wpi.first.wpilibj.PIDController;
-import edu.wpi.first.wpilibj.PIDOutput;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -23,7 +22,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 /**
  * This is the robot drivetrain!
  */
-public class DriveTrain extends Subsystem implements PIDOutput {
+public class DriveTrain extends Subsystem {
 	
 	// DriveTrain hardware
     private final CANTalon leftMotor1 = new CANTalon(RobotMap.driveTrainLeftMotor1);
@@ -31,38 +30,48 @@ public class DriveTrain extends Subsystem implements PIDOutput {
     private final CANTalon rightMotor1 = new CANTalon(RobotMap.driveTrainRightMotor1);
     private final CANTalon rightMotor2 = new CANTalon(RobotMap.driveTrainRightMotor2);
     private final RobotDrive robotDrive = new RobotDrive(leftMotor2, rightMotor2);
-    private final AnalogGyro gyro = new AnalogGyro(RobotMap.driveTrainGyro1);
     private AHRS ahrs;  // navX-mxp 9-axis IMU
     
-    // PID contorller and parameters for turning using the navX
-    PIDController turnController;
-    static final double kP = 0.02;
-    static final double kI = 0.00;
-    static final double kD = 0.01;
-    static final double kF = 0.00;
-    static final double kToleranceDegrees = 3.0f;
-    static final int kToleranceSamples = 5;  // These number of samples must be within tolerance to finish turn
+    // Track encoder resets in software, since encoder reset on CANTalon has latency to the next encoder read
+    private double leftEncoderZero = 0, rightEncoderZero = 0;
     
-    static final double kDriveTolerance = 100.0f;
-    int nDriveInToleranceSamples;
-    
-    int nInToleranceSamples;  // Number of successive measurements that were in tolerance
-
     public DriveTrain() {
     	// Call the Subsystem constructor
     	super();
     	
     	// Set up subsystem components
-        leftMotor2.setFeedbackDevice(CANTalon.FeedbackDevice.QuadEncoder);
-        rightMotor2.setFeedbackDevice(CANTalon.FeedbackDevice.QuadEncoder);
+        leftMotor2.setFeedbackDevice(FeedbackDevice.CtreMagEncoder_Relative);
+        rightMotor2.setFeedbackDevice(FeedbackDevice.CtreMagEncoder_Relative);
+        leftMotor2.configEncoderCodesPerRev(100);
+        rightMotor2.configEncoderCodesPerRev(100);
+        leftMotor2.configNominalOutputVoltage(+0.0f, -0.0f);
+        rightMotor2.configNominalOutputVoltage(+0.0f, -0.0f);
+        leftMotor2.configPeakOutputVoltage(+12.0f, -12.0f);
+        rightMotor2.configPeakOutputVoltage(+12.0f, -12.0f);
+        leftMotor2.setVoltageRampRate(40);
+        rightMotor2.setVoltageRampRate(40);
+        // With these settings, the encoder reads 4000 ticks per revolution.
+        
+        leftMotor2.reverseSensor(true);
 
-        robotDrive.setSafetyEnabled(true);
+        setDriveControlByPower();
+        
+//        rightMotor2.setProfile(0);      
+//        leftMotor2.setProfile(0);      
+//        rightMotor2.setPID(0.5, 0.0, 0.0);  // ProtoBot:  0.020, 0.0002, 2.0;  ProtoBoard:  0.005, 0.00008, 0.00001
+//        leftMotor2.setPID(0.5, 0.0, 0.0);  // ProtoBot:  0.020, 0.0002, 2.0;  ProtoBoard:  0.005, 0.00008, 0.00001
+//        rightMotor2.setF(0.0);   // ProtoBot:  0.035;  ProtoBoard:  0.025
+//        leftMotor2.setF(0.0);   // ProtoBot:  0.035;  ProtoBoard:  0.025
+      
+        leftMotor1.changeControlMode(TalonControlMode.Follower);
+        rightMotor1.changeControlMode(TalonControlMode.Follower);
+        leftMotor1.set(leftMotor2.getDeviceID());
+        rightMotor1.set(rightMotor2.getDeviceID());        
+        
         robotDrive.setExpiration(0.1);
         robotDrive.setSensitivity(0.5);
         robotDrive.setMaxOutput(1.0);
     	
-        gyro.setSensitivity(0.007);
-        
         try {
             /* Communicate w/navX MXP via the MXP SPI Bus.                                     */
             /* Alternatively:  I2C.Port.kMXP, SerialPort.Port.kMXP or SerialPort.Port.kUSB     */
@@ -71,44 +80,21 @@ public class DriveTrain extends Subsystem implements PIDOutput {
         } catch (RuntimeException ex ) {
             DriverStation.reportError("Error instantiating navX MXP:  " + ex.getMessage(), true);
         }
-        ahrs.zeroYaw();
-        
-        // Implement PID controller for turning
-        turnController = new PIDController(kP, kI, kD, kF, ahrs, this);
-        turnController.setInputRange(-180.0f,  180.0f);
-        turnController.setContinuous(true);
-        turnController.setOutputRange(-1.0, 1.0);
-        turnController.setAbsoluteTolerance(kToleranceDegrees);  // PIDController.onTarget() method does not work!
-        turnController.setToleranceBuffer(3);
-        
-        
-//        shooterMotorTop.reverseSensor(true);
-        rightMotor2.changeControlMode(TalonControlMode.PercentVbus);
-        rightMotor2.setProfile(0);
-        
-//        shooterMotorTop.reverseSensor(true);
-        leftMotor2.changeControlMode(TalonControlMode.PercentVbus);
-        leftMotor2.setProfile(0);
-        
-        rightMotor1.changeControlMode(TalonControlMode.Follower);
-        leftMotor1.changeControlMode(TalonControlMode.Follower);
-        
+        ahrs.zeroYaw();        
         
         // Add the subsystem to the LiveWindow
         LiveWindow.addActuator("DriveTrain", "leftMotor1", leftMotor1);
         LiveWindow.addActuator("DriveTrain", "leftMotor2", leftMotor2);
         LiveWindow.addActuator("DriveTrain", "rightMotor1", rightMotor1);
         LiveWindow.addActuator("DriveTrain", "rightMotor2", rightMotor2);
-        LiveWindow.addActuator("DriveTrain", "RotatePIDController", turnController);
-        LiveWindow.addSensor("DriveTrain", "gyro1", gyro);
         LiveWindow.addSensor("DriveTrain", "navX-mxp", ahrs);
         
         /* Display 6-axis Processed Angle Data                                      */
-//        SmartDashboard.putBoolean(  "IMU_Connected",        ahrs.isConnected());
-//        SmartDashboard.putBoolean(  "IMU_IsCalibrating",    ahrs.isCalibrating());
-//        SmartDashboard.putNumber(   "IMU_Yaw",              ahrs.getYaw());
-//        SmartDashboard.putNumber(   "IMU_Pitch",            ahrs.getPitch());
-//        SmartDashboard.putNumber(   "IMU_Roll",             ahrs.getRoll());
+        SmartDashboard.putBoolean(  "IMU_Connected",        ahrs.isConnected());
+        SmartDashboard.putBoolean(  "IMU_IsCalibrating",    ahrs.isCalibrating());
+        SmartDashboard.putNumber(   "IMU_Yaw",              ahrs.getYaw());
+        SmartDashboard.putNumber(   "IMU_Pitch",            ahrs.getPitch());
+        SmartDashboard.putNumber(   "IMU_Roll",             ahrs.getRoll());
         
         /* These functions are compatible w/the WPI Gyro Class, providing a simple  */
         /* path for upgrading from the Kit-of-Parts gyro to the navx MXP            */
@@ -119,7 +105,27 @@ public class DriveTrain extends Subsystem implements PIDOutput {
     // Put methods for controlling this subsystem
     // here. Call these from Commands.
 
+    /**
+     * Set the drive controller to use power settings, instead of using the
+     * encoder PID controller.
+     */
+    public void setDriveControlByPower() {
+        leftMotor2.changeControlMode(TalonControlMode.PercentVbus);    	
+        rightMotor2.changeControlMode(TalonControlMode.PercentVbus);
+        leftMotor2.configPeakOutputVoltage(+12.0f, -12.0f);
+        rightMotor2.configPeakOutputVoltage(+12.0f, -12.0f);
+        robotDrive.setSafetyEnabled(true);
+    }
+    
+    /**
+     * Use this in the execute method of a DriveWithJoysticks command.  <p>
+     * <b>NOTE:</b> Be sure to call setDriveControlByPower() in the initialize method.
+     * @param leftStick Left joystick
+     * @param rightStick Right joystick
+     */
     public void driveWithJoystick(Joystick leftStick, Joystick rightStick) {
+        leftMotor2.clearStickyFaults();
+        rightMotor2.clearStickyFaults();
     	robotDrive.tankDrive(leftStick, rightStick);
     }
 
@@ -127,6 +133,7 @@ public class DriveTrain extends Subsystem implements PIDOutput {
      * Stop the drive train motors
      */
 	public void stop() {
+		setDriveControlByPower();
 		robotDrive.drive(0, 0);
 	}
 
@@ -135,7 +142,8 @@ public class DriveTrain extends Subsystem implements PIDOutput {
 	 * @param speed +1 to -1, + = forward, - = backward
 	 */
 	public void driveForward(double speed) {
-		robotDrive.drive(speed, 0);
+		setDriveControlByPower();
+		robotDrive.drive(-speed, 0);
 	}
 
 	/**
@@ -143,11 +151,12 @@ public class DriveTrain extends Subsystem implements PIDOutput {
 	 * @param speed +1 to -1, + = backward, - = forward
 	 */
 	public void driveBackward(double speed) {
-		robotDrive.drive(-1.0*speed, 0);
+		setDriveControlByPower();
+		robotDrive.drive(speed, 0);
 	}
 	
 	/**
-	 * Drive the motors at "outputMagnitude" and "curve". 
+	 * Drive the motors at "speed" and "curve". 
 	 * Both outputMagnitude and curve are -1.0 to +1.0 values, where 0.0 represents stopped and not turning. 
 	 * curve < 0 will turn left and curve > 0 will turn right. The algorithm for steering provides a constant
 	 * turn radius for any normal speed range, both forward and backward. Increasing m_sensitivity causes 
@@ -159,150 +168,99 @@ public class DriveTrain extends Subsystem implements PIDOutput {
 	 *          your robot. Conversely, turn radius r = -ln(curve)*w for a given value of curve and wheelbase w
 	 */
 	public void driveCurve(double speed, double curve) {
-		robotDrive.drive(speed, curve);
+		setDriveControlByPower();
+		robotDrive.drive(-speed, curve);
 	}
 	
 	/**
-	 * Returns the current angle of the gyro.
+	 * Returns the current angle of the NavX gyro.
 	 */
 	public double getDegrees() {
-		SmartDashboard.putNumber("gyro angle", gyro.getAngle());
-		SmartDashboard.putNumber("navX angle", ahrs.getAngle());
-		return gyro.getAngle();
+		double angle;
+		
+		angle = ahrs.getAngle(); 
+		
+		SmartDashboard.putNumber("navX angle", angle);
+		return angle;
+	}
+	
+	public void smartDashboardNavXAngles() {
+		SmartDashboard.putNumber(   "IMU_Yaw",              ahrs.getYaw());
+		SmartDashboard.putNumber(   "IMU_Pitch",            ahrs.getPitch());
+		SmartDashboard.putNumber(   "IMU_Roll",             ahrs.getRoll());
 	}
 	
 	/**
-	 * Resets the angle of the gyro and the NavX
+	 * Gets tilting forward/back angle (pitch)
+	 * @return angle in degrees, 0 = vertical, + = nose down, - = nose up
+	 */
+	public double getRobotPitch() {
+		return ahrs.getRoll();		// Note that NavX orientation is 90 degrees, so swap pitch/roll
+	}
+	
+	/**
+	 * Gets tilting left/right angle (roll)
+	 * @return angle in degrees, 0 = vertical, + = tilted (left?), - = tilted (right?) -- need to check
+	 */
+	public double getRobotRoll() {
+		return ahrs.getYaw();		// Note that NavX orientation is 90 degrees, so swap pitch/roll
+	}
+	
+	/**
+	 * Resets the angle of the NavX gyro.
 	 */
 	public void resetDegrees() {
-		gyro.reset();
 		ahrs.reset();
 	}
 	
 	/**
-	 * Turns the robot a certain number of degrees using PID
-	 * @param degrees
+	 * Reset encoder positions to 0.
 	 */
-	public void turnDegreesPIDStart(double degrees) {
-		resetDegrees();
-		nInToleranceSamples = 0;
-		turnController.setSetpoint(degrees);
-		turnController.enable();
-	}
-	
-	/**
-	 * Drives the robot forward a certain distance
-	 * @param distance (eg. 5000 encoder units)
-	 */
-	public void driveDistancePIDStart(double distance){
-		rightMotor2.changeControlMode(TalonControlMode.Position);
-		leftMotor2.changeControlMode(TalonControlMode.Position);
-        rightMotor2.setPID(0.020, 0.0002, 2.0);  // ProtoBot:  0.020, 0.0002, 2.0;  ProtoBoard:  0.005, 0.00008, 0.00001
-        leftMotor2.setPID(0.020, 0.0002, 2.0);  // ProtoBot:  0.020, 0.0002, 2.0;  ProtoBoard:  0.005, 0.00008, 0.00001
-        rightMotor2.setF(0.035);   // ProtoBot:  0.035;  ProtoBoard:  0.025
-        leftMotor2.setF(0.035);   // ProtoBot:  0.035;  ProtoBoard:  0.025
-		rightMotor2.set(distance);
-		leftMotor2.set(distance);
-		rightMotor2.enableControl();
-		leftMotor2.enableControl();
-	}
-	
-	/**
-	 * Checks to see if the robot has reached the distance it was assigned to
-	 * @return boolean
-	 */
-	public boolean driveDistancePIDIsFinished(){
-		double errRight;
-		double errLeft;
+	public void resetEncoders() {
+//        leftMotor2.setPosition(0);
+//        rightMotor2.setPosition(0);
 
-		//err = Math.abs(turnController.getSetpoint() - ahrs.getAngle());
-		errRight = Math.abs(rightMotor2.getError());
-		errLeft = Math.abs(leftMotor2.getError());
-		
-		if ( errLeft <= kDriveTolerance && errRight <= kDriveTolerance) {
-			nDriveInToleranceSamples++;
-		} else {
-			nDriveInToleranceSamples = 0;
-		}
-
-		if ( nDriveInToleranceSamples >= kToleranceSamples ) {
-			return true;
-		} else {
-			return false;
-		}
+        // Track encoder resets in software, since encoder reset on CANTalon has latency to the next encoder read
+        leftEncoderZero = leftMotor2.getPosition();
+        rightEncoderZero = rightMotor2.getPosition();
 	}
 	
-	/**
-	 * Stops the PID Control of Driving the robot forward
+	/*
+	 * Get left encoder position.  4000 ticks = 1 revolution.
 	 */
-	public void driveDistancePIDCancel(){
-		rightMotor2.changeControlMode(TalonControlMode.PercentVbus);
-		leftMotor2.changeControlMode(TalonControlMode.PercentVbus);
-        rightMotor2.setPID(0.0, 0.0, 0.0);  // ProtoBot:  0.020, 0.0002, 2.0;  ProtoBoard:  0.005, 0.00008, 0.00001
-        leftMotor2.setPID(0.0, 0.0, 0.0);  // ProtoBot:  0.020, 0.0002, 2.0;  ProtoBoard:  0.005, 0.00008, 0.00001
-        rightMotor2.setF(0.0);   // ProtoBot:  0.035;  ProtoBoard:  0.025
-        leftMotor2.setF(0.0);   // ProtoBot:  0.035;  ProtoBoard:  0.025
-		rightMotor2.disableControl();
-		leftMotor2.disableControl();
-	}
-	
-	/**
-	 * Checks to see if the robot has turned a certain amount of degrees and is within the error range.
-	 * @return boolean
-	 */
-	public boolean turnDegreesPIDIsFinished() {
-		double err;
-		
-//		SmartDashboard.putNumber("PID error", turnController.getError());
-//		SmartDashboard.putNumber("PID avg error", turnController.getAvgError());
-//		SmartDashboard.putNumber("PID setpoint", turnController.getSetpoint());
-//		SmartDashboard.putNumber("PID power", turnController.get());
-//		SmartDashboard.putBoolean("PID on target", turnController.onTarget());
-	
-		err = Math.abs(turnController.getSetpoint() - ahrs.getAngle());
-		if (err > 180) { 
-			err = Math.abs(360-err); 
+	public double getLeftEncoder() {
+		if (Robot.smartDashboardDebug) {
+//			SmartDashboard.putNumber("Left Setpoint", leftMotor2.getSetpoint());
+			SmartDashboard.putNumber("Left Position", leftMotor2.getPosition() - leftEncoderZero);
+//			SmartDashboard.putNumber("Left Encoder Position", leftMotor2.getEncPosition());
+//			SmartDashboard.putNumber("Left Get", leftMotor2.get());
+//			SmartDashboard.putNumber("Left Error", leftMotor2.getError());
+			SmartDashboard.putNumber("Left Output Voltage", leftMotor2.getOutputVoltage());
+			SmartDashboard.putNumber("Left Speed", leftMotor2.getSpeed());
+			
+			SmartDashboard.putBoolean("Left Mode Position", TalonControlMode.Position == leftMotor2.getControlMode());
 		}
 		
-//		SmartDashboard.putNumber("PID my error", err);
-		
-		if ( err <= kToleranceDegrees ) {
-			nInToleranceSamples++;
-		} else {
-			nInToleranceSamples = 0;
-		}
-
-		if ( nInToleranceSamples >= kToleranceSamples ) {
-			turnController.disable();
-			return true;
-		} else {
-			return false;
-		}
-}
+		return leftMotor2.getPosition() - leftEncoderZero;
+	}
 	
-	/**
-	 * Stops the PID Rotating.
+	/*
+	 * Get right encoder position.  4000 ticks = 1 revolution.
 	 */
-	public void turnDegreesPIDCancel() {
-		turnController.disable();
-	}
-
-	@Override
-    /* This function is invoked periodically by the PID Controller, */
-    /* based upon navX MXP yaw angle input and PID Coefficients.    */
-    public void pidWrite(double output) {
-//    	getDegrees();
-//    	SmartDashboard.putNumber("PID turn power", output);
-    	robotDrive.drive(output, -1);
-    }
+	public double getRightEncoder() {
+		if (Robot.smartDashboardDebug) {
+//			SmartDashboard.putNumber("Right Setpoint", rightMotor2.getSetpoint());
+			SmartDashboard.putNumber("Right Position", rightMotor2.getPosition() - rightEncoderZero);
+//			SmartDashboard.putNumber("Right Encoder Position", rightMotor2.getEncPosition());
+//			SmartDashboard.putNumber("Right Get", rightMotor2.get());
+//			SmartDashboard.putNumber("Right Error", rightMotor2.getError());
+			SmartDashboard.putNumber("Right Output Voltage", rightMotor2.getOutputVoltage());
+			SmartDashboard.putNumber("Right Speed", rightMotor2.getSpeed());
 	
-	public int getLeftEncoder() {
-		SmartDashboard.putNumber("Left Encoder Position", leftMotor2.getEncPosition());
-		return leftMotor2.getEncPosition();
-	}
-	public int getRightEncoder() {
-		SmartDashboard.putNumber("Right Encoder Position", rightMotor2.getEncPosition());
-		return rightMotor2.getEncPosition();
+			SmartDashboard.putBoolean("Right Mode Position", TalonControlMode.Position == rightMotor2.getControlMode());
+		}
+		
+		return rightMotor2.getPosition() - rightEncoderZero;
 	}
 
     public void initDefaultCommand() {

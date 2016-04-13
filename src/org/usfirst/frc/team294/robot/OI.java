@@ -70,7 +70,7 @@ public class OI {
 	
 	Command[] MiddleKnobCommands = new Command[] {
 		null,		// Position 1
-		null,		// Position 2
+		new AutoDriveAndShootPosition2(),		// Position 2
 		null,		// Position 3
 		null,		// Position 4
 		null		// Position 5
@@ -269,6 +269,17 @@ public class OI {
 	 */
 	public double readMiddleKnobTurnAngle(){
 		return MiddleKnobTurnAngles[readMiddleKnobRaw()];
+	}
+
+	public Command getMiddleKnobCommand() {
+		int i;
+		
+		i = readMiddleKnobRaw();
+		if (i<MiddleKnobCommands.length) {
+			return MiddleKnobCommands[i];			
+		} else {
+			return null;
+		}			
 	}
 
 	/**

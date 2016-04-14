@@ -13,8 +13,8 @@ public class AutoTargetShoot extends CommandGroup {
     	// Target goal and pre-rev flywheels
     	addParallel(new FlyWheelSetToSpeedForGoal());		// Rev flywheels
 //    	addParallel(new ShooterArmMoveToGoal());			// Start moving arm
-    	addSequential(new DriveTurnToGoal(2.0),2);
-    	addSequential(new DriveTurnToGoal(1.5),2);
+    	addSequential(new DriveTurnToGoal(2.0));
+    	addSequential(new DriveTurnToGoal(0.75));
 //    	addSequential(new DriveTurnToGoal(1.5),2);			// Usually, it takes 2-3 turning iterations to get the position exactly.  But 3 iterations take time.
     	addSequential(new FlyWheelSetToSpeedForGoal()); 	// Ensure flywheels are at speed
     	// Move arm last, since it may move the target out of the camera's Y field of view!

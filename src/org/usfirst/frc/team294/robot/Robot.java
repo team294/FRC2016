@@ -197,7 +197,7 @@ public class Robot extends IterativeRobot {
 		vision.findGoal();
 		vision.getGoalXAngleError();
 		vision.getGoalArmAngle();
-		
+				
 		if (smartDashboardDebug) {
 			// Uncomment the following line to read coPanel knobs.
 //			oi.updateSmartDashboard();

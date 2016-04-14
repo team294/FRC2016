@@ -128,9 +128,9 @@ public class Vision extends Subsystem {
 
 		// Calculate arm angle to target goal
 		if (dGoal<151) {
-			goalArmAngle = 0.00213*dGoal*dGoal -0.6312*dGoal + 95.7;			
+			goalArmAngle = 0.00207*dGoal*dGoal -0.5694*dGoal + 93.1;			
 		} else {
-			goalArmAngle = 49.0;
+			goalArmAngle = 54.0;
 		}
 		
 		// Calculate flywheel speeds

@@ -71,9 +71,9 @@ public class OI {
 	Command[] MiddleKnobCommands = new Command[] {
 		null,		// Position 1
 		new AutoDriveAndShootPosition2(),		// Position 2
-		null,		// Position 3
-		null,		// Position 4
-		null		// Position 5
+		new AutoDriveAndShootPosition3(),		// Position 3
+		new AutoDriveAndShootPosition4(),		// Position 4
+		new AutoDriveAndShootPosition5()		// Position 5
 	};
 	
 	Command[] BottomKnobCommands = new Command[] {	
@@ -243,7 +243,8 @@ public class OI {
 	public int readMiddleKnobRaw() {
 		double knobReading2;
 
-		int i=0;knobReading2 = coPanel.getRawAxis(6);
+		int i=0;
+		knobReading2 = coPanel.getRawAxis(6);
 		int len=middleKnobThreshold.length;
 		for(i=0;i<len; i++) {
 			if (knobReading2<middleKnobThreshold[i]) break;
@@ -254,7 +255,7 @@ public class OI {
         	SmartDashboard.putNumber("Middle Knob Reading", knobReading2);
         }
         
-		if(i==len)return len-1;
+//		if(i==len)return len-1;
 
 		return i;
 	}
@@ -276,7 +277,7 @@ public class OI {
 		
 		i = readMiddleKnobRaw();
 		if (i<MiddleKnobCommands.length) {
-			return MiddleKnobCommands[i];			
+			return MiddleKnobCommands[i];
 		} else {
 			return null;
 		}			

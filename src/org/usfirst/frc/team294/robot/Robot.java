@@ -134,6 +134,13 @@ public class Robot extends IterativeRobot {
 	public void autonomousPeriodic() {
 		Scheduler.getInstance().run();
 		
+        shooterArm.updateSmartDashboard();
+		driveTrain.getDegrees();
+
+		vision.findGoal();
+		vision.getGoalXAngleError();
+		vision.getGoalArmAngle();
+
 		// Stop auto mode if the robot is tilted too much
 		if (Math.abs(driveTrain.getRobotPitch())<=60 && Math.abs(driveTrain.getRobotRoll())<=60)
 			timerTilt.reset();
@@ -190,7 +197,7 @@ public class Robot extends IterativeRobot {
 		vision.findGoal();
 		vision.getGoalXAngleError();
 		vision.getGoalArmAngle();
-		
+				
 		if (smartDashboardDebug) {
 			// Uncomment the following line to read coPanel knobs.
 //			oi.updateSmartDashboard();

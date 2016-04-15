@@ -44,9 +44,11 @@ public class DriveTurnToGoal extends Command {
     	angleTol.setTolerance(maxTol);
        	Robot.driveTrain.resetDegrees();    		
 
-        commandSpeed = 0.55;
+        commandSpeed = 0.65;
         Robot.vision.findGoal();
         targetAngle = Robot.vision.getGoalXAngleError();
+    	System.out.println("Auto turn to goal:  dist = " + Robot.vision.getGoalDistance() + ", turn angle = " + targetAngle);
+
         targetAngle = (targetAngle < 0) ? targetAngle+360.0 : targetAngle;
     }
 

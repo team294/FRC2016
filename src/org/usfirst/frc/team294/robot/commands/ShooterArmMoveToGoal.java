@@ -24,6 +24,8 @@ public class ShooterArmMoveToGoal extends Command {
     protected void initialize() {
     	Robot.vision.findGoal();
     	Robot.shooterArm.moveToAngle(Robot.vision.getGoalArmAngle());
+    	System.out.println("Auto move arm to goal:  dist = " + Robot.vision.getGoalDistance() + ", arm angle = " + Robot.vision.getGoalArmAngle());
+
     }
 
     // Called repeatedly when this Command is scheduled to run

@@ -35,6 +35,9 @@ public class DriveTrain extends Subsystem {
     // Track encoder resets in software, since encoder reset on CANTalon has latency to the next encoder read
     private double leftEncoderZero = 0, rightEncoderZero = 0;
     
+    // Track navX resets in software, since gyro reset on navX has latency to the next encoder read
+    private double yawZero = 0;
+    
     public DriveTrain() {
     	// Call the Subsystem constructor
     	super();
@@ -173,14 +176,28 @@ public class DriveTrain extends Subsystem {
 	}
 	
 	/**
+	 * Resets the angle of the NavX gyro.
+	 */
+	public void resetDegrees() {
+//		ahrs.reset();
+//		System.out.println("Just reset NavX.  Current angle = " + ahrs.getAngle());
+
+	    // Track navX resets in software, since gyro reset on navX has latency to the next encoder read
+		yawZero = ahrs.getAngle();
+	}
+	
+	/**
 	 * Returns the current angle of the NavX gyro.
 	 */
 	public double getDegrees() {
 		double angle;
 		
-		angle = ahrs.getAngle(); 
+		angle = ahrs.getAngle() - yawZero; 
 		
-		SmartDashboard.putNumber("navX angle", angle);
+		// Normalize to 0 to 360 degrees
+		angle = angle - Math.floor(angle/360)*360;
+		
+		SmartDashboard.putNumber("navX angle", angle>180.0 ? angle-360.0 : angle);
 		return angle;
 	}
 	
@@ -203,14 +220,7 @@ public class DriveTrain extends Subsystem {
 	 * @return angle in degrees, 0 = vertical, + = tilted (left?), - = tilted (right?) -- need to check
 	 */
 	public double getRobotRoll() {
-		return ahrs.getYaw();		// Note that NavX orientation is 90 degrees, so swap pitch/roll
-	}
-	
-	/**
-	 * Resets the angle of the NavX gyro.
-	 */
-	public void resetDegrees() {
-		ahrs.reset();
+		return ahrs.getPitch();		// Note that NavX orientation is 90 degrees, so swap pitch/roll
 	}
 	
 	/**

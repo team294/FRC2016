@@ -32,6 +32,8 @@ public class FlyWheelSetToSpeedForGoal extends Command {
     	sTol.reset();
     	
     	Robot.shooter.setLEDsFlywheelAtSpeed(false);
+    	
+    	System.out.println("Auto set flywheel speed:  dist = " + Robot.vision.getGoalDistance() + ", topSpeed = " + topSpeed + ", botSpeed = " + bottomSpeed);
     }
 
     // Called repeatedly when this Command is scheduled to run

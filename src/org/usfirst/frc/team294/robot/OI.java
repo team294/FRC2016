@@ -78,7 +78,7 @@ public class OI {
 		new AutoPortcullis(), 		//Portcullis 
 		new AutoCheval(), 		//ChevalDeFrise 
 		new AutoFastBarrier(), 		//Ramparts
-		new AutoFastBarrier(), 		//Moat
+		new AutoMoat(), 		//Moat
 		new AutoCruiseConfig(), 		//DrawBridge 
 		new AutoCruiseConfig(), 		//SallyPort
 		new AutoFastBarrier(), 		//RockWall 

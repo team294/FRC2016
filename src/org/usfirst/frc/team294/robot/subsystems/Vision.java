@@ -47,7 +47,7 @@ public class Vision extends Subsystem {
 	final double cameraYRatio = cameraXRatio*480.0/640.0;  	// SY/Sz
 	final double cameraXHalfRes = 640/2;		// Resolution
 	final double cameraYHalfRes = 480/2;		// Resolution
-	final double xsBallScreen = 175;				// Ignore anything to the left of this (ball and elastic band)
+	final double xsBallScreen = 160;				// Ignore anything to the left of this (ball and elastic band)
 	
 	public Vision(){
 		table = NetworkTable.getTable("GRIP/myContoursReport");

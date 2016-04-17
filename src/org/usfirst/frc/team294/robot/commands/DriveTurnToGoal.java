@@ -11,17 +11,12 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
  */
 public class DriveTurnToGoal extends DriveAngle {
 
-	// Initial settings when command was invoked
-	private double maxTol;
-	
     /** 
      * Turns robot to face largest goal found, to within tolerance
-     * @param angleTolerance = accuracy of robot turning, in degrees
+     * @param angleTolerance = accuracy of robot turning which is good enough to stop command, in degrees
      */
     public DriveTurnToGoal(double angleTolerance) {
-        super(0.65, 0, true);
-        
-        maxTol = angleTolerance;
+        super(0.65, 0, true, angleTolerance);
     }
 
     // Called just before this Command runs the first time

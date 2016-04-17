@@ -11,7 +11,7 @@ public class AutoLowBar extends CommandGroup {
     
     public  AutoLowBar() {
     	// Configure robot for low bar
-    	addParallel(new LowerIntakeAndShooterArm(true));
+    	addParallel(new LowerIntakeAndShooterArm(false));
     	addSequential(new ShiftDown());
     	addSequential(new WaitSeconds(2.5));	// Is this the right delay?
 
@@ -26,7 +26,7 @@ public class AutoLowBar extends CommandGroup {
     	// Turn towards goal
     	addParallel(new ShooterArmMoveToSetLocation(56));			// Start moving arm to correct target angle
     	addSequential(new WaitSeconds(0.1));
-    	addSequential(new DriveAngle(0.65, 45, false));				// 45 degrees from original orientation
+    	addSequential(new DriveAngle(0.65, 60, false));				// 45 degrees from original orientation
     	addSequential(new AutoTargetShoot());
    }
 }

@@ -206,10 +206,18 @@ public class OI {
         SmartDashboard.putData("Shooter Arm Batter+1", new ShooterArmMoveAndRev(RobotMap.shootingAngleFromEndOfBatter, RobotMap.maxFlywheelSpeed, RobotMap.maxFlywheelSpeed));
         SmartDashboard.putData("Shooter Arm Batter", new ShooterArmMoveAndRev(RobotMap.shootingAngle,2100, 2520));
 
-        
         SmartDashboard.putData("Shooter Arm Joystick Relative", new ShooterArmMoveRelativeJoystick());
         SmartDashboard.putData("Shooter Arm cam to goal", new ShooterArmMoveToGoal());
-        
+
+        SmartDashboard.putData("Rotate +90", new DriveAngle(0.65, 90, true));
+        SmartDashboard.putData("Rotate -90", new DriveAngle(0.65, -90, true));
+        SmartDashboard.putData("Rotate +2", new DriveAngle(0.65, +2, true, 0.75));
+        SmartDashboard.putData("Rotate -2", new DriveAngle(0.65, -2, true, 0.75));
+        SmartDashboard.putData("Rotate +8", new DriveAngle(0.65, +8, true, 2.0));
+        SmartDashboard.putData("Rotate -8", new DriveAngle(0.65, -8, true, 2.0));
+        SmartDashboard.putData("Rotate +90 fast", new DriveAngle(1.0, 90, true));
+        SmartDashboard.putData("Rotate -90 fast", new DriveAngle(1.0, -90, true));
+
         if (Robot.smartDashboardDebug) {
         	setupSmartDashboardDebug();
         }
@@ -355,10 +363,13 @@ public class OI {
 //        SmartDashboard.putData("Rotate to 90", new DriveAngle(0.65, 90, false));
         SmartDashboard.putData("Rotate +90", new DriveAngle(0.65, 90, true));
         SmartDashboard.putData("Rotate -90", new DriveAngle(0.65, -90, true));
-        SmartDashboard.putData("Rotate +2", new DriveAngle(0.65, 2, true));
-        SmartDashboard.putData("Rotate -2", new DriveAngle(0.65, -2, true));
-        SmartDashboard.putData("Rotate +5", new DriveAngle(0.65, +5, true));
-        SmartDashboard.putData("Rotate -5", new DriveAngle(0.65, -5, true));
+        SmartDashboard.putData("Rotate +5", new DriveAngle(0.65, +5, true, 0.75));
+        SmartDashboard.putData("Rotate -5", new DriveAngle(0.65, -5, true, 0.75));
+        SmartDashboard.putData("Rotate +10", new DriveAngle(0.65, +10, true, 2.0));
+        SmartDashboard.putData("Rotate -10", new DriveAngle(0.65, -10, true, 2.0));
+        SmartDashboard.putData("Rotate +90 fast", new DriveAngle(1.0, 90, true));
+        SmartDashboard.putData("Rotate -90 fast", new DriveAngle(1.0, -90, true));
+
 
         SmartDashboard.putData("Start Top FlyWheel only", new FlyWheelSetToSpeed(RobotMap.maxFlywheelSpeed, 0));
         SmartDashboard.putData("Start Bottom FlyWheel only", new FlyWheelSetToSpeed(0, RobotMap.maxFlywheelSpeed));

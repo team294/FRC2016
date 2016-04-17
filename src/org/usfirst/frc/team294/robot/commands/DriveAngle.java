@@ -15,14 +15,16 @@ public class DriveAngle extends Command {
     protected double commandSpeed;
     protected double targetAngle;
     protected boolean relative;
-    
+	protected double maxTol;
+	
     // Check if target has been reached
-    protected ToleranceChecker angleTol = new ToleranceChecker(4, 5);
+    private double defaultTolerance = 4.0;
+    protected ToleranceChecker angleTol = new ToleranceChecker(defaultTolerance, 5);
     
     // Steering settings
     private double angleErr, speedControl;
-    private double minSpeed = 0.2;
-    private double kPangle = 0.02; 
+    private double minSpeed = 0.25;
+    private double kPangle = 0.025; 
     
     /**
      * Turns a given angle using the NavX.
@@ -34,13 +36,31 @@ public class DriveAngle extends Command {
         commandSpeed = Math.abs(speed);
         targetAngle = (angle < 0) ? angle+360.0 : angle;
         this.relative = relative;
+        maxTol = defaultTolerance;
         
+        requires(Robot.driveTrain);
+    }
+
+    /**
+     * Turns a given angle using the NavX.
+     * @param speed +1 = full speed, 0  = don't move
+     * @param angle to turn, in degrees.  0 to 360 degrees clockwise, or 0 to -180 counter-clockwise
+     * @param relative true = relative to current angle, false = absolute NavX orientation
+     * @param angleTolerance = accuracy of robot turning which is good enough to stop command, in degrees
+     */
+    public DriveAngle(double speed, double angle, boolean relative, double angleTolerance) {
+        commandSpeed = Math.abs(speed);
+        targetAngle = (angle < 0) ? angle+360.0 : angle;
+        this.relative = relative;
+        maxTol = angleTolerance;
+
         requires(Robot.driveTrain);
     }
 
     // Called just before this Command runs the first time
     protected void initialize() {
     	angleTol.reset();
+    	angleTol.setTolerance(maxTol);
     	if (relative) {
         	Robot.driveTrain.resetDegrees();    		
     	}
@@ -48,12 +68,21 @@ public class DriveAngle extends Command {
 //    	speedControl = 1;
     }
 
-    // Called repeatedly when this Command is scheduled to run
-    protected void execute() {
+    private double getAngleError() {
+    	double angleErr;
+    	
     	// Find angle error.  - = left, + = right
     	angleErr = targetAngle - Robot.driveTrain.getDegrees();
     	angleErr = (angleErr>180) ? angleErr-360 : angleErr;
-    	angleErr = (angleErr<-180) ? angleErr+360 : angleErr;
+    	angleErr = (angleErr<-180) ? angleErr+360 : angleErr;   
+    	
+    	return angleErr;
+    }    
+    
+    // Called repeatedly when this Command is scheduled to run
+    protected void execute() {
+    	// Find angle error.  - = left, + = right
+    	angleErr = getAngleError();
     	
         if (Robot.smartDashboardDebug) {
         	SmartDashboard.putNumber("Drive Angle Error", angleErr);

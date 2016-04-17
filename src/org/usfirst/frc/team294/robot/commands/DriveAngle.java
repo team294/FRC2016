@@ -15,7 +15,6 @@ public class DriveAngle extends Command {
     private double commandSpeed;
     private double targetAngle;
     private boolean relative;
-    private boolean getAngleFromMiddleKnob;
     
     // Steering settings
     private double angleErr, speedControl;
@@ -35,34 +34,12 @@ public class DriveAngle extends Command {
         commandSpeed = Math.abs(speed);
         targetAngle = (angle < 0) ? angle+360.0 : angle;
         this.relative = relative;
-        getAngleFromMiddleKnob = false;
-        
-        requires(Robot.driveTrain);
-    }
-
-    /**
-     * Turns a given angle using the NavX.
-     * @param speed +1 = full speed, 0  = don't move
-     * @param angle to turn, in degrees.  0 to 360 degrees clockwise, or 0 to -180 counter-clockwise
-     * @param relative true = relative to current angle, false = absolute NavX orientation
-     * @param getAngleFromMiddleKnob true = override angle with auto-angle from middle knob.  false = use angle from command.
-     */
-    public DriveAngle(double speed, double angle, boolean relative, boolean getAngleFromMiddleKnob) {
-        commandSpeed = Math.abs(speed);
-        targetAngle = (angle < 0) ? angle+360.0 : angle;
-        this.relative = relative;
-        this.getAngleFromMiddleKnob = getAngleFromMiddleKnob;
         
         requires(Robot.driveTrain);
     }
 
     // Called just before this Command runs the first time
     protected void initialize() {
-    	if (getAngleFromMiddleKnob) {
-    		targetAngle = Robot.oi.readMiddleKnobTurnAngle();
-            targetAngle = (targetAngle < 0) ? targetAngle+360.0 : targetAngle;
-    	}
-    	
     	angleTol.reset();
     	if (relative) {
         	Robot.driveTrain.resetDegrees();    		

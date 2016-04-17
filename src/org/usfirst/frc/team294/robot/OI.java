@@ -66,8 +66,6 @@ public class OI {
 			BottomKnob.DrawBridge, BottomKnob.SallyPort, BottomKnob.RockWall, BottomKnob.RoughTerrain, BottomKnob.LowBar, BottomKnob.noChange, BottomKnob.noChange
 	};
 	
-	double[] MiddleKnobTurnAngles = new double[] {45.0, 30.0, 15.0, -15.0, -45.0 };
-	
 	Command[] MiddleKnobCommands = new Command[] {
 		null,		// Position 1
 		new AutoDriveAndShootPosition2(),		// Position 2
@@ -254,24 +252,23 @@ public class OI {
         	SmartDashboard.putNumber("Middle Knob Position", i);
         	SmartDashboard.putNumber("Middle Knob Reading", knobReading2);
         }
-        
-//		if(i==len)return len-1;
 
 		return i;
 	}
 	
+	/**
+	 * Reads the middle knob.
+	 * @return OI.MiddleKnob robot starting position constant for the current knob position
+	 */
 	public MiddleKnob readMiddleKnob(){
 		return MiddleKnobPositions[readMiddleKnobRaw()];
 	}
 
 	/**
-	 * Reads the bottom knob.  Returns angle to hit target at end of auto.
-	 * @return Angle to turn
+	 * Gets "drive, turn, and shoot" command based on the robot starting position, as
+	 * per the middle knob setting.  Use this after crossing the outer works (barriers). 
+	 * @return  Command to turn and shoot
 	 */
-	public double readMiddleKnobTurnAngle(){
-		return MiddleKnobTurnAngles[readMiddleKnobRaw()];
-	}
-
 	public Command getMiddleKnobCommand() {
 		int i;
 		
@@ -306,10 +303,18 @@ public class OI {
 		return (i);
 	}
 
+	/**
+	 * Reads the bottom knob.
+	 * @return OI.BottomKnob barrier constant for the current knob position
+	 */
 	public BottomKnob readBottomKnob() {
 		return BottomKnobPositions[readBottomKnobRaw()];
 	}
 	
+	/**
+	 * Gets autonomous command to run based on bottom knob setting (barrier to cross)
+	 * @return Command to cross the barrier
+	 */
 	public Command getAutonomousCommand() {
 		return BottomKnobCommands[readBottomKnobRaw()];
 	}

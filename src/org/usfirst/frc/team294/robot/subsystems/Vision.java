@@ -169,7 +169,7 @@ public class Vision extends Subsystem {
 	 * Old version of findGoal.  Selects the target with the largest X width.
 	 * @return
 	 */
-	public boolean findGoalOLD() {
+	public boolean findGoalLargest() {
 		// For finding the goal with the correct width
 		int i, goal;
 		double maxWidth;

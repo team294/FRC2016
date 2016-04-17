@@ -7,45 +7,49 @@ import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**
- * Turns a given angle using the NavX.
+ *
  */
-public class DriveAngle extends Command {
+public class DriveTurnToGoalOld extends Command {
 
 	// Initial settings when command was invoked
-    protected double commandSpeed;
-    protected double targetAngle;
-    protected boolean relative;
-    
-    // Check if target has been reached
-    protected ToleranceChecker angleTol = new ToleranceChecker(4, 5);
+	private double maxTol;
+	
+	// Other initialization variables
+    private double commandSpeed;
+    private double targetAngle;
     
     // Steering settings
     private double angleErr, speedControl;
     private double minSpeed = 0.2;
-    private double kPangle = 0.02; 
+    private double kPangle = 0.03; 
     
-    /**
-     * Turns a given angle using the NavX.
-     * @param speed +1 = full speed, 0  = don't move
-     * @param angle to turn, in degrees.  0 to 360 degrees clockwise, or 0 to -180 counter-clockwise
-     * @param relative true = relative to current angle, false = absolute NavX orientation
+    // Check if target has been reached
+    ToleranceChecker angleTol = new ToleranceChecker(1.5, 5);		// Default tolerance of 1.5 will be overwritten in initialize()
+    
+    /** 
+     * Turns robot to face largest goal found, to within tolerance
+     * @param angleTolerance = accuracy of robot turning, in degrees
      */
-    public DriveAngle(double speed, double angle, boolean relative) {
-        commandSpeed = Math.abs(speed);
-        targetAngle = (angle < 0) ? angle+360.0 : angle;
-        this.relative = relative;
-        
+    public DriveTurnToGoalOld(double angleTolerance) {
+        // Use requires() here to declare subsystem dependencies
+        // eg. requires(chassis);        
         requires(Robot.driveTrain);
+        
+        maxTol = angleTolerance;
     }
 
     // Called just before this Command runs the first time
     protected void initialize() {
     	angleTol.reset();
-    	if (relative) {
-        	Robot.driveTrain.resetDegrees();    		
-    	}
-//    	angleErr = 0;
-//    	speedControl = 1;
+    	angleTol.setTolerance(maxTol);
+       	Robot.driveTrain.resetDegrees();    		
+
+        commandSpeed = 0.65;
+        Robot.vision.findGoal();
+        targetAngle = Robot.vision.getGoalXAngleError();
+    	System.out.println("Auto turn to goal:  dist = " + Robot.vision.getGoalDistance() + ", turn angle = " + targetAngle);
+
+        targetAngle = (targetAngle < 0) ? targetAngle+360.0 : targetAngle;
     }
 
     // Called repeatedly when this Command is scheduled to run
@@ -66,8 +70,9 @@ public class DriveAngle extends Command {
     	} else {
         	// Find speed to drive
         	speedControl = angleErr*kPangle;
-        	speedControl = (speedControl>commandSpeed) ? commandSpeed : speedControl;
-        	speedControl = (speedControl<-commandSpeed) ? -commandSpeed : speedControl;
+        	speedControl = (speedControl>1) ? 1 : speedControl;
+        	speedControl = (speedControl<-1) ? -1 : speedControl;
+        	speedControl *= commandSpeed;
         	
         	if (speedControl>0) {
         		speedControl = (speedControl<minSpeed) ? minSpeed : speedControl;
@@ -76,7 +81,7 @@ public class DriveAngle extends Command {
         	}
         	
         	Robot.driveTrain.driveCurve(speedControl, 1);
-//        	System.out.print(commandSpeed + "  "+ speedControl);    		
+        	SmartDashboard.putNumber("Drive angle power", speedControl);
     	}
     }
 

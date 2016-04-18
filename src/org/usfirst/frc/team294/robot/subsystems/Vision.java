@@ -25,6 +25,7 @@ public class Vision extends Subsystem {
 	
 	// GRIP data
 	NetworkTable table;
+	NetworkTable grip_table;
 	double[] centerX, centerY, width;
 	double[] networkTableDefault = new double[] { -1.0 };
 
@@ -51,11 +52,25 @@ public class Vision extends Subsystem {
 	
 	public Vision(){
 		table = NetworkTable.getTable("GRIP/myContoursReport");
+		grip_table = NetworkTable.getTable("GRIP");
 		bGoalFound = false;
 	}
 	
     // Put methods for controlling this subsystem
     // here. Call these from Commands.
+	
+	public void enableCameraSaving(){
+		grip_table.putNumber("saveImagePeriod", 0);
+		grip_table.putBoolean("saveImageEnabled", true);
+	}
+	
+	public void disableCameraSaving(){
+		grip_table.putBoolean("saveImageEnabled", false);
+	}
+	
+	public void setCameraPeriod(double period){
+		grip_table.putNumber("saveImagePeriod", period);
+	}
 
 	/**
 	 * Searches for goal and primes internal data structures with goal coordinates.

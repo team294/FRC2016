@@ -111,7 +111,7 @@ public class Robot extends IterativeRobot {
 	 * to reset subsystems before shutting down.
 	 */
 	public void disabledInit() {
-
+		vision.disableCameraSaving();
 	}
 
 	public void disabledPeriodic() {
@@ -126,6 +126,9 @@ public class Robot extends IterativeRobot {
 			autonomousCommand.start();
 
 		timerTilt.reset();
+		
+		vision.enableCameraSaving();
+		vision.setCameraPeriod(0.25);
 	}
 
 	/**
@@ -164,6 +167,9 @@ public class Robot extends IterativeRobot {
 //			raiseArm90.start();			
 //		}
 		shooterArm.setBrakeOff();
+		
+		vision.enableCameraSaving();
+		vision.setCameraPeriod(1);
 	}
 
 	/**

@@ -116,6 +116,8 @@ public class Robot extends IterativeRobot {
 
 	public void disabledPeriodic() {
 		Scheduler.getInstance().run();
+
+		vision.findGoal();
 	}
 
 	public void autonomousInit() {

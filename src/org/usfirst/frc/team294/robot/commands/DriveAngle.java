@@ -12,18 +12,19 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 public class DriveAngle extends Command {
 
 	// Initial settings when command was invoked
-    private double commandSpeed;
-    private double targetAngle;
-    private boolean relative;
-    private boolean getAngleFromMiddleKnob;
+    protected double commandSpeed;
+    protected double targetAngle;
+    protected boolean relative;
+	protected double maxTol;
+	
+    // Check if target has been reached
+    private double defaultTolerance = 4.0;
+    protected ToleranceChecker angleTol = new ToleranceChecker(defaultTolerance, 5);
     
     // Steering settings
     private double angleErr, speedControl;
-    private double minSpeed = 0.2;
-    private double kPangle = 0.03; 
-    
-    // Check if target has been reached
-    ToleranceChecker angleTol = new ToleranceChecker(4, 5);
+    private double minSpeed = 0.25;
+    private double kPangle = 0.025; 
     
     /**
      * Turns a given angle using the NavX.
@@ -35,7 +36,7 @@ public class DriveAngle extends Command {
         commandSpeed = Math.abs(speed);
         targetAngle = (angle < 0) ? angle+360.0 : angle;
         this.relative = relative;
-        getAngleFromMiddleKnob = false;
+        maxTol = defaultTolerance;
         
         requires(Robot.driveTrain);
     }
@@ -45,38 +46,43 @@ public class DriveAngle extends Command {
      * @param speed +1 = full speed, 0  = don't move
      * @param angle to turn, in degrees.  0 to 360 degrees clockwise, or 0 to -180 counter-clockwise
      * @param relative true = relative to current angle, false = absolute NavX orientation
-     * @param getAngleFromMiddleKnob true = override angle with auto-angle from middle knob.  false = use angle from command.
+     * @param angleTolerance = accuracy of robot turning which is good enough to stop command, in degrees
      */
-    public DriveAngle(double speed, double angle, boolean relative, boolean getAngleFromMiddleKnob) {
+    public DriveAngle(double speed, double angle, boolean relative, double angleTolerance) {
         commandSpeed = Math.abs(speed);
         targetAngle = (angle < 0) ? angle+360.0 : angle;
         this.relative = relative;
-        this.getAngleFromMiddleKnob = getAngleFromMiddleKnob;
-        
+        maxTol = angleTolerance;
+
         requires(Robot.driveTrain);
     }
 
     // Called just before this Command runs the first time
     protected void initialize() {
-    	if (getAngleFromMiddleKnob) {
-    		targetAngle = Robot.oi.readMiddleKnobTurnAngle();
-            targetAngle = (targetAngle < 0) ? targetAngle+360.0 : targetAngle;
-    	}
-    	
     	angleTol.reset();
+    	angleTol.setTolerance(maxTol);
     	if (relative) {
         	Robot.driveTrain.resetDegrees();    		
     	}
 //    	angleErr = 0;
-    	speedControl = 1;
+//    	speedControl = 1;
     }
 
-    // Called repeatedly when this Command is scheduled to run
-    protected void execute() {
+    private double getAngleError() {
+    	double angleErr;
+    	
     	// Find angle error.  - = left, + = right
     	angleErr = targetAngle - Robot.driveTrain.getDegrees();
     	angleErr = (angleErr>180) ? angleErr-360 : angleErr;
-    	angleErr = (angleErr<-180) ? angleErr+360 : angleErr;
+    	angleErr = (angleErr<-180) ? angleErr+360 : angleErr;   
+    	
+    	return angleErr;
+    }    
+    
+    // Called repeatedly when this Command is scheduled to run
+    protected void execute() {
+    	// Find angle error.  - = left, + = right
+    	angleErr = getAngleError();
     	
         if (Robot.smartDashboardDebug) {
         	SmartDashboard.putNumber("Drive Angle Error", angleErr);
@@ -84,12 +90,13 @@ public class DriveAngle extends Command {
         
     	angleTol.check(Math.abs(angleErr));
     	
-    	if (!angleTol.success()) {
+    	if (angleTol.success()) {
+        	Robot.driveTrain.stop();
+    	} else {
         	// Find speed to drive
         	speedControl = angleErr*kPangle;
-        	speedControl = (speedControl>1) ? 1 : speedControl;
-        	speedControl = (speedControl<-1) ? -1 : speedControl;
-        	speedControl *= commandSpeed;
+        	speedControl = (speedControl>commandSpeed) ? commandSpeed : speedControl;
+        	speedControl = (speedControl<-commandSpeed) ? -commandSpeed : speedControl;
         	
         	if (speedControl>0) {
         		speedControl = (speedControl<minSpeed) ? minSpeed : speedControl;
@@ -109,12 +116,12 @@ public class DriveAngle extends Command {
 
     // Called once after isFinished returns true
     protected void end() {
-    	Robot.driveTrain.driveCurve(0, 0);
+    	Robot.driveTrain.stop();
     }
 
     // Called when another command which requires one or more of the same
     // subsystems is scheduled to run
     protected void interrupted() {
-    	Robot.driveTrain.driveCurve(0, 0);
+    	Robot.driveTrain.stop();
     }
 }

@@ -15,7 +15,7 @@ public class AutoDriveAndShootPosition2 extends CommandGroup {
     	addSequential(new DriveStraightSegInit(1.0, 4.0*12.0, DriveStraightSegInit.Units.inches));
     	addSequential(new DriveStop());
 //    	addSequential(new WaitSeconds(2.0));
-    	addSequential(new DriveAngle(0.7, -40.0, false));    	
+    	addSequential(new DriveAngle(0.7, -50.0, false));    	
     	addSequential(new AutoTargetShoot());
     }
 }

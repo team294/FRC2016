@@ -14,8 +14,9 @@ public class AutoDriveAndShootPosition5 extends CommandGroup {
 //    	addSequential(new DriveAngle(0.7, 60.0, false));
     	addSequential(new DriveStraightSegInit(1.0, 4.0*12.0, DriveStraightSegInit.Units.inches));
     	addSequential(new DriveStop());
-    	addSequential(new WaitSeconds(2.0));
-    	addSequential(new DriveAngle(0.7, -30, false));    	
+    	//addSequential(new WaitSeconds(2.0));
+    	//addSequential(new DriveAngle(0.7, -30, false));    	//This could work for other defenses
+    	addSequential(new DriveAngle(0.7, -45, false));    	//Testing for possible portcullis auto.
     	addSequential(new AutoTargetShoot());
     }
 }

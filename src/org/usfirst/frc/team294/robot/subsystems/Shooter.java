@@ -110,6 +110,13 @@ public class Shooter extends Subsystem {
      * @param bottomSpeed RPM to set bottom motor.  + = eject ball, - = load ball.
 	 */
     public void setSpeed(double topSpeed, double bottomSpeed) {
+    	
+    	if(topSpeed > 0 && bottomSpeed > 0){
+    		Robot.vision.setCameraPeriod(0);
+    	}else{
+    		Robot.vision.setCameraPeriod(1);
+    	}
+    	
     	motorTop.enableControl();
     	motorBottom.enableControl();
     	if (Math.abs(motorTop.getSetpoint()-topSpeed)>0.1*topSpeed) {
@@ -136,6 +143,7 @@ public class Shooter extends Subsystem {
     	motorBottom.disableControl();
     	
     	setFlywheelSpeedLight(false);
+		Robot.vision.setCameraPeriod(1);
     }
     
     /** 

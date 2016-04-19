@@ -17,7 +17,7 @@ public class AutoFastBarrier extends CommandGroup {
     	addSequential(new DriveStop());
     	//addSequential(new WaitSeconds(0.1));
 //    	addSequential(new DriveAngle(0.55, 0, false, true));				// Turn towards goal using angle based on starting position knob
-    	addSequential(new DriveAngle(0.7, 0.0, true));    		// Recover original orientation
+    	addSequential(new DriveAngle(0.7, 0.0, false));    		// Recover original orientation
     	
     	addSequential(new AutoDriveAndShootMiddleKnob());
 

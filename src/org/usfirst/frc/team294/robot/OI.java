@@ -142,7 +142,7 @@ public class OI {
 		xbB[8].whileHeld(new IntakeOverride(true));
 		xbB[8].whenReleased(new IntakeOverride(false));
 	    xbB[9].whenPressed(new StopFlyAndIntake());
-		xbB[10].whenPressed(new ShooterPistonOverride());
+		//xbB[10].whenPressed(new ShooterPistonOverride());
 
         xbPovUp.whenActive(new ShooterArmMoveAndFlyIn(RobotMap.ShootFromLocation.Outerworks));
         xbPovDown.whenActive(new ShooterArmMoveAndStopFlywheels(RobotMap.shooterArmBallLoadAngle));

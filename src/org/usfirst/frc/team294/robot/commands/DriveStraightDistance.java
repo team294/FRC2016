@@ -30,7 +30,7 @@ public class DriveStraightDistance extends Command {
     
     // Check if target has been reached
 //    ToleranceChecker driveTol = new ToleranceChecker(100, 5);
-    ToleranceChecker driveTol = new ToleranceChecker(0.02, 5);
+    ToleranceChecker driveTol = new ToleranceChecker(0.5, 5);
     
     /**
      * Drives straight a given distance using the NavX for angle correction.

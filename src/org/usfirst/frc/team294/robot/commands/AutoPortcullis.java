@@ -20,6 +20,6 @@ public class AutoPortcullis extends CommandGroup {
     	addSequential(new IntakeSetToSpeed(-1));
     	addSequential(new DriveStraightDistance(.5, 24, DriveStraightDistance.Units.inches));    	// "Slow" speed, this will push up against the port
     	addSequential(new DriveStraightDistance(1.0, 6.0*12.0, DriveStraightDistance.Units.inches));    	// "Quickly blasts through port"
-    	addSequential(new DriveAngle(0.55, 0, false));				// Recover original orientation
+    	addSequential(new DriveAngle(0.65, 0, false));				// Recover original orientation
     }
 }

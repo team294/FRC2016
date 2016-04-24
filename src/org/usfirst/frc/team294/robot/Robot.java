@@ -35,6 +35,7 @@ public class Robot extends IterativeRobot {
 	public static Shooter shooter;
 	public static Intake intake;
 	public static Vision vision;
+	public static ArmPiston armPiston;
 
 	public static PowerDistributionPanel panel;
 

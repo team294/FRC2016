@@ -66,7 +66,13 @@ public class OI {
 			BottomKnob.DrawBridge, BottomKnob.SallyPort, BottomKnob.RockWall, BottomKnob.RoughTerrain, BottomKnob.LowBar, BottomKnob.noChange, BottomKnob.noChange
 	};
 	
-	double[] MiddleKnobTurnAngles = new double[] {45.0, 30.0, 15.0, -30.0, -45.0 };
+	Command[] MiddleKnobCommands = new Command[] {
+		null,		// Position 1
+		new AutoDriveAndShootPosition2(),		// Position 2
+		new AutoDriveAndShootPosition3(),		// Position 3
+		new AutoDriveAndShootPosition4(),		// Position 4
+		new AutoDriveAndShootPosition5()		// Position 5
+	};
 	
 	Command[] BottomKnobCommands = new Command[] {	
 		new AutoPortcullis(), 		//Portcullis 
@@ -200,10 +206,17 @@ public class OI {
         SmartDashboard.putData("Shooter Arm Batter+1", new ShooterArmMoveAndRev(RobotMap.shootingAngleFromEndOfBatter, RobotMap.maxFlywheelSpeed, RobotMap.maxFlywheelSpeed));
         SmartDashboard.putData("Shooter Arm Batter", new ShooterArmMoveAndRev(RobotMap.shootingAngle,2100, 2520));
 
-        
         SmartDashboard.putData("Shooter Arm Joystick Relative", new ShooterArmMoveRelativeJoystick());
         SmartDashboard.putData("Shooter Arm cam to goal", new ShooterArmMoveToGoal());
 
+        SmartDashboard.putData("Rotate +90", new DriveAngle(0.65, 90, true));
+        SmartDashboard.putData("Rotate -90", new DriveAngle(0.65, -90, true));
+        SmartDashboard.putData("Rotate +2", new DriveAngle(0.65, +2, true, 0.75));
+        SmartDashboard.putData("Rotate -2", new DriveAngle(0.65, -2, true, 0.75));
+        SmartDashboard.putData("Rotate +8", new DriveAngle(0.65, +8, true, 2.0));
+        SmartDashboard.putData("Rotate -8", new DriveAngle(0.65, -8, true, 2.0));
+        SmartDashboard.putData("Rotate +90 fast", new DriveAngle(1.0, 90, true));
+        SmartDashboard.putData("Rotate -90 fast", new DriveAngle(1.0, -90, true));
 
         if (Robot.smartDashboardDebug) {
         	setupSmartDashboardDebug();
@@ -236,7 +249,8 @@ public class OI {
 	public int readMiddleKnobRaw() {
 		double knobReading2;
 
-		int i=0;knobReading2 = coPanel.getRawAxis(6);
+		int i=0;
+		knobReading2 = coPanel.getRawAxis(6);
 		int len=middleKnobThreshold.length;
 		for(i=0;i<len; i++) {
 			if (knobReading2<middleKnobThreshold[i]) break;
@@ -246,22 +260,32 @@ public class OI {
         	SmartDashboard.putNumber("Middle Knob Position", i);
         	SmartDashboard.putNumber("Middle Knob Reading", knobReading2);
         }
-        
-		if(i==len)return len-1;
 
 		return i;
 	}
 	
+	/**
+	 * Reads the middle knob.
+	 * @return OI.MiddleKnob robot starting position constant for the current knob position
+	 */
 	public MiddleKnob readMiddleKnob(){
 		return MiddleKnobPositions[readMiddleKnobRaw()];
 	}
 
 	/**
-	 * Reads the bottom knob.  Returns angle to hit target at end of auto.
-	 * @return Angle to turn
+	 * Gets "drive, turn, and shoot" command based on the robot starting position, as
+	 * per the middle knob setting.  Use this after crossing the outer works (barriers). 
+	 * @return  Command to turn and shoot
 	 */
-	public double readMiddleKnobTurnAngle(){
-		return MiddleKnobTurnAngles[readMiddleKnobRaw()];
+	public Command getMiddleKnobCommand() {
+		int i;
+		
+		i = readMiddleKnobRaw();
+		if (i<MiddleKnobCommands.length) {
+			return MiddleKnobCommands[i];
+		} else {
+			return null;
+		}			
 	}
 
 	/**
@@ -287,10 +311,18 @@ public class OI {
 		return (i);
 	}
 
+	/**
+	 * Reads the bottom knob.
+	 * @return OI.BottomKnob barrier constant for the current knob position
+	 */
 	public BottomKnob readBottomKnob() {
 		return BottomKnobPositions[readBottomKnobRaw()];
 	}
 	
+	/**
+	 * Gets autonomous command to run based on bottom knob setting (barrier to cross)
+	 * @return Command to cross the barrier
+	 */
 	public Command getAutonomousCommand() {
 		return BottomKnobCommands[readBottomKnobRaw()];
 	}
@@ -317,11 +349,6 @@ public class OI {
         SmartDashboard.putData("Shoot ball auto target", new AutoTargetShoot());
 
         // SmartDashboard Buttons
-//		SmartDashboard.putData("Drive fwd 0.5 speed", new DriveCurve(0.5, 0));
-//		SmartDashboard.putData("Drive left 0.5 speed", new DriveCurve(0.5, -0.5));
-//		SmartDashboard.putData("Drive right 0.5 speed", new DriveCurve(0.5, 0.5));
-//		SmartDashboard.putData("DriveTalon: driveForward 5 revs", new DriveDistance(1.0, 5.0));
-//		SmartDashboard.putData("DriveTalon: driveForward 1 rev", new DriveDistance(0.5, 1.0));
         SmartDashboard.putData("DriveStraightNxp: 10 revs fast", new DriveStraightDistance(1.0, 10.0, DriveStraightDistance.Units.rotations));
         SmartDashboard.putData("DriveStraightNxp: 10 revs slow", new DriveStraightDistance(0.6, 10.0, DriveStraightDistance.Units.rotations));
         SmartDashboard.putData("DriveStraightNxp: 5 revs fast", new DriveStraightDistance(1.0, 5.0, DriveStraightDistance.Units.rotations));
@@ -331,21 +358,18 @@ public class OI {
 //        SmartDashboard.putData("DriveStraightNxp: -5 revs fast", new DriveStraightDistance(1.0, -5.0, DriveStraightDistance.Units.rotations));
         SmartDashboard.putData("DriveStraightNxp: -5 revs slow", new DriveStraightDistance(0.6, -5.0, DriveStraightDistance.Units.rotations));
         SmartDashboard.putData("DriveStraightNxp: 10 feet slow", new DriveStraightDistance(0.6, 120.0, DriveStraightDistance.Units.inches));
-//        SmartDashboard.putData("Rotate +90 PID", new DriveAnglePID(90.0));
-//        SmartDashboard.putData("Rotate -90 PID", new DriveAnglePID(-90.0));
-//        SmartDashboard.putData("Rotate +5 PID", new DriveAnglePID(5.0));
-//        SmartDashboard.putData("Rotate -5 PID", new DriveAnglePID(-5.0));
-//        SmartDashboard.putData("Rotate +2 PID", new DriveAnglePID(2.0));
-//        SmartDashboard.putData("Rotate -2 PID", new DriveAnglePID(-2.0));
-        SmartDashboard.putData("Rotate to 0", new DriveAngle(0.55, 0, false));
-//        SmartDashboard.putData("Rotate to 10", new DriveAngle(0.55, 10, false));
-//        SmartDashboard.putData("Rotate to 90", new DriveAngle(0.55, 90, false));
-        SmartDashboard.putData("Rotate +90", new DriveAngle(0.55, 90, true));
-        SmartDashboard.putData("Rotate -90", new DriveAngle(0.55, -90, true));
-        SmartDashboard.putData("Rotate +2", new DriveAngle(0.55, 2, true));
-        SmartDashboard.putData("Rotate -2", new DriveAngle(0.55, -2, true));
-        SmartDashboard.putData("Rotate +5", new DriveAngle(0.55, +5, true));
-        SmartDashboard.putData("Rotate -5", new DriveAngle(0.55, -5, true));
+        SmartDashboard.putData("Rotate to 0", new DriveAngle(0.65, 0, false));
+//        SmartDashboard.putData("Rotate to 10", new DriveAngle(0.65, 10, false));
+//        SmartDashboard.putData("Rotate to 90", new DriveAngle(0.65, 90, false));
+        SmartDashboard.putData("Rotate +90", new DriveAngle(0.65, 90, true));
+        SmartDashboard.putData("Rotate -90", new DriveAngle(0.65, -90, true));
+        SmartDashboard.putData("Rotate +5", new DriveAngle(0.65, +5, true, 0.75));
+        SmartDashboard.putData("Rotate -5", new DriveAngle(0.65, -5, true, 0.75));
+        SmartDashboard.putData("Rotate +10", new DriveAngle(0.65, +10, true, 2.0));
+        SmartDashboard.putData("Rotate -10", new DriveAngle(0.65, -10, true, 2.0));
+        SmartDashboard.putData("Rotate +90 fast", new DriveAngle(1.0, 90, true));
+        SmartDashboard.putData("Rotate -90 fast", new DriveAngle(1.0, -90, true));
+
 
         SmartDashboard.putData("Start Top FlyWheel only", new FlyWheelSetToSpeed(RobotMap.maxFlywheelSpeed, 0));
         SmartDashboard.putData("Start Bottom FlyWheel only", new FlyWheelSetToSpeed(0, RobotMap.maxFlywheelSpeed));

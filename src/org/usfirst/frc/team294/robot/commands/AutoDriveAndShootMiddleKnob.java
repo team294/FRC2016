@@ -1,41 +1,39 @@
 package org.usfirst.frc.team294.robot.commands;
 
 import org.usfirst.frc.team294.robot.Robot;
-import org.usfirst.frc.team294.robot.RobotMap;
 
 import edu.wpi.first.wpilibj.command.Command;
 
 /**
  *
  */
-public class ShooterArmMoveToGoal extends Command {
-	
-	/**
-	 * Moves arm to angle of goal based on camera and holds there with PID/potentiometer.
-	 */
-    public ShooterArmMoveToGoal() {
+public class AutoDriveAndShootMiddleKnob extends Command {
+
+    private Command driveCommand;
+
+	public AutoDriveAndShootMiddleKnob() {
         // Use requires() here to declare subsystem dependencies
         // eg. requires(chassis);
-
-    	requires(Robot.shooterArm); 
+    	requires(Robot.shooter);
+    	requires(Robot.shooterArm);
+    	requires(Robot.driveTrain);
     }
 
     // Called just before this Command runs the first time
     protected void initialize() {
-    	Robot.vision.findGoal();
-    	Robot.shooterArm.moveToAngle(Robot.vision.getGoalArmAngle());
-    	System.out.println("Auto move arm to goal:  dist = " + Robot.vision.getGoalDistance() + ", arm angle = " + Robot.vision.getGoalArmAngle());
-
+		driveCommand = Robot.oi.getMiddleKnobCommand();
+		
+		if (driveCommand != null)
+			driveCommand.start();
     }
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
-    	
     }
 
     // Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished() {
-    	return (Robot.shooterArm.moveToAngleIsFinished());
+        return true;
     }
 
     // Called once after isFinished returns true

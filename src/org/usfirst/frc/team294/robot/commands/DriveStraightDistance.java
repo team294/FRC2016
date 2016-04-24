@@ -39,6 +39,7 @@ public class DriveStraightDistance extends Command {
      * @param units = DriveStraightDistance.rotations or DriveStraightDistance.units
      */
     public DriveStraightDistance(double speed, double distance, Units units) {
+    	
         commandSpeed = Math.abs(speed);
 //        this.distance = distance*encTickPerRev;
         if (units == Units.rotations) {

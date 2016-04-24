@@ -124,7 +124,8 @@ public class Intake extends Subsystem {
      * @return true = intake is in down position
      */
     public boolean intakeSensorDown() {
-    	return intakeDownSensor.get();
+    	return false;		// No sensor installed, so always return false
+//    	return intakeDownSensor.get();
     }
     
     /**

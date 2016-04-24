@@ -11,38 +11,22 @@ public class AutoLowBar extends CommandGroup {
     
     public  AutoLowBar() {
     	// Configure robot for low bar
-    	addSequential(new ShooterArmMoveToSetLocation(RobotMap.upperBoundAngleToAvoid+3));
-    	//addSequential(new WaitSeconds(0.25));
-    	addParallel(new ShiftDown());
-    	addSequential(new IntakeLowerIfRaised());
-    	addSequential(new ShooterArmMoveToSetLocation(0));
+    	addParallel(new LowerIntakeAndShooterArm(false));
+    	addSequential(new ShiftDown());
+    	addSequential(new WaitSeconds(2.5));	// Is this the right delay?
 
-    	// Drive across barrier and turn towards goal
-    	addSequential(new DriveStraightDistance(0.65, 16.0*12.0, DriveStraightDistance.Units.inches));    	// "Slow" speed, 16 feet
+    	// Drive across barrier (and then some)
+//    	addSequential(new DriveStraightDistance(0.65, 16.0*12.0, DriveStraightDistance.Units.inches));    	// "Slow" speed, 16 feet
+    	addSequential(new DriveStraightSegInit(0.4, 40.0, DriveStraightSegInit.Units.inches));    	// "slow" speed, 40 inches
+    	addSequential(new DriveStraightSegMid(0.65, 9.0*12.0, DriveStraightSegMid.Units.inches));    	// "Medium" speed, 9 feet total
+    	addSequential(new DriveStraightSegMid(1.0, 15.0*12.0, DriveStraightSegMid.Units.inches));    	// "slow" speed, 15 feet total
+    	addSequential(new DriveStraightSegMid(0.4, 16.0*12.0, DriveStraightSegMid.Units.inches));    	// "slow" speed, 16 feet total
+    	addSequential(new DriveStop());
     	
-//    	addSequential(new DriveStraightSegInit());
-//    	addSequential(new DriveStraightSegMid());
-//    	addSequential(new DriveStraightSegMid());
-//    	addSequential(new DriveStraightSegFinal());
-    	
+    	// Turn towards goal
     	addParallel(new ShooterArmMoveToSetLocation(56));			// Start moving arm to correct target angle
-    	addSequential(new DriveAngle(0.55, 45, false));				// 45 degrees from original orientation
+    	addSequential(new WaitSeconds(0.1));
+    	addSequential(new DriveAngle(0.65, 45, false));				// 45 degrees from original orientation
     	addSequential(new AutoTargetShoot());
-    	// Add Commands here:
-        // e.g. addSequential(new Command1());
-        //      addSequential(new Command2());
-        // these will run in order.
-
-        // To run multiple commands at the same time,
-        // use addParallel()
-        // e.g. addParallel(new Command1());
-        //      addSequential(new Command2());
-        // Command1 and Command2 will run in parallel.
-
-        // A command group will require all of the subsystems that each member
-        // would require.
-        // e.g. if Command1 requires chassis, and Command2 requires arm,
-        // a CommandGroup containing them would require both the chassis and the
-        // arm.
-    }
+   }
 }

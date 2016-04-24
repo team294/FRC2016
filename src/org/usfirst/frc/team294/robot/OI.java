@@ -104,7 +104,7 @@ public class OI {
 	    Trigger xbLT = new AxisTrigger(xboxController, 2, 0.9);
         Trigger xbRT = new AxisTrigger(xboxController, 3, 0.9);
         Trigger xbPovUp = new POVTrigger(xboxController, 0);
-        //Trigger xbPovRight = new POVTrigger(xboxController, 90);
+        Trigger xbPovRight = new POVTrigger(xboxController, 90);
         Trigger xbPovDown = new POVTrigger(xboxController, 180);
         Trigger xbPovLeft = new POVTrigger(xboxController, 270);
 		
@@ -142,11 +142,12 @@ public class OI {
 		xbB[8].whileHeld(new IntakeOverride(true));
 		xbB[8].whenReleased(new IntakeOverride(false));
 	    xbB[9].whenPressed(new StopFlyAndIntake());
-		xbB[10].whenPressed(new ShooterPistonOverride());
+		//xbB[10].whenPressed(new ShooterPistonOverride());
 
         xbPovUp.whenActive(new ShooterArmMoveAndFlyIn(RobotMap.ShootFromLocation.Outerworks));
         xbPovDown.whenActive(new ShooterArmMoveAndStopFlywheels(RobotMap.shooterArmBallLoadAngle));
 		xbPovLeft.whenActive(new ShooterArmMoveAndFlyIn(RobotMap.ShootFromLocation.EndOfBatter));
+		xbPovRight.whenActive(new ShooterArmMoveAndFlyIn(RobotMap.ShootFromLocation.ManualOuterworks));
 
 		//Rev the flywheels to the correct speed
 		xbLT.whenActive(new FlyWheelSetToSpeedForArmLocation());

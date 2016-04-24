@@ -50,6 +50,7 @@ public class RobotMap {
     public static double shooterArmBallCruiseAngle = 10.0;  // Reduced from 15 to 10 degrees due to larger flywheels and arm stops.
     public static double shootingAngleFromOuterworks = 45.0; //Shooting angle from the outerworks
     public static double shootingAngleFromEndOfBatter = 62.0; //Shooting angle from the end of the batter
+    public static double shootingAngleOuterworksManual = 52.0;
     
     // Shooter arm range to avoid when raising or lowering intake
     public static double lowerBoundAngleToAvoid = 6;
@@ -66,7 +67,7 @@ public class RobotMap {
     public static double batterBotFlywheelSpeed = 2300;  // practice bot: 2520
 
 	public enum ShootFromLocation {
-		None,Batter,Outerworks,EndOfBatter
+		None,Batter,Outerworks,EndOfBatter,ManualOuterworks
 	}
 
     public static double getArmAngle(ShootFromLocation location) {
@@ -74,6 +75,8 @@ public class RobotMap {
     		return shootingAngleFromEndOfBatter;
     	else if (location == ShootFromLocation.Outerworks)
     		return shootingAngleFromOuterworks;
+    	else if (location == ShootFromLocation.ManualOuterworks)
+    		return shootingAngleOuterworksManual;
     	else
         	return shootingAngle;
     }
@@ -83,7 +86,7 @@ public class RobotMap {
 			return batterTopFlywheelSpeed;
         } else if (location == ShootFromLocation.EndOfBatter) {
 			return endOfBatterTopFlywheelSpeed;
-        } else if (location == ShootFromLocation.Outerworks) {
+        } else if (location == ShootFromLocation.Outerworks || location == ShootFromLocation.ManualOuterworks) {
 			return outerworksTopFlywheelSpeed;
         } else {
 			return batterTopFlywheelSpeed;
@@ -95,7 +98,7 @@ public class RobotMap {
 			return batterBotFlywheelSpeed;
         } else if (location == ShootFromLocation.EndOfBatter) {
 			return endOfBatterBotFlywheelSpeed;
-        } else if (location == ShootFromLocation.Outerworks) {
+        } else if (location == ShootFromLocation.Outerworks || location == ShootFromLocation.ManualOuterworks) {
 			return outerworksBotFlywheelSpeed;
         } else {
 			return batterBotFlywheelSpeed;

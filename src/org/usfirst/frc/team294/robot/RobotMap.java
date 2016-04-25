@@ -57,6 +57,9 @@ public class RobotMap {
     public static double lowerBoundAngleToAvoid = 6;
     public static double upperBoundAngleToAvoid = 83;
     
+    //This is the max angle the shooter arm can move while the arm piston is out.
+    public static double maxPistonOutAngle = 30;
+    
     // Shooter flywheel speeds
 	//TODO:  Change to 4500 for competition robot;
     public static double maxFlywheelSpeed = 4200;

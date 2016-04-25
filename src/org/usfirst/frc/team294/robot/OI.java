@@ -189,6 +189,8 @@ public class OI {
 
         SmartDashboard.putData("Piston out", new ShooterPistonOut(true));
         SmartDashboard.putData("Piston in", new ShooterPistonOut(false));
+		SmartDashboard.putData("Port Piston Out", new ArmPistonOut());
+		SmartDashboard.putData("Port Piston In", new ArmPistonIn());
         SmartDashboard.putData("Start FlyWheels", new FlyWheelSetToSpeed(RobotMap.maxFlywheelSpeed));
         SmartDashboard.putData("Intake FlyWheels", new FlyWheelSetToSpeed(-2500));
         SmartDashboard.putData("Stop FlyWheels", new FlyWheelStop());

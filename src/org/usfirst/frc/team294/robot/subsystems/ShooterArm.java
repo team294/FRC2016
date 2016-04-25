@@ -161,12 +161,16 @@ public class ShooterArm extends Subsystem {
 			return;
 		}
 		
+		if(getAngle() >= RobotMap.maxPistonOutAngle && Robot.armPiston.pistonIsOut()){
+			return;
+		}
+		
 		// Turn off brake before moving arm
 		setBrakeOff();
 		Robot.shooter.setLEDsArmAtAngle(false);
 		
-		if(Robot.armPiston.pistonIsOut() && angle>15){
-			angle=15;
+		if(Robot.armPiston.pistonIsOut() && angle>RobotMap.maxPistonOutAngle){
+			angle=28;
 		}
 		
 		// If arm is in keepout zone and intake is up (or in unknown state), then move arm away from the intake out of the keepout zone.

@@ -11,10 +11,6 @@ import edu.wpi.first.wpilibj.command.Subsystem;
 public class ArmPiston extends Subsystem {
 
     private final Solenoid piston = new Solenoid(RobotMap.armPiston);
-    
-    // Put methods for controlling this subsystem
-    // here. Call these from Commands.
-
 	
 	public void pistonOut(){
 		piston.set(true);

@@ -39,6 +39,7 @@ public class RobotMap {
     public static int intakeSolenoidRev = 3;
     public static int shooterPiston = 4;
     public static int shooterArmBrakeSolenoid = 5;
+    public static int armPiston = 6;
     
     // Range of motion for shooter arm
     public static double shooterArmMinAngle=0;
@@ -55,6 +56,9 @@ public class RobotMap {
     // Shooter arm range to avoid when raising or lowering intake
     public static double lowerBoundAngleToAvoid = 6;
     public static double upperBoundAngleToAvoid = 83;
+    
+    //This is the max angle the shooter arm can move while the arm piston is out.
+    public static double maxPistonOutAngle = 30;
     
     // Shooter flywheel speeds
 	//TODO:  Change to 4500 for competition robot;

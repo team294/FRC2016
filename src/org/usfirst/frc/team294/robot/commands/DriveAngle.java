@@ -23,6 +23,7 @@ public class DriveAngle extends Command {
     
     // Steering settings
     private double angleErr, speedControl;
+    private double priorAngleErr;
     private double minSpeed = 0.25;
     private double kPangle = 0.025; 
     
@@ -64,8 +65,8 @@ public class DriveAngle extends Command {
     	if (relative) {
         	Robot.driveTrain.resetDegrees();    		
     	}
-//    	angleErr = 0;
-//    	speedControl = 1;
+
+    	priorAngleErr = getAngleError();
     }
 
     private double getAngleError() {

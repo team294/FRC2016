@@ -21,14 +21,19 @@ public class DriveTurnToGoal extends DriveAngle {
 
     // Called just before this Command runs the first time
     protected void initialize() {
-    	angleTol.reset();
-    	angleTol.setTolerance(maxTol);
-       	Robot.driveTrain.resetDegrees();    		
-
         Robot.vision.findGoal();
         targetAngle = Robot.vision.getGoalXAngleError();
-    	System.out.println("Auto turn to goal:  dist = " + Robot.vision.getGoalDistance() + ", turn angle = " + targetAngle);
 
+    	System.out.println("Auto turn to goal:  Robot angle before reset = " + Robot.driveTrain.getDegrees() + 
+    			", target angle = " + targetAngle);
+        
         targetAngle = (targetAngle < 0) ? targetAngle+360.0 : targetAngle;
+       	super.initialize();
+//    	angleTol.reset();
+//    	angleTol.setTolerance(maxTol);
+//       	Robot.driveTrain.resetDegrees();    		
+       	
+    	System.out.println("Auto turn to goal:  dist = " + Robot.vision.getGoalDistance() + ", target angle = " 
+    			+ targetAngle + ", current angle = " + Robot.driveTrain.getDegrees());
     }
 }

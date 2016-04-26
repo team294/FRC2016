@@ -5,6 +5,7 @@ import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.PowerDistributionPanel;
 import edu.wpi.first.wpilibj.Preferences;
 import edu.wpi.first.wpilibj.Timer;
+import edu.wpi.first.wpilibj.Joystick.RumbleType;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
@@ -55,6 +56,10 @@ public class Robot extends IterativeRobot {
 	public static Timer timerLEDs = new Timer();
 	public static boolean timerLEDsCycleHigh = false;   // True in high half of LED interval
 	public static double timerLEDsHalfPeriod = 0.05;  // Half-period of timer, in seconds
+	
+	public static Timer timerRumble = new Timer();
+	public static boolean prevBallLoaded = false;
+	public static boolean prevReadyToShoot = false;
 
 	/**
 	 * This function is run when the robot is first started up and should be
@@ -91,6 +96,7 @@ public class Robot extends IterativeRobot {
 
         timerLEDs.start();
         timerTilt.start();
+        timerRumble.start();
         
         // instantiate the command used for the autonomous period
 		//autonomousCommand = new AutonomousCommandGroup();
@@ -111,7 +117,7 @@ public class Robot extends IterativeRobot {
 	 * to reset subsystems before shutting down.
 	 */
 	public void disabledInit() {
-
+		vision.disableCameraSaving();
 	}
 
 	public void disabledPeriodic() {
@@ -128,6 +134,9 @@ public class Robot extends IterativeRobot {
 			autonomousCommand.start();
 
 		timerTilt.reset();
+		
+		vision.enableCameraSaving();
+		vision.setCameraPeriod(0.25);
 	}
 
 	/**
@@ -166,6 +175,9 @@ public class Robot extends IterativeRobot {
 //			raiseArm90.start();			
 //		}
 		shooterArm.setBrakeOff();
+		
+		vision.enableCameraSaving();
+		vision.setCameraPeriod(1);
 	}
 
 	/**
@@ -181,11 +193,30 @@ public class Robot extends IterativeRobot {
 	        if (timerLEDsCycleHigh) {
 	        	shooter.setFlywheelSpeedLight(shooter.bLEDsArmAtAngle);
 	        } else {
-	        	shooter.setFlywheelSpeedLight(shooter.bLEDsArmAtAngle && !shooter.bLEDsFlywheelAtSpeed);	        	
+	        	shooter.setFlywheelSpeedLight(shooter.bLEDsArmAtAngle /*&& !shooter.bLEDsFlywheelAtSpeed*/);	        	
 	        }
 		}
 		
+		// Rumble as needed
+		boolean ballLoaded = shooter.isBallLoaded(); 
+		if (ballLoaded && !prevBallLoaded) {
+			timerRumble.reset();
+			oi.xboxController.setRumble(RumbleType.kLeftRumble, 1);
+		}
+		prevBallLoaded = ballLoaded;
 
+		boolean readyToShoot = shooter.bLEDsArmAtAngle && shooter.bLEDsFlywheelAtSpeed;
+		if (readyToShoot && !prevReadyToShoot) {
+			timerRumble.reset();
+			oi.xboxController.setRumble(RumbleType.kRightRumble, 1);
+		}
+		prevReadyToShoot = readyToShoot;
+
+		if (timerRumble.get() > 0.5) {
+	    	oi.xboxController.setRumble(RumbleType.kLeftRumble, 0);
+	    	oi.xboxController.setRumble(RumbleType.kRightRumble, 0);
+		}
+		
 		// Show arm angle
         shooterArm.updateSmartDashboard();
         

@@ -14,13 +14,18 @@ public class AutoTargetShoot extends CommandGroup {
     	addParallel(new FlyWheelSetToSpeedForGoal());		// Rev flywheels
 //    	addParallel(new ShooterArmMoveToGoal());			// Start moving arm
     	addSequential(new DriveTurnToGoal(2.0));
+    	//TODO:  Determine correct delay that accounts for latency without taking too much time
+    	addSequential(new WaitSeconds(0.4));  //0.4
     	addSequential(new DriveTurnToGoal(0.75));
 //    	addSequential(new DriveTurnToGoal(1.5),2);			// Usually, it takes 2-3 turning iterations to get the position exactly.  But 3 iterations take time.
     	addSequential(new FlyWheelSetToSpeedForGoal()); 	// Ensure flywheels are at speed
     	// Move arm last, since it may move the target out of the camera's Y field of view!
+    	//TODO:  Determine correct delay that accounts for latency without taking too much time
+    	addSequential(new WaitSeconds(0.1));  //0.1
     	addSequential(new ShooterArmMoveToGoal());			// Ensure arm is at target angle
 
     	// Shoot goal
+    	addSequential(new WaitSeconds(0.2));  //0.2
     	addSequential(new ShooterPistonOut(true)); //When wheels are full speed, use piston to push the ball into fly wheels
     	addSequential(new WaitSeconds(0.5));
     	addSequential(new ShooterPistonOut(false));

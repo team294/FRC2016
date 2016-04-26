@@ -43,7 +43,8 @@ public class ShooterArm extends Subsystem {
 	
 	private double joyRelativeRate = 8;
 	
-	private ToleranceChecker armTol = new ToleranceChecker(3.0, 10);
+	private double defaultTolerance = 3.0;
+	private ToleranceChecker armTol = new ToleranceChecker(defaultTolerance, 10);
 //	private ToleranceChecker armTol = new ToleranceChecker(1.5, 10);
 	private double angleTolForLEDs = 8;				// Turn LEDs on when arm is within 8 degress of target angle
 	
@@ -136,6 +137,21 @@ public class ShooterArm extends Subsystem {
 		return convertPosToAngle(shooterArmMotor.getSetpoint());
 	}
 
+
+	/**
+	 * Tell PID controller to move arm to a specific absolute angle.  Arm will move
+	 * as much as it can within its movement limits and without interfering
+	 * with the intake (if the intake is raised).
+	 * Automatically turns flashlight on if angle >= 30 degrees, off if < 30 degrees.
+	 * @param angle Desired target angle, in degrees.  0 = horizontal, + = up, - = down
+	 * @param tolerance Tolerance (+/-) to target angle that arm must achieve for moveToAngleIsFinished() to return true   
+	 */
+	public void moveToAngle(double angle, double tolerance) {
+		armTol.setTolerance(tolerance);
+		moveToAngleInternal(angle);
+	}
+	
+	
 	/**
 	 * Tell PID controller to move arm to a specific absolute angle.  Arm will move
 	 * as much as it can within its movement limits and without interfering
@@ -144,13 +160,11 @@ public class ShooterArm extends Subsystem {
 	 * @param angle Desired target angle, in degrees.  0 = horizontal, + = up, - = down
 	 */
 	public void moveToAngle(double angle) {
-//		if(angle > 35){
-//    		SmartDashboard.putBoolean("useCamera1", false);
-//    	}else{
-//    		SmartDashboard.putBoolean("useCamera1", true);
-//    	}
-		
-		
+		armTol.setTolerance(defaultTolerance);
+		moveToAngleInternal(angle);
+	}
+
+	private void moveToAngleInternal(double angle) {
 		// Don't move if the shooter arm is disabled or if arm could crash into intake
 //		if (!Robot.shooterArmEnabled || 
 //				(Robot.intake.intakeSolenoidIsOff() && getAngle()>=45 && angle<getAngle() )  ||

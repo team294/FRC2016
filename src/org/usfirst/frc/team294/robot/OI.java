@@ -203,6 +203,7 @@ public class OI {
 
         SmartDashboard.putData("Shooter Arm Shooting Angle", new ShooterArmMoveToSetLocation(RobotMap.shootingAngle));
         SmartDashboard.putData("Shooter Arm 0", new ShooterArmMoveToSetLocation(0));
+        SmartDashboard.putData("Shooter Arm Calibration", new ShooterArmMoveToSetLocation(30));
         SmartDashboard.putData("Shooter Arm Load", new ShooterArmMoveAndStopFlywheels(RobotMap.shooterArmBallLoadAngle));
         SmartDashboard.putData("Shooter Arm Cruise", new ShooterArmMoveAndStopFlywheels(RobotMap.shooterArmBallCruiseAngle, RobotMap.shooterArmBallCruiseAngleTolerance));
         SmartDashboard.putData("Shooter Arm OuterWks", new ShooterArmMoveAndRev(RobotMap.shootingAngleFromOuterworks, RobotMap.maxFlywheelSpeed, RobotMap.maxFlywheelSpeed));

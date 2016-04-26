@@ -24,7 +24,7 @@ public class DriveAngle extends Command {
     // Steering settings
     private double angleErr, speedControl;
     private double priorAngleErr;
-    private double minSpeed = 0.25;
+    private double minSpeed = 0.22;   // Was 0.25, oscillates sometimes
     private double kPangle = 0.025; 
     
     /**
@@ -106,7 +106,9 @@ public class DriveAngle extends Command {
         	}
         	
         	Robot.driveTrain.driveCurve(speedControl, 1);
-//        	System.out.print(commandSpeed + "  "+ speedControl);    		
+//        	System.out.print(commandSpeed + "  "+ speedControl);    
+        	
+        	priorAngleErr = angleErr;
     	}
     }
 

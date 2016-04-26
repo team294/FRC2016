@@ -139,10 +139,11 @@ public class OI {
 		xbB[4].whenPressed(new IntakeRaiseWithArmMoveIfNeeded());
 		xbB[5].whenPressed(new ShooterArmMoveAndStopFlywheels(RobotMap.shooterArmBallCruiseAngle));
 		xbB[6].whenPressed(new ShooterArmMoveAndFlyIn(RobotMap.ShootFromLocation.Batter));
+		//add code so while xbB[7] is held, the arm piston can be moved e.g. it is enabled
 		xbB[8].whileHeld(new IntakeOverride(true));
 		xbB[8].whenReleased(new IntakeOverride(false));
 	    xbB[9].whenPressed(new StopFlyAndIntake());
-		//xbB[10].whenPressed(new ShooterPistonOverride());
+		//add code so when xbB[10] is pressed, the arm piston moves
 
         xbPovUp.whenActive(new ShooterArmMoveAndFlyIn(RobotMap.ShootFromLocation.Outerworks));
         xbPovDown.whenActive(new ShooterArmMoveAndStopFlywheels(RobotMap.shooterArmBallLoadAngle));
@@ -157,14 +158,14 @@ public class OI {
         coP[1].whenPressed(new ShootBall());
         coP[2].whenPressed(new ShooterArmMoveAndFlyIn(RobotMap.ShootFromLocation.Outerworks));
         coP[3].whenPressed(new ShooterArmMoveAndStopFlywheels(RobotMap.shooterArmBallLoadAngle));
-        coP[4].whenPressed(new SetToStartingPosition());
+        coP[4].whenPressed(new FlyWheelSetToSpeedForArmLocation());
         coP[5].whileHeld(new IntakeOverride(true));
         coP[5].whenReleased(new IntakeOverride(false));
         coP[6].whenPressed(new ShooterArmMoveAndFlyIn(RobotMap.ShootFromLocation.Batter));
         coP[7].whenPressed(new ShooterArmMoveAndStopFlywheels(RobotMap.shooterArmBallCruiseAngle));
-        //coP[8].whenPressed(new ShooterArmMoveAndFlyIn(RobotMap.ShootFromLocation.Outerworks));
+        //Set the arm piston to out
         coP[9].whenPressed(new IntakeSetToSpeed(-1));
-        //coP[10].whenPressed(new ShooterArmMoveAndFlyIn(RobotMap.ShootFromLocation.Outerworks));
+        //Set the arm piston to in
         coP[11].whenPressed(new LoadBallSequence());
         coP[12].whenPressed(new StopFlyAndIntake());
         coP[13].whenPressed(new IntakeLowerIfRaised());

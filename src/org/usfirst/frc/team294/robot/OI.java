@@ -137,7 +137,7 @@ public class OI {
 		xbB[2].whenPressed(new IntakeSetToSpeed(-1));
 		xbB[3].whenPressed(new LoadBallSequence());
 		xbB[4].whenPressed(new IntakeRaiseWithArmMoveIfNeeded());
-		xbB[5].whenPressed(new ShooterArmMoveAndStopFlywheels(RobotMap.shooterArmBallCruiseAngle));
+		xbB[5].whenPressed(new ShooterArmMoveAndStopFlywheels(RobotMap.shooterArmBallCruiseAngle, RobotMap.shooterArmBallCruiseAngleTolerance));
 		xbB[6].whenPressed(new ShooterArmMoveAndFlyIn(RobotMap.ShootFromLocation.Batter));
 		xbB[8].whileHeld(new IntakeOverride(true));
 		xbB[8].whenReleased(new IntakeOverride(false));
@@ -161,7 +161,7 @@ public class OI {
         coP[5].whileHeld(new IntakeOverride(true));
         coP[5].whenReleased(new IntakeOverride(false));
         coP[6].whenPressed(new ShooterArmMoveAndFlyIn(RobotMap.ShootFromLocation.Batter));
-        coP[7].whenPressed(new ShooterArmMoveAndStopFlywheels(RobotMap.shooterArmBallCruiseAngle));
+        coP[7].whenPressed(new ShooterArmMoveAndStopFlywheels(RobotMap.shooterArmBallCruiseAngle, RobotMap.shooterArmBallCruiseAngleTolerance));
         //coP[8].whenPressed(new ShooterArmMoveAndFlyIn(RobotMap.ShootFromLocation.Outerworks));
         coP[9].whenPressed(new IntakeSetToSpeed(-1));
         //coP[10].whenPressed(new ShooterArmMoveAndFlyIn(RobotMap.ShootFromLocation.Outerworks));
@@ -204,7 +204,7 @@ public class OI {
         SmartDashboard.putData("Shooter Arm Shooting Angle", new ShooterArmMoveToSetLocation(RobotMap.shootingAngle));
         SmartDashboard.putData("Shooter Arm 0", new ShooterArmMoveToSetLocation(0));
         SmartDashboard.putData("Shooter Arm Load", new ShooterArmMoveAndStopFlywheels(RobotMap.shooterArmBallLoadAngle));
-        SmartDashboard.putData("Shooter Arm Cruise", new ShooterArmMoveAndStopFlywheels(RobotMap.shooterArmBallCruiseAngle));
+        SmartDashboard.putData("Shooter Arm Cruise", new ShooterArmMoveAndStopFlywheels(RobotMap.shooterArmBallCruiseAngle, RobotMap.shooterArmBallCruiseAngleTolerance));
         SmartDashboard.putData("Shooter Arm OuterWks", new ShooterArmMoveAndRev(RobotMap.shootingAngleFromOuterworks, RobotMap.maxFlywheelSpeed, RobotMap.maxFlywheelSpeed));
         SmartDashboard.putData("Shooter Arm Batter+1", new ShooterArmMoveAndRev(RobotMap.shootingAngleFromEndOfBatter, RobotMap.maxFlywheelSpeed, RobotMap.maxFlywheelSpeed));
         SmartDashboard.putData("Shooter Arm Batter", new ShooterArmMoveAndRev(RobotMap.shootingAngle,2100, 2520));

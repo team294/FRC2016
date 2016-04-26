@@ -11,4 +11,9 @@ public class ShooterArmMoveAndStopFlywheels extends CommandGroup {
     	addParallel(new FlyWheelStop());
     	addSequential(new ShooterArmMoveToSetLocation(angle));
     }
+
+    public  ShooterArmMoveAndStopFlywheels(double angle, double tolerance) {
+    	addParallel(new FlyWheelStop());
+    	addSequential(new ShooterArmMoveToSetLocation(angle, tolerance));
+    }
 }

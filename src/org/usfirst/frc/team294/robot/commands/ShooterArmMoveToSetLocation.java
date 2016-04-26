@@ -9,12 +9,31 @@ import edu.wpi.first.wpilibj.command.Command;
  *
  */
 public class ShooterArmMoveToSetLocation extends Command {
-	double angleRequested, angleToMove;
+	double angleRequested, angleToMove, tolerance;
+	boolean setTolerance;
 	RobotMap.ShootFromLocation fromLocation;
 	
+    /**
+	 * Moves arm to set angle and holds there with PID/potentiometer.
+	 * @param location, per RobotMap.ShootFromLocation
+	 */
     public ShooterArmMoveToSetLocation(RobotMap.ShootFromLocation location) {
     	fromLocation = location;
     	angleRequested = RobotMap.getArmAngle(location);
+    	setTolerance = false;
+    	requires(Robot.shooterArm); 
+    }
+
+    /**
+	 * Moves arm to set angle and holds there with PID/potentiometer.
+	 * @param location, per RobotMap.ShootFromLocation
+	 * @param tolerance, angle +/- tolerance arm must get to before this command is finished
+	 */
+    public ShooterArmMoveToSetLocation(RobotMap.ShootFromLocation location, double tolerance) {
+    	fromLocation = location;
+    	angleRequested = RobotMap.getArmAngle(location);
+    	setTolerance = true;
+    	this.tolerance = tolerance;
     	requires(Robot.shooterArm); 
     }
 
@@ -23,12 +42,23 @@ public class ShooterArmMoveToSetLocation extends Command {
 	 * @param angle, in degrees
 	 */
     public ShooterArmMoveToSetLocation(double angle) {
-        // Use requires() here to declare subsystem dependencies
-        // eg. requires(chassis);
     	fromLocation = RobotMap.ShootFromLocation.None;
     	angleRequested = angle;
+    	setTolerance = false;
     	requires(Robot.shooterArm); 
-//    	requires(Robot.intake);
+    }
+
+    /**
+	 * Moves arm to set angle and holds there with PID/potentiometer.
+	 * @param angle, in degrees
+	 * @param tolerance, angle +/- tolerance arm must get to before this command is finished
+	 */
+    public ShooterArmMoveToSetLocation(double angle, double tolerance) {
+    	fromLocation = RobotMap.ShootFromLocation.None;
+    	angleRequested = angle;
+    	setTolerance = true;
+    	this.tolerance = tolerance;
+    	requires(Robot.shooterArm); 
     }
 
     // Called just before this Command runs the first time
@@ -78,7 +108,11 @@ public class ShooterArmMoveToSetLocation extends Command {
     	}
     	
 //    	Robot.intake.setSpeed(0);
-    	Robot.shooterArm.moveToAngle(angleToMove);
+    	if (setTolerance) {
+        	Robot.shooterArm.moveToAngle(angleToMove, tolerance);    		
+    	} else {
+        	Robot.shooterArm.moveToAngle(angleToMove);
+    	}
     	Robot.shooterArm.setShootFromLocation(fromLocation);
     }
 

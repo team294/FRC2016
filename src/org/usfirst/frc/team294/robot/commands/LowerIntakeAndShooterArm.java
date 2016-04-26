@@ -18,7 +18,7 @@ public class LowerIntakeAndShooterArm extends CommandGroup {
     	addSequential(new IntakeLowerIfRaised());
     	//addSequential(new WaitSeconds(0.5));
     	if (cruiseAngle)
-    		addSequential(new ShooterArmMoveToSetLocation(RobotMap.shooterArmBallCruiseAngle));
+    		addSequential(new ShooterArmMoveToSetLocation(RobotMap.shooterArmBallCruiseAngle, RobotMap.shooterArmBallCruiseAngleTolerance));
     	else
     		addSequential(new ShooterArmMoveToSetLocation(RobotMap.shooterArmBallLoadAngle));    		
     }

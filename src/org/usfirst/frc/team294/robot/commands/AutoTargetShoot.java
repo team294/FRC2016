@@ -30,7 +30,7 @@ public class AutoTargetShoot extends CommandGroup {
     	addSequential(new WaitSeconds(0.5));
     	addSequential(new ShooterPistonOut(false));
     	addParallel(new FlyWheelStop()); //Stops the fly wheels from spinning
-    	addSequential(new ShooterArmMoveToSetLocation(RobotMap.shooterArmBallCruiseAngle));
+    	addSequential(new ShooterArmMoveToSetLocation(RobotMap.shooterArmBallCruiseAngle, RobotMap.shooterArmBallCruiseAngleTolerance));
     	    	
     	// Add Commands here:
         // e.g. addSequential(new Command1());

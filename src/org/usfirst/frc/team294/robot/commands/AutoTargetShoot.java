@@ -25,7 +25,7 @@ public class AutoTargetShoot extends CommandGroup {
     	addSequential(new ShooterArmMoveToGoal());			// Ensure arm is at target angle
 
     	// Shoot goal
-    	addSequential(new WaitSeconds(0.2));  //0.2
+    	addSequential(new WaitSeconds(0.4));  //0.2
     	addSequential(new ShooterPistonOut(true)); //When wheels are full speed, use piston to push the ball into fly wheels
     	addSequential(new WaitSeconds(0.5));
     	addSequential(new ShooterPistonOut(false));

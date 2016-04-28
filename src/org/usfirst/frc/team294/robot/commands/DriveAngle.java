@@ -93,6 +93,8 @@ public class DriveAngle extends Command {
     	
     	if (angleTol.success()) {
         	Robot.driveTrain.stop();
+        	Robot.writeLog("Auto turn (finish):  current angle = " + Robot.driveTrain.getDegrees() + 
+        			", target angle = " + targetAngle);
     	} else {
         	// Find speed to drive
         	speedControl = angleErr*kPangle;

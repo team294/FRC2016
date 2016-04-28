@@ -11,6 +11,11 @@ import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
+import java.io.FileWriter;
+import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 import org.usfirst.frc.team294.robot.commands.*;
 import org.usfirst.frc.team294.robot.subsystems.*;
 
@@ -61,6 +66,18 @@ public class Robot extends IterativeRobot {
 	public static Timer timerRumble = new Timer();
 	public static boolean prevBallLoaded = false;
 	public static boolean prevReadyToShoot = false;
+	
+	public static FileWriter debugStream;
+	public static final SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+
+	public static void writeLog(String msg) {
+		if (debugStream == null) return;
+		try {
+			debugStream.write(format.format(new Date()) + ": " + msg + "\n");
+			debugStream.flush();
+		} catch (IOException e) {
+		}
+	}
 
 	/**
 	 * This function is run when the robot is first started up and should be
@@ -76,6 +93,14 @@ public class Robot extends IterativeRobot {
 			shooterArmEnabled = false;
 		} else {
 			shooterArmEnabled = true;
+		}
+		
+		try {
+			debugStream = new FileWriter("/home/lvuser/debug.log", true);
+			debugStream.write("Robot program started\n");
+			debugStream.flush();
+		} catch (IOException e) {
+			System.out.println("Could not open debug file: " + e);
 		}
 
 		//Instantiates the subsystems
@@ -130,6 +155,8 @@ public class Robot extends IterativeRobot {
 	}
 
 	public void autonomousInit() {
+		writeLog("autonomousInit");
+		
 		// schedule the autonomous command (example)
 		autonomousCommand = oi.getAutonomousCommand();
 		

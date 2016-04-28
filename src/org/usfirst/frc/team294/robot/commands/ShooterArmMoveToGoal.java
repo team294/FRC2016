@@ -9,7 +9,8 @@ import edu.wpi.first.wpilibj.command.Command;
  *
  */
 public class ShooterArmMoveToGoal extends Command {
-	
+	private double targetArmAngle;
+
 	/**
 	 * Moves arm to angle of goal based on camera and holds there with PID/potentiometer.
 	 */
@@ -22,10 +23,10 @@ public class ShooterArmMoveToGoal extends Command {
 
     // Called just before this Command runs the first time
     protected void initialize() {
-    	Robot.vision.findGoal();
-    	Robot.shooterArm.moveToAngle(Robot.vision.getGoalArmAngle());
-    	System.out.println("Auto move arm to goal:  dist = " + Robot.vision.getGoalDistance() + ", arm angle = " + Robot.vision.getGoalArmAngle());
-
+       	Robot.vision.findGoal();
+    	targetArmAngle = Robot.vision.getGoalArmAngle();
+    	Robot.shooterArm.moveToAngle(targetArmAngle);
+    	Robot.writeLog("Auto move arm to goal (init):  dist = " + Robot.vision.getGoalDistance() + ", target arm angle = " + targetArmAngle);
     }
 
     // Called repeatedly when this Command is scheduled to run
@@ -35,7 +36,13 @@ public class ShooterArmMoveToGoal extends Command {
 
     // Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished() {
-    	return (Robot.shooterArm.moveToAngleIsFinished());
+    	if (Robot.shooterArm.moveToAngleIsFinished()){
+        	Robot.writeLog("Auto move arm to goal (finish):  target arm angle = " + targetArmAngle + ", actual arm angle = " + 
+        			Robot.shooterArm.getAngle());
+    		return true;
+    	} else {
+    		return false;
+    	}
     }
 
     // Called once after isFinished returns true

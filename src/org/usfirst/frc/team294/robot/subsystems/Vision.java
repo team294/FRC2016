@@ -14,6 +14,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 public class Vision extends Subsystem {
     // Local data
 	boolean bGoalFound;				// Are the goal coords in xsGoal, ysGoal valid?
+	boolean bGoalFoundSaved;		// Saved version of bGoalFound -- when 
 	double xsGoal, ysGoal;  		// Screen coords of center of largest goal
 	double dGoal;					// Distance to goal, in inches
 	double xsGoalTarget;			// Ideal screen location of goal center (in pixels), based on distance to goal
@@ -72,6 +73,11 @@ public class Vision extends Subsystem {
 		grip_table.putNumber("saveImagePeriod", period);
 	}
 
+	
+//	public boolean isGoalFound() {
+//		
+//	}
+	
 	/**
 	 * Searches for goal and primes internal data structures with goal coordinates.
 	 * @return True if a goal was found.
@@ -158,9 +164,11 @@ public class Vision extends Subsystem {
 
 		// Calculate arm angle to target goal
 		if (dGoal<151) {
-			goalArmAngle = 0.00207*dGoal*dGoal -0.5694*dGoal + 93.1;			
+//			goalArmAngle = 0.00207*dGoal*dGoal -0.5694*dGoal + 93.1;			
+			goalArmAngle = 0.00234*dGoal*dGoal -0.6629*dGoal + 96.1;			
 		} else {
-			goalArmAngle = 54.0;
+//			goalArmAngle = 54.0;
+			goalArmAngle = 49.0;
 		}
 		
 		// Calculate flywheel speeds

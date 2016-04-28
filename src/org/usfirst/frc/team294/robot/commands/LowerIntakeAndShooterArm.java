@@ -14,7 +14,7 @@ public class LowerIntakeAndShooterArm extends CommandGroup {
 	 * @param cruiseAngle true = lower arm to cruise angle; false = lower arm to ball load angle (all the way)
 	 */
     public LowerIntakeAndShooterArm(boolean cruiseAngle) {
-    	addSequential(new ShooterArmMoveToSetLocation(RobotMap.upperBoundAngleToAvoid+3));
+    	addSequential(new ShooterArmMoveToSetLocation(RobotMap.upperBoundAngleToAvoid+8, 6));
     	addSequential(new IntakeLowerIfRaised());
     	//addSequential(new WaitSeconds(0.5));
     	if (cruiseAngle)

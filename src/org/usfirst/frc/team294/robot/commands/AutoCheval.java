@@ -13,7 +13,7 @@ public class AutoCheval extends CommandGroup {
     	//
     	//Robot is 32 inches long
     	//
-    	addSequential(new ShooterArmMoveToSetLocation(RobotMap.upperBoundAngleToAvoid+3));
+    	addSequential(new ShooterArmMoveToSetLocation(RobotMap.upperBoundAngleToAvoid+8, 6));
 //    	addSequential(new WaitSeconds(0.25));
 //    	addSequential(new WaitSeconds(0.1));
     	addSequential(new ShiftDown());

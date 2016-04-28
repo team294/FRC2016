@@ -61,7 +61,7 @@ public class ShooterArm extends Subsystem {
 		//shooterArmMotor.setPID(65, 0.1, 15, 0, 5, 50, 0);  // Best values with elastic retention bands, gears, 3-turn pot (practice robot)
 		//shooterArmMotor.setPID(45, 0.25, 60, 0, 7, 50, 0);  // Best values with elastic retention bands, 2-stage gears (no planetary), 3-turn pot (practice robot)
 //		shooterArmMotor.setPID(60, 0.0, 60, 0, 7, 50, 0);  // Best values with elastic retention bands, 2-stage gears (no planetary), 3-turn pot (practice robot), smoother without i-term
-		shooterArmMotor.setPID(45, 0.0, 80, 0, 7, 50, 0);  // Best values with elastic retention bands, 2-stage gears (no planetary), 3-turn pot (practice robot), smoother without i-term
+		shooterArmMotor.setPID(50, 0.0, 100, 0, 7, 50, 0);  // Best values with elastic retention bands, 2-stage gears (no planetary), 3-turn pot (practice robot), smoother without i-term
 		shooterArmMotor.configPeakOutputVoltage(+5.0f, -10.0f);
 		shooterArmMotor.changeControlMode(TalonControlMode.Position);
 		shooterArmMotor.configPotentiometerTurns(3);		// 3-turn pot.  Also use this for 1-turn pot, since all cals are for this.

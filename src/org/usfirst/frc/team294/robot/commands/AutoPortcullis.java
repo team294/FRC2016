@@ -13,7 +13,7 @@ public class AutoPortcullis extends CommandGroup {
     	addSequential(new ShiftDown());
     	addParallel(new DriveStraightDistance(0.4, -2.0*12, DriveStraightDistance.Units.inches));    	// "slow" speed, 2 feet total
     	//addSequential(new LowerIntakeAndShooterArm(false));
-    	addSequential(new ShooterArmMoveToSetLocation(RobotMap.upperBoundAngleToAvoid+3));
+    	addSequential(new ShooterArmMoveToSetLocation(RobotMap.upperBoundAngleToAvoid+8, 6));
     	addSequential(new IntakeLowerIfRaised());
     	addSequential(new ShooterArmMoveToSetLocation(RobotMap.maxPistonOutAngle-3, 4.0));
     	addSequential(new ArmPistonOut());

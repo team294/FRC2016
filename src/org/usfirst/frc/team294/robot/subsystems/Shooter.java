@@ -59,7 +59,8 @@ public class Shooter extends Subsystem {
         motorTop.configPeakOutputVoltage(+12.0f, -12.0f);
 //        motorTop.setPID(0.010, 0.00005, 0); motorTop.setF(0.020); // Better (3" wheels)
 //        motorTop.setPID(0.010, 0.00015, 0, 0.020, 10000, 50, 0); // Limit windup -- best (3" wheels)
-        motorTop.setPID(0.060, 0.00015, 0, 0.025, 6000, 50, 0); // best (4" wheels)
+//        motorTop.setPID(0.060, 0.00015, 0, 0.025, 6000, 50, 0); // best (4" wheels) (practice bot)
+        motorTop.setPID(0.060, 0.00015, 0, 0.026, 6000, 50, 0); // best (4" wheels)  (competition bot)
         motorTop.changeControlMode(TalonControlMode.Speed);
 
         motorBottom.setFeedbackDevice(FeedbackDevice.CtreMagEncoder_Relative);
@@ -67,7 +68,8 @@ public class Shooter extends Subsystem {
         motorBottom.reverseSensor(true);
         motorBottom.configNominalOutputVoltage(+0.0f, -0.0f);
         motorBottom.configPeakOutputVoltage(+12.0f, -12.0f);
-        motorBottom.setPID(0.060, 0.00015, 0, 0.030, 6000, 50, 0); // best (4" wheels)
+//        motorBottom.setPID(0.060, 0.00015, 0, 0.030, 6000, 50, 0); // best (4" wheels)  (practice bot)
+        motorBottom.setPID(0.060, 0.00015, 0, 0.026, 6000, 50, 0); // best (4" wheels)  (competition bot)
         motorBottom.changeControlMode(TalonControlMode.Speed);
                 
 //        ballPiston.set(DoubleSolenoid.Value.kReverse);

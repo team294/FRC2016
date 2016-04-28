@@ -40,8 +40,8 @@ public class Vision extends Subsystem {
 	final double hGoal = 85.0 - 1.5 + 12.0/2.0;	// Height of middle of goal -- Competition field
 	final double hAxle = 12.5;		// Height of arm axle
 	final double dArm = 20.0;			// Length of arm from axle to camera
-	final double angleArmHorizontal = 9.5;	// Arm angle at horizontal
-	final double angleArmVertical = 104.7;	// Arm angle at vertical
+	final double angleArmHorizontal = 7.6;	// Arm angle at horizontal, practice bot = 9.5
+	final double angleArmVertical = 102.6;	// Arm angle at vertical, practice bot = 104.7
 	final double angleArmM = 90.0/(angleArmVertical - angleArmHorizontal);	// Slope
 	final double angleArmB = -angleArmM*angleArmHorizontal;				// Intercept
 	final double cameraXRatio = 84.25/90.0/2.0*1.1;  	// Sx/Sz

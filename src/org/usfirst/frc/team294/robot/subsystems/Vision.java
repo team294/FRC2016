@@ -139,9 +139,9 @@ public class Vision extends Subsystem {
 
 				// Calculate ideal screen X position of goal
 				if (dGoalTemp<100) {
-					xsGoalTargetTemp = -0.00469436*dGoalTemp*dGoalTemp + 1.170263*dGoalTemp + 217.3622;
+					xsGoalTargetTemp = -0.00469436*dGoalTemp*dGoalTemp + 1.170263*dGoalTemp + 206.3622;
 				} else {
-					xsGoalTargetTemp = 287.0;
+					xsGoalTargetTemp = 276.0;
 				}
 
 				// If this is the first goal or closer than the last goal, then save it
@@ -175,135 +175,31 @@ public class Vision extends Subsystem {
 		// Calculate arm angle to target goal
 		if (dGoal<151) {
 //			goalArmAngle = 0.00207*dGoal*dGoal -0.5694*dGoal + 93.1;			
-			goalArmAngle = 0.00234*dGoal*dGoal -0.6629*dGoal + 96.1;			
+//			goalArmAngle = 0.00234*dGoal*dGoal -0.6629*dGoal + 96.1;			
+			goalArmAngle = 0.00196*dGoal*dGoal -0.5434*dGoal + 88.4;			
 		} else {
 //			goalArmAngle = 54.0;
-			goalArmAngle = 49.0;
+//			goalArmAngle = 49.0;
+			goalArmAngle = 51.0;
 		}
 		
 		// Calculate flywheel speeds
-		if (dGoal<=40) {
+		if (dGoal<=50) {
 			speedTopFlywheel = 2100.0;
 			speedBottomFlywheel = 2520.0;
-		} else if (dGoal>=72) {
+		} else  {
 			speedTopFlywheel = maxFlywheelSpeed;
 			speedBottomFlywheel = maxFlywheelSpeed;
-		} else {
-			speedTopFlywheel = 75.0*dGoal - 900.0;
-			speedBottomFlywheel = 61.88*dGoal + 45;
-			speedTopFlywheel = (speedTopFlywheel>maxFlywheelSpeed) ? maxFlywheelSpeed : speedTopFlywheel;
-			speedBottomFlywheel = (speedBottomFlywheel>maxFlywheelSpeed) ? maxFlywheelSpeed : speedBottomFlywheel;			
+//		} else {
+//			speedTopFlywheel = 75.0*dGoal - 900.0;
+//			speedBottomFlywheel = 61.88*dGoal + 45;
+//			speedTopFlywheel = (speedTopFlywheel>maxFlywheelSpeed) ? maxFlywheelSpeed : speedTopFlywheel;
+//			speedBottomFlywheel = (speedBottomFlywheel>maxFlywheelSpeed) ? maxFlywheelSpeed : speedBottomFlywheel;			
 		}
 		
 		return bGoalFound;
 	}
 	
-	/**
-	 * Old version of findGoal.  Selects the target with the largest X width.
-	 * @return
-	 */
-	public boolean findGoalLargest() {
-		// For finding the goal with the correct width
-		int i, goal;
-		double maxWidth;
-		
-		// For distance calcs
-		double angleGoalOnScreen, angleArm;
-		
-		// Get GRIP data
-		do {
-			width = table.getNumberArray("width", networkTableDefault );
-			centerX = table.getNumberArray("centerX", networkTableDefault );
-			centerY = table.getNumberArray("centerY", networkTableDefault );
-		} while (width.length!=centerX.length || width.length!=centerY.length);
-			
-		// Are any contours found?
-		if (width.length>0) {
-			bGoalFound = (width[0]>=0);
-		} else {
-			bGoalFound = false;
-		}
-		if (!bGoalFound) {
-			SmartDashboard.putNumber("Cam goal distance",-1);
-			return bGoalFound;
-		}
-		
-		// Find goal with largest width.  Filter out ball and elastic band (X <= xsBallSceen)
-		maxWidth = 0;
-		goal = -1;
-		for (i=0; i<width.length; i++) {
-			if (width[i]>maxWidth && centerX[i]>xsBallScreen) {
-				maxWidth = width[i];
-				goal = i;
-			}
-		}
-		
-		if (goal==-1) {
-			bGoalFound = false;
-			SmartDashboard.putNumber("Cam goal distance",-2);
-			return bGoalFound;			
-		}
-		
-		bGoalFound = true;
-		xsGoal = centerX[goal];
-		ysGoal = centerY[goal];
-		
-		// Filter arm angle
-		angleArm = Robot.shooterArm.getAngle();
-		if (armAngleFiltered.getNumPoints()>0) {
-			// If arm has moved a lot since we last averaged, then flush the average.
-			if (Math.abs(armAngleFiltered.getAverage()-angleArm) > 5.0) 
-				armAngleFiltered.reset();
-		}
-		armAngleFiltered.add(angleArm);
-		angleArm = armAngleFiltered.getAverage()*angleArmM + angleArmB;
-		
-		// Calculate horizontal distance to goal, in inches
-		angleGoalOnScreen = Math.atan( (cameraYHalfRes - ysGoal)/cameraYHalfRes * cameraYRatio)*180.0/Math.PI;
-		dGoal = (hGoal - hAxle - dArm*Math.sin(angleArm*Math.PI/180.0)) / Math.tan((angleArm + angleGoalOnScreen)*Math.PI/180.0);				
-		SmartDashboard.putNumber("Cam goal distance",dGoal);
-
-		// Calculate ideal screen X position of goal
-		if (dGoal<100) {
-			xsGoalTarget = -0.00469436*dGoal*dGoal + 1.170263*dGoal + 217.3622;
-		} else {
-			xsGoalTarget = 287.0;
-		}
-
-		// Calculate angle to turn robot to point at goal
-		xAngleErr = Math.atan( (xsGoal-xsGoalTarget)/cameraXHalfRes * cameraXRatio) * 180.0/Math.PI;
-
-		// Calculate ideal screen Y position of goal
-		if (dGoal<=72) {
-			ysGoalTarget = -0.638*dGoal + 350;
-		} else {
-			ysGoalTarget = 1.279*dGoal + 209;
-		}
-
-		// Calculate arm angle to target goal
-		if (dGoal<151) {
-			goalArmAngle = 0.00207*dGoal*dGoal -0.5694*dGoal + 93.1;			
-		} else {
-			goalArmAngle = 54.0;
-		}
-		
-		// Calculate flywheel speeds
-		if (dGoal<=40) {
-			speedTopFlywheel = 2100.0;
-			speedBottomFlywheel = 2520.0;
-		} else if (dGoal>=72) {
-			speedTopFlywheel = maxFlywheelSpeed;
-			speedBottomFlywheel = maxFlywheelSpeed;
-		} else {
-			speedTopFlywheel = 75.0*dGoal - 900.0;
-			speedBottomFlywheel = 61.88*dGoal + 45;
-			speedTopFlywheel = (speedTopFlywheel>maxFlywheelSpeed) ? maxFlywheelSpeed : speedTopFlywheel;
-			speedBottomFlywheel = (speedBottomFlywheel>maxFlywheelSpeed) ? maxFlywheelSpeed : speedBottomFlywheel;			
-		}
-		
-		return bGoalFound;
-	}
-
 	/**
 	 * Returns the horizontal distance to last goal found with findGoal(), in inches
 	 * @return distance, in inches.  -1 if no goal found.

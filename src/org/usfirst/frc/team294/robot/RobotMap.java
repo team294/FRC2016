@@ -52,7 +52,7 @@ public class RobotMap {
     public static double shooterArmBallCruiseAngleTolerance = 5.0;
     public static double shootingAngleFromOuterworks = 45.0; //Shooting angle from the outerworks
     public static double shootingAngleFromEndOfBatter = 62.0; //Shooting angle from the end of the batter
-    public static double shootingAngleOuterworksManual = 52.0;
+    public static double shootingAngleOuterworksManual = 53.0;
     
     // Shooter arm range to avoid when raising or lowering intake
     public static double lowerBoundAngleToAvoid = 6;

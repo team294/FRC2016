@@ -202,15 +202,19 @@ public class OI {
         SmartDashboard.putData("Intake Rollers Out", new IntakeSetToSpeed(-1));        
         SmartDashboard.putData("Intake Motor Stop", new IntakeMotorStop());
 
-        SmartDashboard.putData("Shooter Arm Shooting Angle", new ShooterArmMoveToSetLocation(RobotMap.shootingAngle));
-        SmartDashboard.putData("Shooter Arm 0", new ShooterArmMoveToSetLocation(0));
+        SmartDashboard.putData("Shooter Arm Batter noFlyW", new ShooterArmMoveToSetLocation(RobotMap.shootingAngle));
+//        SmartDashboard.putData("Shooter Arm 0", new ShooterArmMoveToSetLocation(0));
         SmartDashboard.putData("Shooter Arm Calibration", new ShooterArmMoveToSetLocation(30));
         SmartDashboard.putData("Shooter Arm Load", new ShooterArmMoveAndStopFlywheels(RobotMap.shooterArmBallLoadAngle));
         SmartDashboard.putData("Shooter Arm Cruise", new ShooterArmMoveAndStopFlywheels(RobotMap.shooterArmBallCruiseAngle, RobotMap.shooterArmBallCruiseAngleTolerance));
-        SmartDashboard.putData("Shooter Arm OuterWks", new ShooterArmMoveAndRev(RobotMap.shootingAngleFromOuterworks, RobotMap.maxFlywheelSpeed, RobotMap.maxFlywheelSpeed));
-        SmartDashboard.putData("Shooter Arm Batter+1", new ShooterArmMoveAndRev(RobotMap.shootingAngleFromEndOfBatter, RobotMap.maxFlywheelSpeed, RobotMap.maxFlywheelSpeed));
-        SmartDashboard.putData("Shooter Arm Batter", new ShooterArmMoveAndRev(RobotMap.shootingAngle,2100, 2520));
+        SmartDashboard.putData("Shooter Arm OuterWks", new ShooterArmMoveAndFlyIn(RobotMap.ShootFromLocation.Outerworks));
+        SmartDashboard.putData("Shooter Arm ManualOuterWks", new ShooterArmMoveAndFlyIn(RobotMap.ShootFromLocation.ManualOuterworks));
+        SmartDashboard.putData("Shooter Arm Batter+1", new ShooterArmMoveAndFlyIn(RobotMap.ShootFromLocation.EndOfBatter));
+        SmartDashboard.putData("Shooter Arm Batter", new ShooterArmMoveAndFlyIn(RobotMap.ShootFromLocation.Batter));
 
+        SmartDashboard.putNumber("Shooter Arm 'Dashboard angle'", 0.0);
+        SmartDashboard.putData("Shooter Arm to 'Dashboard angle'", new ShooterArmMoveToDashboardAngle());
+        
         SmartDashboard.putData("Shooter Arm Joystick Relative", new ShooterArmMoveRelativeJoystick());
         SmartDashboard.putData("Shooter Arm cam to goal", new ShooterArmMoveToGoal());
 

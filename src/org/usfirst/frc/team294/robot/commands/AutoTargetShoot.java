@@ -22,11 +22,12 @@ public class AutoTargetShoot extends CommandGroup {
     	// Move arm last, since it may move the target out of the camera's Y field of view!
     	//TODO:  Determine correct delay that accounts for latency without taking too much time
     	addSequential(new WaitSeconds(0.1));  //0.1
+    	addSequential(new VisonSaveFoundGoalState());
     	addSequential(new ShooterArmMoveToGoal());			// Ensure arm is at target angle
 
     	// Shoot goal
     	addSequential(new WaitSeconds(0.4));  //0.2
-    	addSequential(new ShooterPistonOut(true)); //When wheels are full speed, use piston to push the ball into fly wheels
+    	addSequential(new ShooterPistonOutIfGoalFound(true)); //When wheels are full speed, use piston to push the ball into fly wheels
     	addSequential(new WaitSeconds(0.5));
     	addSequential(new ShooterPistonOut(false));
     	addParallel(new FlyWheelStop()); //Stops the fly wheels from spinning

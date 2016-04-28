@@ -14,7 +14,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 public class Vision extends Subsystem {
     // Local data
 	boolean bGoalFound;				// Are the goal coords in xsGoal, ysGoal valid?
-	boolean bGoalFoundSaved;		// Saved version of bGoalFound -- when 
+	boolean bGoalFoundSaved;		// Saved version of bGoalFound -- when saveGoalFoundState() is called
 	double xsGoal, ysGoal;  		// Screen coords of center of largest goal
 	double dGoal;					// Distance to goal, in inches
 	double xsGoalTarget;			// Ideal screen location of goal center (in pixels), based on distance to goal
@@ -73,10 +73,20 @@ public class Vision extends Subsystem {
 		grip_table.putNumber("saveImagePeriod", period);
 	}
 
+	/**
+	 * Saves to memory whether or not the last call to findGoal() found a goal.
+	 */
+	public void saveGoalFoundState() {
+		bGoalFoundSaved = bGoalFound;
+	}
 	
-//	public boolean isGoalFound() {
-//		
-//	}
+	/**
+	 * Recall the last state that was saved by saveGoalFoundState()
+	 * @return true = goal was found just before saving, false = goal was not found just before saving
+	 */
+	public boolean readSavedGoalFoundState() {
+		return bGoalFoundSaved;
+	}
 	
 	/**
 	 * Searches for goal and primes internal data structures with goal coordinates.

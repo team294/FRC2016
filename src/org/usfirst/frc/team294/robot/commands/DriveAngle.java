@@ -25,8 +25,9 @@ public class DriveAngle extends Command {
     private double angleErr, speedControl;
     private double priorAngleErr;
 //    private double minSpeed = 0.22;   // Was 0.25, practice bot oscillates sometimes, so use 0.22.
-    private double minSpeed = 0.21;   // Was 0.22, oscillated in competition once, so use 0.21.
-    private double kPangle = 0.025; 
+    private double minSpeed = 0.25;   // Was 0.22, oscillated in competition once, so use 0.21.
+    private double kPangle = 0.025;
+    private double kDangle = 0.05;
     
     /**
      * Turns a given angle using the NavX.
@@ -99,15 +100,17 @@ public class DriveAngle extends Command {
     	} else {
         	// Find speed to drive
         	speedControl = angleErr*kPangle;
-        	speedControl = (speedControl>commandSpeed) ? commandSpeed : speedControl;
-        	speedControl = (speedControl<-commandSpeed) ? -commandSpeed : speedControl;
         	
         	if (speedControl>0) {
         		speedControl = (speedControl<minSpeed) ? minSpeed : speedControl;
         	} else {
         		speedControl = (speedControl>-minSpeed) ? -minSpeed : speedControl;
         	}
-        	
+
+        	speedControl += kDangle*(angleErr-priorAngleErr);
+        	speedControl = (speedControl>commandSpeed) ? commandSpeed : speedControl;
+        	speedControl = (speedControl<-commandSpeed) ? -commandSpeed : speedControl;
+
         	Robot.driveTrain.driveCurve(speedControl, 1);
 //        	System.out.print(commandSpeed + "  "+ speedControl);    
         	

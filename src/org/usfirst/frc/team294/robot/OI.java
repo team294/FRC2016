@@ -178,7 +178,7 @@ public class OI {
 
 		SmartDashboard.putData("DriveWithJoysticks", new DriveWithJoysticks());
         SmartDashboard.putData("Drive: All Stop", new DriveStop());
-        SmartDashboard.putData("Rotate to goal", new DriveTurnToGoal(1.0));
+        SmartDashboard.putData("Rotate to goal", new DriveTurnToGoal(0.75));
 
         SmartDashboard.putData("ShiftUp", new ShiftUp());
         SmartDashboard.putData("ShiftDown", new ShiftDown());

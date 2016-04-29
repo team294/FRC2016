@@ -138,12 +138,15 @@ public class Vision extends Subsystem {
 				dGoalTemp = (hGoal - hAxle - dArm*Math.sin(angleArm*Math.PI/180.0)) / Math.tan((angleArm + angleGoalOnScreen)*Math.PI/180.0);				
 
 				// Calculate ideal screen X position of goal
-				if (dGoalTemp<100) {
-					xsGoalTargetTemp = -0.00469436*dGoalTemp*dGoalTemp + 1.170263*dGoalTemp + 206.3622;
-				} else {
-					xsGoalTargetTemp = 276.0;
-				}
-
+//				if (dGoalTemp<100) {
+//					xsGoalTargetTemp = -0.00469436*dGoalTemp*dGoalTemp + 1.170263*dGoalTemp + 206.3622;
+//					xsGoalTargetTemp = -0.00469436*dGoalTemp*dGoalTemp + 1.170263*dGoalTemp + 184.4;
+//					xsGoalTargetTemp = -0.007805*dGoalTemp*dGoalTemp + 1.5009*dGoalTemp + 188.0;
+//				} else {
+//					xsGoalTargetTemp = 188.0;
+//				}
+				xsGoalTargetTemp = 0.171429*dGoalTemp + 219.7;
+				
 				// If this is the first goal or closer than the last goal, then save it
 				if (!bGoalFound || ( Math.abs(xsGoalTargetTemp-centerX[i])<Math.abs(xsGoalTarget-xsGoal) )) {
 					bGoalFound=true;

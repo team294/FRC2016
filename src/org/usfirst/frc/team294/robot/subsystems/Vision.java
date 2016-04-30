@@ -180,11 +180,13 @@ public class Vision extends Subsystem {
 		if (dGoal<151) {
 //			goalArmAngle = 0.00207*dGoal*dGoal -0.5694*dGoal + 93.1;			
 //			goalArmAngle = 0.00234*dGoal*dGoal -0.6629*dGoal + 96.1;			
-			goalArmAngle = 0.00196*dGoal*dGoal -0.5434*dGoal + 88.4;			
+//			goalArmAngle = 0.00196*dGoal*dGoal -0.5434*dGoal + 88.4;			
+			goalArmAngle = 0.00196*dGoal*dGoal -0.5434*dGoal + 87.4;	// Lower goal angle 1 degree -- shooting slightly high with new balls in quarter finals
 		} else {
 //			goalArmAngle = 54.0;
 //			goalArmAngle = 49.0;
-			goalArmAngle = 51.0;
+//			goalArmAngle = 51.0;  
+			goalArmAngle = 50.0;  // Lower goal angle 1 degree -- shooting slightly high with new balls in quarter finals
 		}
 		
 		// Calculate flywheel speeds

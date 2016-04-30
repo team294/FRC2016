@@ -25,7 +25,8 @@ public class DriveAngle extends Command {
     private double angleErr, speedControl;
     private double priorAngleErr;
 //    private double minSpeed = 0.22;   // Was 0.25, practice bot oscillates sometimes, so use 0.22.
-    private double minSpeed = 0.25;   // Was 0.22, oscillated in competition once, so use 0.21.
+//    private double minSpeed = 0.21;   // Was 0.22, oscillated in competition once, so use 0.21.
+    private double minSpeed = 0.25;   // Back to 0.25 after adding D term
     private double kPangle = 0.025;
     private double kDangle = 0.05;
     

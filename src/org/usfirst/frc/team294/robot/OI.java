@@ -67,8 +67,8 @@ public class OI {
 	};
 	
 	Command[] MiddleKnobCommands = new Command[] {
-		null,		// Position 1
-		new AutoDriveAndShootPosition2(),		// Position 2
+		new AutoDriveAndShootPosition2a(),		// Position 2, go straight far and turn/shoot (without dog leg)
+		new AutoDriveAndShootPosition2(),		// Position 2, classic dog leg
 		new AutoDriveAndShootPosition3(),		// Position 3
 		new AutoDriveAndShootPosition4(),		// Position 4
 		new AutoDriveAndShootPosition5()		// Position 5

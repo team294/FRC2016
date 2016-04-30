@@ -24,7 +24,7 @@ public class AutoLowBar extends CommandGroup {
     	addSequential(new DriveStop());
     	
     	// Turn towards goal
-    	addParallel(new ShooterArmMoveToSetLocation(45));			// Start moving arm to correct target angle.  WAS 56
+    	addParallel(new ShooterArmMoveToSetLocation(RobotMap.shootingAngleTargetAcquire));			// Start moving arm to correct target angle.  WAS 56
     	addSequential(new WaitSeconds(0.1));
     	addSequential(new DriveAngle(0.65, 45, false));				// 45 degrees from original orientation
     	addSequential(new AutoTargetShoot());

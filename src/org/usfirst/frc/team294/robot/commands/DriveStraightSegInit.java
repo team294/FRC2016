@@ -57,8 +57,8 @@ public class DriveStraightSegInit extends Command {
     	Robot.driveTrain.resetDegrees();
     	Robot.driveTrain.resetEncoders();
 
-    	System.out.println("Init:  speed = " + commandSpeed + ", dist = " + distance);
-    	System.out.println("Init:  Left encoder = " + Robot.driveTrain.getLeftEncoder() + " right encoder = " + Robot.driveTrain.getRightEncoder());
+    	Robot.writeLog("Drive Straight Init (init):  speed = " + commandSpeed + ", dist = " + distance);
+    	Robot.writeLog("Drive Straight Init (init):  Left encoder = " + Robot.driveTrain.getLeftEncoder() + " right encoder = " + Robot.driveTrain.getRightEncoder());
     }
 
     // Called repeatedly when this Command is scheduled to run
@@ -90,7 +90,9 @@ public class DriveStraightSegInit extends Command {
         	curve = (distErr>=0) ? -curve : curve; // Flip sign if we are going forwards
         	
         	Robot.driveTrain.driveCurve(distSpeedControl, curve);
-//        	System.out.print(commandSpeed + "  "+ distSpeedControl+"  "+curve);    		
+//        	System.out.print(commandSpeed + "  "+ distSpeedControl+"  "+curve);
+    	} else {
+        	Robot.writeLog("Drive Straight Init (finish):  Left encoder = " + Robot.driveTrain.getLeftEncoder() + " right encoder = " + Robot.driveTrain.getRightEncoder());    		
     	}
     }
 

@@ -62,8 +62,8 @@ public class DriveStraightSegFinal extends Command {
 //    	Robot.driveTrain.resetDegrees();
 //    	Robot.driveTrain.resetEncoders();
 
-    	System.out.println("Final:  speed = " + commandSpeed + ", dist = " + distance);
-    	System.out.println("Final:  Left encoder = " + Robot.driveTrain.getLeftEncoder() + " right encoder = " + Robot.driveTrain.getRightEncoder());
+    	Robot.writeLog("Drive Straight Final (init):  speed = " + commandSpeed + ", dist = " + distance);
+    	Robot.writeLog("Drive Straight Final (init):  Left encoder = " + Robot.driveTrain.getLeftEncoder() + " right encoder = " + Robot.driveTrain.getRightEncoder());
 
     }
 
@@ -106,6 +106,8 @@ public class DriveStraightSegFinal extends Command {
         	
         	Robot.driveTrain.driveCurve(distSpeedControl, curve);
 //        	System.out.print(commandSpeed + "  "+ distSpeedControl+"  "+curve);    		
+    	} else {
+        	Robot.writeLog("Drive Straight Final (finish):  Left encoder = " + Robot.driveTrain.getLeftEncoder() + " right encoder = " + Robot.driveTrain.getRightEncoder());    		
     	}
     }
 

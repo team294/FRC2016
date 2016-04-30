@@ -50,7 +50,8 @@ public class RobotMap {
     public static double shootingAngle = 76; 				//Up on the tower shooting angle
     public static double shooterArmBallCruiseAngle = 14.0;  // Reduced from 15 to 10 degrees due to larger flywheels and arm stops.
     public static double shooterArmBallCruiseAngleTolerance = 5.0;
-    public static double shootingAngleFromOuterworks = 45.0; //Shooting angle from the outerworks
+    public static double shootingAngleFromOuterworks = 45.0; //Shooting angle from the outerworks (aka target acquire)
+    public static double shootingAngleTargetAcquire = 45.0; //Shooting angle for auto targeting
     public static double shootingAngleFromEndOfBatter = 62.0; //Shooting angle from the end of the batter
     public static double shootingAngleOuterworksManual = 53.0;
     

@@ -58,8 +58,8 @@ public class DriveStraightSegMid extends Command {
 //    	Robot.driveTrain.resetDegrees();
 //    	Robot.driveTrain.resetEncoders();   	
 
-    	System.out.println("Mid:  speed = " + commandSpeed + ", dist = " + distance);
-    	System.out.println("Mid:  Left encoder = " + Robot.driveTrain.getLeftEncoder() + " right encoder = " + Robot.driveTrain.getRightEncoder());
+    	Robot.writeLog("Drive Straight Mid (init):  speed = " + commandSpeed + ", dist = " + distance);
+    	Robot.writeLog("Drive Straight Mid (init):  Left encoder = " + Robot.driveTrain.getLeftEncoder() + " right encoder = " + Robot.driveTrain.getRightEncoder());
 
     }
 
@@ -93,6 +93,8 @@ public class DriveStraightSegMid extends Command {
         	
         	Robot.driveTrain.driveCurve(distSpeedControl, curve);
 //        	System.out.print(commandSpeed + "  "+ distSpeedControl+"  "+curve);    		
+    	} else {
+        	Robot.writeLog("Drive Straight Mid (finish):  Left encoder = " + Robot.driveTrain.getLeftEncoder() + " right encoder = " + Robot.driveTrain.getRightEncoder());    		
     	}
     }
 

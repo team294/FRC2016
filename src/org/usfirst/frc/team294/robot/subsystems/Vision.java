@@ -145,7 +145,8 @@ public class Vision extends Subsystem {
 //				} else {
 //					xsGoalTargetTemp = 188.0;
 //				}
-				xsGoalTargetTemp = 0.171429*dGoalTemp + 219.7;
+				xsGoalTargetTemp = 0.171429*dGoalTemp + 219.7;  // Last few qualifier matches
+//				xsGoalTargetTemp = 0.19588*dGoalTemp + 220.4;  // Based on recalibration on practice field.  Targets ~0.3 deg to the left of prior code.
 				
 				// If this is the first goal or closer than the last goal, then save it
 				if (!bGoalFound || ( Math.abs(xsGoalTargetTemp-centerX[i])<Math.abs(xsGoalTarget-xsGoal) )) {

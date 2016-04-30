@@ -53,7 +53,7 @@ public class RobotMap {
     public static double shootingAngleFromOuterworks = 45.0; //Shooting angle from the outerworks (aka target acquire)
     public static double shootingAngleTargetAcquire = 45.0; //Shooting angle for auto targeting
     public static double shootingAngleFromEndOfBatter = 62.0; //Shooting angle from the end of the batter
-    public static double shootingAngleOuterworksManual = 53.0;
+    public static double shootingAngleOuterworksManual = 52.0;  // was 53, shooting little high in elims with new balls
     
     // Shooter arm range to avoid when raising or lowering intake
     public static double lowerBoundAngleToAvoid = 6;

@@ -156,7 +156,8 @@ public class OI {
 	    xbRT.whenActive(new ShootBall());
 
         coP[1].whenPressed(new ShootBall());
-        coP[2].whenPressed(new ShooterArmMoveAndFlyIn(RobotMap.ShootFromLocation.Outerworks));
+//        coP[2].whenPressed(new ShooterArmMoveAndFlyIn(RobotMap.ShootFromLocation.Outerworks));
+        coP[2].whenPressed(new ShooterArmMoveAndFlyIn(RobotMap.ShootFromLocation.ManualOuterworks));
         coP[3].whenPressed(new ShooterArmMoveAndStopFlywheels(RobotMap.shooterArmBallLoadAngle));
         coP[4].whenPressed(new FlyWheelSetToSpeedForArmLocation());
         coP[5].whileHeld(new IntakeOverride(true));

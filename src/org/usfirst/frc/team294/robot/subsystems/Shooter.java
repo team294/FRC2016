@@ -9,14 +9,14 @@ import org.usfirst.frc.team294.robot.triggers.BallLoadedTrigger;
 import org.usfirst.frc.team294.robot.triggers.MotorCurrentTrigger;
 import org.usfirst.frc.team294.robot.utilities.RCSwitch;
 
-import edu.wpi.first.wpilibj.CANTalon;
+import com.ctre.CANTalon;
 import edu.wpi.first.wpilibj.DigitalInput;
 // import edu.wpi.first.wpilibj.DoubleSolenoid;  // Old code for double solenoid from prototype bot
 import edu.wpi.first.wpilibj.Solenoid;
-import edu.wpi.first.wpilibj.CANTalon.FeedbackDevice;
-import edu.wpi.first.wpilibj.CANTalon.TalonControlMode;
+import com.ctre.CANTalon.FeedbackDevice;
+import com.ctre.CANTalon.TalonControlMode;
 import edu.wpi.first.wpilibj.command.Subsystem;
-import edu.wpi.first.wpilibj.hal.CanTalonJNI;
+import com.ctre.CanTalonJNI;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 

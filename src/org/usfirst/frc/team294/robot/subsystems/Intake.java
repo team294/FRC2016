@@ -7,7 +7,7 @@ import org.usfirst.frc.team294.robot.commands.RecordBallState;
 import org.usfirst.frc.team294.robot.triggers.BallLoadedTrigger;
 import org.usfirst.frc.team294.robot.triggers.MotorCurrentTrigger;
 
-import edu.wpi.first.wpilibj.CANTalon;
+import com.ctre.CANTalon;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.command.Subsystem;
@@ -18,11 +18,11 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
  * Intake subsystem
  */
 public class Intake extends Subsystem {
-    private final CANTalon intakeMotor = new CANTalon(RobotMap.intakeMotor);
+	private final CANTalon intakeMotor = new CANTalon(RobotMap.intakeMotor);
     private final DoubleSolenoid intakeSolenoid = new DoubleSolenoid(RobotMap.intakeSolenoidFwd, RobotMap.intakeSolenoidRev);
     private final DigitalInput intakeDownSensor = new DigitalInput(RobotMap.intakeDownSensor);
 
-    public final MotorCurrentTrigger motorCurrentTrigger = new MotorCurrentTrigger(intakeMotor, 35, 2);
+    //public final MotorCurrentTrigger motorCurrentTrigger = new MotorCurrentTrigger(intakeMotor, 35.0, 2.0);
 
     public Intake() {
     	// Call the Subsystem constructor

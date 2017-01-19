@@ -1,11 +1,11 @@
 package org.usfirst.frc.team294.robot;
 
 import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.GenericHID.RumbleType;
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.PowerDistributionPanel;
 import edu.wpi.first.wpilibj.Preferences;
 import edu.wpi.first.wpilibj.Timer;
-import edu.wpi.first.wpilibj.Joystick.RumbleType;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
@@ -33,7 +33,7 @@ public class Robot extends IterativeRobot {
 	
 	public static OI oi;
 
-	// Creates the SubSystem onjects
+	// Creates the SubSystem objects
 	public static DriveTrain driveTrain;
 	public static Shifter shifter;
 	public static ShooterArm shooterArm;

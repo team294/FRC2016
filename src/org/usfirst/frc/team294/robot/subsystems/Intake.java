@@ -22,7 +22,7 @@ public class Intake extends Subsystem {
     private final DoubleSolenoid intakeSolenoid = new DoubleSolenoid(RobotMap.intakeSolenoidFwd, RobotMap.intakeSolenoidRev);
     private final DigitalInput intakeDownSensor = new DigitalInput(RobotMap.intakeDownSensor);
 
-    //public final MotorCurrentTrigger motorCurrentTrigger = new MotorCurrentTrigger(intakeMotor, 35.0, 2.0);
+    public final MotorCurrentTrigger motorCurrentTrigger = new MotorCurrentTrigger(intakeMotor, 35.0, 2.0);
 
     public Intake() {
     	// Call the Subsystem constructor

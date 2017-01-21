@@ -1,7 +1,5 @@
 package org.usfirst.frc.team294.robot;
 
-import org.usfirst.frc.team294.robot.RobotMap.ShootFromLocation;
-
 /**
  * The RobotMap is a mapping from the ports sensors and actuators are wired into
  * to a variable name. This provides flexibility changing wiring, makes checking
@@ -32,7 +30,7 @@ public class RobotMap {
 	public static int flashlight = 0;
     public static int speedlight = 1;
 
-   // Pneumatic controller PCM IDs
+    // Pneumatic controller PCM IDs
     public static int shifterSolenoidFwd = 0;
     public static int shifterSolenoidRev = 1;
     public static int intakeSolenoidFwd = 2;

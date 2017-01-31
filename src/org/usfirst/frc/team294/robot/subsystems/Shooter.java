@@ -21,6 +21,13 @@ import edu.wpi.first.wpilibj.Solenoid;
 //import edu.wpi.first.wpilibj.CANTalon.TalonControlMode;
 import edu.wpi.first.wpilibj.command.Subsystem;
 //import edu.wpi.first.wpilibj.hal.CanTalonJNI;
+import edu.wpi.first.wpilibj.DigitalInput;
+// import edu.wpi.first.wpilibj.DoubleSolenoid;  // Old code for double solenoid from prototype bot
+import edu.wpi.first.wpilibj.Solenoid;
+import com.ctre.CANTalon.FeedbackDevice;
+import com.ctre.CANTalon.TalonControlMode;
+import edu.wpi.first.wpilibj.command.Subsystem;
+import com.ctre.CanTalonJNI;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 

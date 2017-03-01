@@ -133,11 +133,21 @@ public class DriveTrain extends Subsystem {
      * <b>NOTE:</b> Be sure to call setDriveControlByPower() in the initialize method.
      * @param leftStick Left joystick
      * @param rightStick Right joystick
-     */
+     *
     public void driveWithJoystick(Joystick leftStick, Joystick rightStick) {
         leftMotor2.clearStickyFaults();
         rightMotor2.clearStickyFaults();
     	robotDrive.tankDrive(leftStick, rightStick);
+    }*/
+    
+    /**
+     * Use this in the execute method of a DriveWithJoysticks command.  <p>
+     * <b>NOTE:</b> Be sure to call setDriveControlByPower() in the initialize method.
+     * @param leftStick Left joystick
+     * @param rightStick Right joystick
+     */
+    public void driveWithJoystick(double leftStick, double rightStick) {
+    	robotDrive.tankDrive(leftStick, rightStick, false);
     }
 
     /**

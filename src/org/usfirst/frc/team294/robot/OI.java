@@ -95,6 +95,8 @@ public class OI {
 	public Joystick xboxController = new Joystick(3);
 	public Joystick coJoystick = new Joystick(4);
 	
+	private boolean driveDirection = true;
+	
 	public OI() {
 		Button[] left = new Button[12];
 	    Button[] right = new Button[12];
@@ -112,13 +114,16 @@ public class OI {
 		for (int i=1; i<left.length; i++) {
 			left[i] = new JoystickButton(leftJoystick, i);
 			right[i] = new JoystickButton(rightJoystick, i);
-			if (i==2) {
+/*			if (i==2) {
 				left[2].whenPressed(new DriveWithJoysticks());
 				right[2].whenPressed(new AutoTargetShoot());
-			} else if(i==3) {
+			} else*/ if(i==3) {
+	    		right[i].whenPressed(new SwitchDriveDirection(true));
+	    		left[i].whenPressed(new SwitchDriveDirection(false));
+/*			} else if(i==3) {
 				left[i].whileHeld(new DriveStraightWithJoysticks(leftJoystick));
 				right[i].whileHeld(new DriveStraightWithJoysticks(rightJoystick));
-			} else {
+*/			} else {
 				left[i].whenPressed(new ShiftDown());
 				right[i].whenPressed(new ShiftUp()); 
 			}
@@ -399,4 +404,21 @@ public class OI {
         //SmartDashboard.putData("Shooter Arm -50", new ShooterArmMoveToSetLocation(-50));
         SmartDashboard.putData("Shooter Arm keep out!", new ShooterArmMoveAwayFromIntake(ShooterArmMoveAwayFromIntake.condition.ifIntakeNotInWay));
     }
+    
+
+	/**
+	 * Sets the drive direction
+	 * @param direction true = gear in the front false = shooter in the front
+	 */
+	public void setDriveDirection(boolean direction){
+		this.driveDirection = direction;
+	}
+	
+	/**
+	 * Gets the drive direction of the robot
+	 * @return true for ? false for ?
+	 */
+	public boolean getDriveDirection(){
+		return driveDirection;
+	}
 }

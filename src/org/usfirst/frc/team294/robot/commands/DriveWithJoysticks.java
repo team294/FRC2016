@@ -1,18 +1,17 @@
 package org.usfirst.frc.team294.robot.commands;
 
-import org.usfirst.frc.team294.robot.Robot;
-
 import edu.wpi.first.wpilibj.command.Command;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+
+import org.usfirst.frc.team294.robot.*;
 
 /**
  *
  */
 public class DriveWithJoysticks extends Command {
 
-	/**
-	 * Drive robot drive train using joysticks.
-	 */
     public DriveWithJoysticks() {
+        // Use requires() here to declare subsystem dependencies
         requires(Robot.driveTrain);
     }
 
@@ -23,7 +22,17 @@ public class DriveWithJoysticks extends Command {
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
-    	Robot.driveTrain.driveWithJoystick(Robot.oi.leftJoystick, Robot.oi.rightJoystick);
+    	double leftVal = Robot.oi.leftJoystick.getY();
+    	double rightVal = Robot.oi.rightJoystick.getY();
+    	
+    	if (Robot.oi.getDriveDirection() == true){
+    		Robot.driveTrain.driveWithJoystick(leftVal, rightVal);
+    		SmartDashboard.putBoolean("Forward", true);
+    	}
+    	else {
+    		Robot.driveTrain.driveWithJoystick(-rightVal, -leftVal);
+    		SmartDashboard.putBoolean("Forward", false);
+    	}
     }
 
     // Make this return true when this Command no longer needs to run execute()
